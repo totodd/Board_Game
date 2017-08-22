@@ -35,14 +35,53 @@ public class StepsGame {
 
     /**
      *
-     * @param wholePlacement 5*5 placement array for a piece
+     * @param wholePlacement 3*3 placement array for a piece
      * @return updated board status [50]
      */
-    static int[] pieceOnBoard(String wholePlacement){
-        return null;
+    static int[] pieceOnBoard(Place place){
+        int[] array = place.getArray();
+
+
+        return transPieceToBoard(place.getExpandedArray());
     }
 
-    static int[] wholePlacementTrans(Pieces )
+    /**
+     *
+     * @param piece (3x3)
+     * @return 3x3 -> [50] to add on BOARD
+     *
+     */
+
+    static int[] transPieceToBoard(int[] piece, int[] position){
+        int[] TEMP_BSTATUS = BOARD_STATUS;
+
+        for(int i = 0; i < 9; i++){
+            TEMP_BSTATUS[position[i]] = piece[i];
+        }
+
+        return TEMP_BSTATUS;
+    }
+
+
+    /**
+     *
+     * @param position (string)
+     * @return indices on board
+     *
+     *      x-11    x-10    x-9
+     *      x-1     x       x+1
+     *      x+9     x+10    x+11
+     */
+
+    static int[] getOnBoardIndex(String position){
+        int CENTER_INDEX = BOARD.indexOf(position);
+        int[] Index_ONBoard = {CENTER_INDEX-11,CENTER_INDEX-10,CENTER_INDEX-9,
+                CENTER_INDEX-1,CENTER_INDEX, CENTER_INDEX+1,
+                CENTER_INDEX+9,CENTER_INDEX+10,CENTER_INDEX+11};
+
+        return Index_ONBoard;
+    }
+
 
     /**
      * Determine whether a piece placement is well-formed according to the following:
