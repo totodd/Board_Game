@@ -32,7 +32,7 @@ public enum Pieces {
     }
 
     int[] rotate(int rot){
-        //TODO rotate maskPos according to rot
+        //TODO : rotate maskPos according to rot
         return maskPos;
     }
 

@@ -15,7 +15,7 @@ public class StepsGame {
     private static final int BOARD_LENGTH = 50;
 
     public static final String BOARD_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
-    public static int[] BOARD_STATUS = new int[BOARD_LENGTH]; // 0 means available, 1 means unavailable to put pieces
+    public static boolean[] BOARD_STATUS = new boolean[BOARD_LENGTH]; // 0 or 1, 0 means available, 1 means occupied
 
 
 
@@ -55,9 +55,10 @@ public class StepsGame {
      *
      */
 
-    static int[] putOnBoard(Place placement){
-        for (int idx : placement.getBoardIdx()){
-            BOARD_STATUS[idx] = 1;
+    static boolean [] putOnBoard(Place placement){
+
+        for (int i = 0; i<placement.getBoardIdx().length; i++){
+            BOARD_STATUS[placement.getBoardIdx()[i]] = (placement.getValue()[i]>0);
         }
 
         //TODO update the BOARD_STATUS with the conflict of UPPER level, change value in adjacent positions to '1' (unavailable)
