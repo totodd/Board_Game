@@ -16,7 +16,8 @@ public class StepsGame {
 
     public static final String BOARD_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
     public static boolean[] BOARD_STATUS = new boolean[BOARD_LENGTH]; // 0 or 1, 0 means available, 1 means occupied
-
+    private static final String BOARD_UPPER = "BDFHJKMOQSVXacefhjlnqsuwy";
+    private static final String BOARD_LOWER = "ACEGILNPRTUWYbdgikmoprtvx";
 
 
     /**
@@ -34,6 +35,21 @@ public class StepsGame {
                 withInUpDown);
     }
 
+    /**
+     * Check if the center of the piece is on the right level, etc: lower level center should be at lower level board
+     * @param placement (Place)
+     * @return if on right level
+     */
+    static boolean onRightLevel(Place placement){
+        switch (placement.getPieceCenter()){
+            case 1:
+                return BOARD_LOWER.contains(String.valueOf(placement.getPosition()));
+            case 2:
+                return BOARD_UPPER.contains(String.valueOf(placement.getPosition()));
+            default:
+                return false;
+        }
+    }
 
 
     /**
@@ -60,8 +76,14 @@ public class StepsGame {
         return BOARD_STATUS;
     }
 
-
-
+    /**
+     * Transfer String placement to Object(Place) placement
+     * @param piecePlacement (String)
+     * @return (Place)
+     */
+    static Place toObjectPlacement(String piecePlacement){
+        return new Place(piecePlacement.charAt(0),piecePlacement.charAt(1),piecePlacement.charAt(2));
+    }
 
 
     /**

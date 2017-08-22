@@ -11,42 +11,44 @@ import java.util.Arrays;
 
 public class Place {
     private Pieces piece;
-    private String position;
-    private int[] boardIdx;
-    private int[] value;
+    private char position;
+    private char rot;
 
-    Place(Pieces piece, String position){
-        this.piece = piece;
+
+    Place(char pieceName, char rot, char position){
+        for (Pieces p : Pieces.values()){
+            if(pieceName == (p.name().charAt(0)))
+                this.piece = p;
+        }
         this.position = position;
+        this.rot = rot;
     }
 
-    public String getPosition() {
+    public char getPosition() {
         return position;
     }
 
     public int[] getValue() {
-        value = piece.getMaskPlacement();
-        return value;
+        return piece.getMaskPlacement(rot);
     }
-
-    public int[] getBoardIdx() {
-        return boardIdx;
-    }
-
 
     /** set 3x3 index of BOARD according to the position and piece value
      *      x-11    x-10    x-9
      *      x-1     x       x+1
      *      x+9     x+10    x+11
      */
-    public void setBoardIdx(int[] boardIdx) {
+    public int[] getBoardIdx() {
         int center = StepsGame.BOARD_STRING.indexOf(position);
         int boardRow = StepsGame.ROW_LENGTH;
 
-        this.boardIdx = new int[]{center - boardRow - 1, center - boardRow, center - boardRow + 1,
+        return new int[]{center - boardRow - 1, center - boardRow, center - boardRow + 1,
                 center - 1, center, center + 1,
                 center + boardRow - 1, center + boardRow, center + boardRow + 1};
-
     }
+
+    public int getPieceCenter(){
+        return piece.getCenter();
+    }
+
 }
 
