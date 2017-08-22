@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
-import com.sun.xml.internal.xsom.impl.scd.Step;
+import com.sun.deploy.util.ArrayUtil;
+
+import java.lang.reflect.Array;
 
 /**
  * all placement are saved in object Place
@@ -48,7 +50,17 @@ public class Place {
 
             this.boardIdx = new int[]{center-boardRow-1, center-boardRow, center-boardRow+1,
                                         center-1, center, center+1,
-                                        center+boardRow-1, center+boardRow, center+boardRow+1};;
+                                        center+boardRow-1, center+boardRow, center+boardRow+1};
+            //updated
+            for(int i : boardIdx){
+                if(i == 0)
+                  boardIdx = removeElement(boardIdx,i);
+            }
+    }
+    //updated
+    public int[] removeElement(int[] a, int del) {
+        System.arraycopy(a,del+1,a,del,a.length-1-del);
+        return a;
     }
 }
 

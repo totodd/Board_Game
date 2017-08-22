@@ -37,7 +37,7 @@ public enum Pieces {
     }
 
     int getCenter(){
-        return maskPos[5];
+        return maskPos[4];
     }
 
 
