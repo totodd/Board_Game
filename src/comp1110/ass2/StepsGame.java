@@ -14,12 +14,35 @@ import java.util.Set;
 public class StepsGame {
 //    private static final int StartPieceNum = 4;
     public static final String BOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
-    public static final String LOW_BOARD = "";
-    public static final String UP_BOARD  = "";
 
-    private static final ROW_LENGTH = 10;
+    private static final int ROW_LENGTH = 10;
+    private static final int BOARD_LENGTH = 50;
+    public static int[] BOARD_STATUS = new int[BOARD_LENGTH]; // 0 means available, 1 means unavailable to put pieces
 
+    /**
+     *
+     * @param placement etc: "ABj"
+     * @return if within the board
+     */
+    static boolean outOfBoard(String placement){
+        boolean withInLeftRight = false;
+        boolean withInUpDown = false;
 
+        return (withInLeftRight
+                &&
+                withInUpDown);
+    }
+
+    /**
+     *
+     * @param wholePlacement 5*5 placement array for a piece
+     * @return updated board status [50]
+     */
+    static int[] pieceOnBoard(String wholePlacement){
+        return null;
+    }
+
+    static int[] wholePlacementTrans(Pieces )
 
     /**
      * Determine whether a piece placement is well-formed according to the following:
