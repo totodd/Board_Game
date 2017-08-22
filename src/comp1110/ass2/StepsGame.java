@@ -1,8 +1,6 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,18 +11,21 @@ import java.util.Set;
  */
 public class StepsGame {
 //    private static final int StartPieceNum = 4;
-    public static final String BOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
-
-    private static final int ROW_LENGTH = 10;
+    public static final int ROW_LENGTH = 10;
     private static final int BOARD_LENGTH = 50;
+
+    public static final String BOARD_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
     public static int[] BOARD_STATUS = new int[BOARD_LENGTH]; // 0 means available, 1 means unavailable to put pieces
+
+
 
     /**
      *
-     * @param placement etc: "ABj"  -> int[3*3] + position
+     * @param placement (Place)  -> int[3*3] + position
      * @return if within the board
      */
-    static boolean outOfBoard(String placement){
+    static boolean withInBoard(Place placement){
+        int[] position = placement.getBoardIdx();
         boolean withInLeftRight = false;
         boolean withInUpDown = false;
 
@@ -33,81 +34,45 @@ public class StepsGame {
                 withInUpDown);
     }
 
-    
+
+//
+//    /**
+//     *
+//     * @param wholePlacement 3*3 placement array for a piece
+//     * @return updated board status [50]
+//     */
+//    static int[] pieceOnBoard(Place place){
+//        int[] array = place.getArray();
+//
+//
+//        return transPieceToBoard(place.getExpandedArray());
+//    }
 
     /**
      *
-     * @param array in the size of 50
-     * @return for each '2', change value in adjacent positions to '2'
+     * @param placement (Place)
+     * @return 3x3 -> [50] to add on BOARD_STRING, then update the conflict UPPER area on [50]
+     *
      */
 
-    static int[] getTwo(int[] array){
-        for(int i = 0; i< array.length; i++){
-            if(array[i] == 2){
+    static int[] putOnBoard(Place placement){
+        for (int idx : placement.getBoardIdx()){
+            BOARD_STATUS[idx] = 1;
+        }
 
-                //need "if" to check outOfBoard
-                
-                array[i-1] = 2;
-                array[i+1] = 2;
-                array[i-10] = 2;
-                array[i+10] =2;
+        //TODO update the BOARD_STATUS with the conflict of UPPER level, change value in adjacent positions to '1' (unavailable)
+        for (int value : placement.getValue()) {
+            if(value == 2) {
+
+
             }
         }
-        return array;
+
+        return BOARD_STATUS;
     }
 
 
-    /**
-     *
-     * @param wholePlacement 3*3 placement array for a piece
-     * @return updated board status [50]
-     */
-    static int[] pieceOnBoard(Place place){
-        int[] array = place.getArray();
 
-
-        return transPieceToBoard(place.getExpandedArray());
-    }
-
-    /**
-     *
-     * @param piece (3x3)
-     * @return 3x3 -> [50] to add on BOARD
-     *
-     */
-
-    static int[] transPieceToBoard(int[] piece, int[] position){
-        int[] TEMP_BSTATUS = BOARD_STATUS;
-
-        for(int i = 0; i < 9; i++){
-            TEMP_BSTATUS[position[i]] = piece[i];
-        }
-
-        return TEMP_BSTATUS;
-    }
-
-
-    /**
-     *
-     * @param position (string)
-     * @return indices on board
-     *
-     *      x-11    x-10    x-9
-     *      x-1     x       x+1
-     *      x+9     x+10    x+11
-     */
-
-    static int[] getOnBoardIndex(String position){
-        int CENTER_INDEX = BOARD.indexOf(position);
-
-        //need "if" to check "outOfBoard"
-
-        int[] Index_ONBoard = {CENTER_INDEX-11,CENTER_INDEX-10,CENTER_INDEX-9,
-                CENTER_INDEX-1,CENTER_INDEX, CENTER_INDEX+1,
-                CENTER_INDEX+9,CENTER_INDEX+10,CENTER_INDEX+11};
-
-        return Index_ONBoard;
-    }
 
 
     /**
@@ -128,10 +93,7 @@ public class StepsGame {
 
 
 
-        return (first >
-                && second >
-                && third >
-                );
+        return false;
     }
 
     /**
@@ -180,7 +142,7 @@ public class StepsGame {
         Set<String> res = new HashSet<String>();
 
         for (String e : res){
-            res.add(e.substring(placement.length(), placement.length()+2))
+            res.add(e.substring(placement.length(), placement.length()+2));
         }
 
 

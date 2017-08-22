@@ -1,20 +1,64 @@
 package comp1110.ass2;
 
 public enum Pieces {
-        A(new int[] {0,1,2,0,1,0,1,1,1})
-    ,B,C,D,E,F,G,H;
+//    A(DU0UDUD00),
+//    B(0U00DU0UD),
+//    C(0U00DUDU0),
+//    D(0U0UD00UD),
+//    E(0U0UD0DU0)
+//    F(00D0DUDU0),
+//    G(0UD0DUDU0),
+//    H(0UDUD00UD)
 
-//        private final String lower;
-//        private final String upper;
+    A(new int[] {1,2,0,2,1,2,1,0,0}),
+    B(new int[] {0,2,0,0,1,2,0,2,1}),
+    C(new int[] {0,2,0,0,1,2,1,2,0}),
+    D(new int[] {0,2,0,2,1,0,0,2,1}),
+    E(new int[] {0,2,0,2,1,0,1,2,0}),
+    F(new int[] {0,0,1,0,1,2,1,2,0}),
+    G(new int[] {0,2,1,0,1,2,1,2,0}),
+    H(new int[] {0,2,1,2,1,0,0,2,1});
+    //down=1
+    //up===2
 
-        Pieces() {
+    private final int[] maskPos;
 
-        }
+    Pieces(int[] maskPos){
+        this.maskPos = maskPos;
+    }
 
-        int[] rotate(char rot){
-            return null;
-        }
+    int[] getMaskPlacement(){
+        return maskPos;
+    }
+
+    int[] rotate(int rot){
+        //TODO rotate maskPos according to rot
+        return maskPos;
+    }
+
+    int getCenter(){
+        return maskPos[5];
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
-

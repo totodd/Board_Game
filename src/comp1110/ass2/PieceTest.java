@@ -32,7 +32,7 @@ public class PieceTest {
 
     public static void main(String[] args) {
 
-        int [] originalArray = PieceCC.A.getMaskPlacement();
+        int [] originalArray = Pieces.A.getMaskPlacement();
         System.out.println("Original.A");
         System.out.println(Arrays.toString(originalArray));
 
