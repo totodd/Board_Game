@@ -59,7 +59,7 @@ public class Place {
     }
     //updated
     public int[] removeElement(int[] a, int del) {
-        System.arraycopy(a,del+1,a,del,a.length-1-del);
+        System.arraycopy(a,del+1,a,del,a.length-1-del); //http://blog.csdn.net/kesalin/article/details/566354
         return a;
     }
 }
