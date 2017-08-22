@@ -21,7 +21,7 @@ public class StepsGame {
 
     /**
      *
-     * @param placement etc: "ABj"
+     * @param placement etc: "ABj"  -> int[3*3] + position
      * @return if within the board
      */
     static boolean outOfBoard(String placement){
@@ -32,6 +32,8 @@ public class StepsGame {
                 &&
                 withInUpDown);
     }
+
+    
 
     /**
      *
