@@ -35,6 +35,28 @@ public class StepsGame {
 
     /**
      *
+     * @param array in the size of 50
+     * @return for each '2', change value in adjacent positions to '2'
+     */
+
+    static int[] getTwo(int[] array){
+        for(int i = 0; i< array.length; i++){
+            if(array[i] == 2){
+
+                //need "if" to check outOfBoard
+                
+                array[i-1] = 2;
+                array[i+1] = 2;
+                array[i-10] = 2;
+                array[i+10] =2;
+            }
+        }
+        return array;
+    }
+
+
+    /**
+     *
      * @param wholePlacement 3*3 placement array for a piece
      * @return updated board status [50]
      */
@@ -75,6 +97,9 @@ public class StepsGame {
 
     static int[] getOnBoardIndex(String position){
         int CENTER_INDEX = BOARD.indexOf(position);
+
+        //need "if" to check "outOfBoard"
+
         int[] Index_ONBoard = {CENTER_INDEX-11,CENTER_INDEX-10,CENTER_INDEX-9,
                 CENTER_INDEX-1,CENTER_INDEX, CENTER_INDEX+1,
                 CENTER_INDEX+9,CENTER_INDEX+10,CENTER_INDEX+11};
