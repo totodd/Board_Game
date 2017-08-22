@@ -35,18 +35,6 @@ public class StepsGame {
     }
 
 
-//
-//    /**
-//     *
-//     * @param wholePlacement 3*3 placement array for a piece
-//     * @return updated board status [50]
-//     */
-//    static int[] pieceOnBoard(Place place){
-//        int[] array = place.getArray();
-//
-//
-//        return transPieceToBoard(place.getExpandedArray());
-//    }
 
     /**
      *
