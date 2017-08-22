@@ -37,14 +37,78 @@ public class StepsGame {
 
     /**
      *
-     * @param wholePlacement 5*5 placement array for a piece
-     * @return updated board status [50]
+     * @param array in the size of 50
+     * @return for each '2', change value in adjacent positions to '2'
      */
-    static int[] pieceOnBoard(String wholePlacement){
-        return null;
+
+    static int[] getTwo(int[] array){
+        for(int i = 0; i< array.length; i++){
+            if(array[i] == 2){
+
+                //need "if" to check outOfBoard
+                
+                array[i-1] = 2;
+                array[i+1] = 2;
+                array[i-10] = 2;
+                array[i+10] =2;
+            }
+        }
+        return array;
     }
 
-    static int[] wholePlacementTrans(Pieces )
+
+    /**
+     *
+     * @param wholePlacement 3*3 placement array for a piece
+     * @return updated board status [50]
+     */
+    static int[] pieceOnBoard(Place place){
+        int[] array = place.getArray();
+
+
+        return transPieceToBoard(place.getExpandedArray());
+    }
+
+    /**
+     *
+     * @param piece (3x3)
+     * @return 3x3 -> [50] to add on BOARD
+     *
+     */
+
+    static int[] transPieceToBoard(int[] piece, int[] position){
+        int[] TEMP_BSTATUS = BOARD_STATUS;
+
+        for(int i = 0; i < 9; i++){
+            TEMP_BSTATUS[position[i]] = piece[i];
+        }
+
+        return TEMP_BSTATUS;
+    }
+
+
+    /**
+     *
+     * @param position (string)
+     * @return indices on board
+     *
+     *      x-11    x-10    x-9
+     *      x-1     x       x+1
+     *      x+9     x+10    x+11
+     */
+
+    static int[] getOnBoardIndex(String position){
+        int CENTER_INDEX = BOARD.indexOf(position);
+
+        //need "if" to check "outOfBoard"
+
+        int[] Index_ONBoard = {CENTER_INDEX-11,CENTER_INDEX-10,CENTER_INDEX-9,
+                CENTER_INDEX-1,CENTER_INDEX, CENTER_INDEX+1,
+                CENTER_INDEX+9,CENTER_INDEX+10,CENTER_INDEX+11};
+
+        return Index_ONBoard;
+    }
+
 
     /**
      * Determine whether a piece placement is well-formed according to the following:
