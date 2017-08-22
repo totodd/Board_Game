@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,21 @@ public class StepsGame {
                 withInUpDown);
     }
 
+    /**
+     * modified from //http://blog.csdn.net/kesalin/article/details/566354
+     *
+     * demo provided in removeElement_Test.java
+     *
+     * @param original: original int array
+     * @param del: index of deleted element(int)
+     * @return new int array with unwanted elements deleted
+     */
+    public static int[] removeElement(int[] original, int del) {
+        int[] lessened = new int[original.length-1];
+        System.arraycopy(original,del+1,original,del,original.length-1-del);
+        lessened = Arrays.copyOf(original,original.length-1);
+        return lessened;
+    }
 
 //
 //    /**
@@ -58,14 +74,13 @@ public class StepsGame {
     static int[] putOnBoard(Place placement){
         for (int idx : placement.getBoardIdx()){
             BOARD_STATUS[idx] = 1;
+            //removeElement might be helpful
         }
 
         //TODO update the BOARD_STATUS with the conflict of UPPER level, change value in adjacent positions to '1' (unavailable)
         for (int value : placement.getValue()) {
             if(value == 2) {
-
-
-            }
+        }
         }
 
         return BOARD_STATUS;
