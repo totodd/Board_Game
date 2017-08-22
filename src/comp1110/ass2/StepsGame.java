@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -9,6 +12,14 @@ import java.util.Set;
  * (http://www.smartgames.eu/en/smartgames/iq-steps)
  */
 public class StepsGame {
+//    private static final int StartPieceNum = 4;
+    public static final String BOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
+    public static final String LOW_BOARD = "";
+    public static final String UP_BOARD  = "";
+
+    private static final ROW_LENGTH = 10;
+
+
 
     /**
      * Determine whether a piece placement is well-formed according to the following:
@@ -22,7 +33,16 @@ public class StepsGame {
      */
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
-        return false;
+        char first = piecePlacement.charAt(0);
+        char second = piecePlacement.charAt(1);
+        char third = piecePlacement.charAt(2);
+
+
+
+        return (first >
+                && second >
+                && third >
+                );
     }
 
     /**
@@ -36,6 +56,7 @@ public class StepsGame {
      */
     static boolean isPlacementWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
+
         return false;
     }
 
@@ -49,6 +70,7 @@ public class StepsGame {
      */
     static boolean isPlacementSequenceValid(String placement) {
         // FIXME Task 5: determine whether a placement sequence is valid
+
         return false;
     }
 
@@ -65,7 +87,15 @@ public class StepsGame {
      */
     static Set<String> getViablePiecePlacements(String placement, String objective) {
         // FIXME Task 6: determine the correct order of piece placements
-        return null;
+        String[] sol = getSolutions(placement);
+        Set<String> res = new HashSet<String>();
+
+        for (String e : res){
+            res.add(e.substring(placement.length(), placement.length()+2))
+        }
+
+
+        return res;
     }
 
     /**
