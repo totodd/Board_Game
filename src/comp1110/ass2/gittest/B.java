@@ -4,4 +4,8 @@ public class B {
     public String toString(){
         return super.toString();
     }
+
+    public void test(){
+
+    }
 }
