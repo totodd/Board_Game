@@ -102,9 +102,18 @@ public class StepsGame {
         char second = piecePlacement.charAt(1);
         char third = piecePlacement.charAt(2);
 
-
-
-        return false;
+        if((int)first<65||(int)first>72){
+            return false;
+        }
+        if((int)second<65||(int)second>72){
+            return false;
+        }
+        if((int)third<65||(int)third>121){
+            return false;
+        }else if((int)third>89&&(int)third<97){
+            return false;
+        }
+        return true;
     }
 
     /**
