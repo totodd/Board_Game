@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -96,7 +97,7 @@ public class StepsGame {
      * @param piecePlacement A string describing a piece placement
      * @return True if the piece placement is well-formed
      */
-    static boolean isPiecePlacementWellFormed(String piecePlacement) {
+     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
         char first = piecePlacement.charAt(0);
         char second = piecePlacement.charAt(1);
@@ -127,8 +128,30 @@ public class StepsGame {
      */
     static boolean isPlacementWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
-
-        return false;
+        if (placement==null){
+            return false;
+        }
+        if(placement.isEmpty()){
+            return false;
+        }
+        if (placement.length()%3!=0){
+            return false;
+        }
+        String[] piecePlacementArray = placement.split("(?<=\\G.{3})");
+        int[] pieceUsed= {0,0,0,0,0,0,0,0};
+        //                A,B,C,D,E,F,G,H
+        //                65,66,67,68,69,70,71,72
+        for (String i:piecePlacementArray){
+            if(!isPiecePlacementWellFormed(i)){
+                return false;
+            }
+            if(pieceUsed[(int)i.charAt(0)-65]==0){
+                pieceUsed[(int)i.charAt(0)-65]=1;
+            }else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
