@@ -1,7 +1,6 @@
 package comp1110.ass2;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class provides the text interface for the Steps Game
@@ -15,7 +14,7 @@ public class StepsGame {
     private static final int BOARD_LENGTH = 50;
 
     public static final String BOARD_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxy";
-    public static boolean[] BOARD_STATUS = new boolean[BOARD_LENGTH]; // 0 or 1, 0 means available, 1 means occupied
+    public static boolean[] BOARD_STATUS = new boolean[BOARD_LENGTH]; // false means available, true means occupied
     private static final String BOARD_UPPER = "BDFHJKMOQSVXacefhjlnqsuwy";
     private static final String BOARD_LOWER = "ACEGILNPRTUWYbdgikmoprtvx";
 
@@ -59,21 +58,21 @@ public class StepsGame {
      *
      */
 
-    static boolean [] putOnBoard(Place placement){
-
-        for (int i = 0; i<placement.getBoardIdx().length; i++){
-            BOARD_STATUS[placement.getBoardIdx()[i]] = (placement.getValue()[i]>0);
-        }
-
-        //TODO update the BOARD_STATUS with the conflict of UPPER level, change value in adjacent positions to '1' (unavailable)
-        for (int value : placement.getValue()) {
-            if(value == 2) {
-
-
+    static boolean [] putOnBoard(Place placement, boolean[]temp_Status){
+        if(temp_Status.length == BOARD_STATUS.length) {
+            for (int i = 0; i < placement.getBoardIdx().length; i++) {
+                int boardIdx = placement.getBoardIdx()[i];
+                temp_Status[boardIdx] = (placement.getValue()[i] > 0);
+                if (placement.getValue()[i] == 2) {
+                    temp_Status[boardIdx - ROW_LENGTH] = true;
+                    temp_Status[boardIdx - 1] = true;
+                    temp_Status[boardIdx + 1] = true;
+                    temp_Status[boardIdx + ROW_LENGTH] = true;
+                }
             }
         }
 
-        return BOARD_STATUS;
+        return temp_Status;
     }
 
     /**
@@ -122,6 +121,29 @@ public class StepsGame {
         return false;
     }
 
+    static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
+        boardStatus = putOnBoard(placement.get(0), boardStatus);
+        if(placement.size()<1){
+            return true;
+        }
+        for(int newIdx :placement.get(0).getBoardIdx()){
+            if(boardStatus[newIdx]){
+                return false;
+            }
+        }
+        placement.remove(0);
+        boardStatus = putOnBoard(placement.get(0),boardStatus);
+        return sequenceValid(placement,boardStatus);
+    }
+
+    static List<Place> turnToPlace(String placement){
+        List<Place> places = new ArrayList<Place>();
+        for(int i = 0 ; i < placement.length(); i = i+3){
+            places.add(new Place(placement.charAt(i), placement.charAt(i+1), placement.charAt(i+2)));
+        }
+        return places;
+    }
+
     /**
      * Determine whether a placement sequence is valid.  To be valid, the placement
      * sequence must be well-formed and each piece placement must be a valid placement
@@ -132,8 +154,9 @@ public class StepsGame {
      */
     static boolean isPlacementSequenceValid(String placement) {
         // FIXME Task 5: determine whether a placement sequence is valid
-
-        return false;
+        List<Place> places = turnToPlace(placement);
+        boolean [] tempStatus = new boolean[BOARD_STATUS.length];
+        return sequenceValid(places,tempStatus);
     }
 
     /**
