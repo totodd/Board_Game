@@ -98,7 +98,7 @@ public class StepsGame {
      * @param piecePlacement A string describing a piece placement
      * @return True if the piece placement is well-formed
      */
-    static boolean isPiecePlacementWellFormed(String piecePlacement) {
+    public static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
         char first = piecePlacement.charAt(0);
         char second = piecePlacement.charAt(1);
@@ -126,7 +126,7 @@ public class StepsGame {
      * @param placement A string describing a placement of one or more pieces
      * @return True if the placement is well-formed
      */
-    static boolean isPlacementWellFormed(String placement) {
+    public static boolean isPlacementWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
         if (placement==null){
             return false;
