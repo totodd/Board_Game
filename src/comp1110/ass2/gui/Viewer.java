@@ -52,7 +52,18 @@ public class Viewer extends Application {
 
 
     void BGInitizlizor(){
-
+        ImageView[] pc = new ImageView[16];
+        String[] imageList = {"AA","AE","BA","BE","CA","CE","DA","DE","EA","EE","FA","FE","GA","GE","HA","HE"};
+        for(int i =0;i<16;i++){
+            piece = new Image(URI_BASE2+imageList[i]+".png");
+            pc[i] = new ImageView();
+            pc[i].setImage(piece);
+            pc[i].setFitWidth(SQUARE_SIZE*0.75);
+            pc[i].setFitHeight(SQUARE_SIZE*0.75);
+            pc[i].setX(15+SQUARE_SIZE*i*0.75);
+            pc[i].setY(10);
+            controls.getChildren().add(pc[i]);
+        }
     }
 
 
@@ -71,26 +82,7 @@ public class Viewer extends Application {
                 textField.clear();
             }
         });
-
-
-        piece = new Image(URI_BASE2+"AA.png");
-        ImageView pc = new ImageView();
-        pc.setImage(piece);
-        pc.setFitWidth(PIECE_IMAGE_SIZE);
-        pc.setFitHeight(PIECE_IMAGE_SIZE);
-        pc.setX(MARGIN_X+3*SQUARE_SIZE);
-        pc.setY(MARGIN_Y+SQUARE_SIZE);
-
-        piece = new Image(URI_BASE2+"HE.png");
-        ImageView pc2 = new ImageView();
-        pc2.setImage(piece);
-        pc2.setFitWidth(PIECE_IMAGE_SIZE);
-        pc2.setFitHeight(PIECE_IMAGE_SIZE);
-        pc2.setX(MARGIN_X+7*SQUARE_SIZE);
-        pc2.setY(MARGIN_Y+2*SQUARE_SIZE);
-
-
-
+        
         ImageView bg = new ImageView();
         bg.setImage(background);
         bg.setFitWidth(PIECE_IMAGE_SIZE * 10/3.429);
@@ -104,10 +96,8 @@ public class Viewer extends Application {
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
-
         controls.getChildren().add(bg);
-        controls.getChildren().add(pc);
-        controls.getChildren().add(pc2);
+        BGInitizlizor();
     }
 
     @Override
