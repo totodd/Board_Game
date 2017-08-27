@@ -47,6 +47,7 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+
     }
 
 
@@ -82,7 +83,7 @@ public class Viewer extends Application {
                 textField.clear();
             }
         });
-        
+
         ImageView bg = new ImageView();
         bg.setImage(background);
         bg.setFitWidth(PIECE_IMAGE_SIZE * 10/3.429);
