@@ -126,7 +126,7 @@ public class StepsGame {
      * @param placement A string describing a placement of one or more pieces
      * @return True if the placement is well-formed
      */
-     static boolean isPlacementWellFormed(String placement) {
+     public static boolean isPlacementWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
         if (placement==null){
             return false;

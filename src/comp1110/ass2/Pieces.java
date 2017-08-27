@@ -42,7 +42,7 @@ public enum Pieces {
         //TODO : rotate maskPos according to rot
         return maskPos;
     }
-    public int getRotateDegree (char rot){
+    public static int getRotateDegree (char rot){
         return rotateDegree(rot);
     }
 

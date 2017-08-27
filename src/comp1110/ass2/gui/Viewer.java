@@ -50,49 +50,51 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+        if(!StepsGame.isPlacementWellFormed(placement)){
+            throw new IllegalArgumentException("Bad Placement: " + placement);
+        }
         char[] pieces = placement.toCharArray();
         char[] Mask = new char[pieces.length/3];
         char[] Rot = new char[pieces.length/3];
         char[] Pos = new char[pieces.length/3];
         int j=0;
-        int k=0;
-        int l=0;
-        int Pos_index=0;
-        int row_index=0;
-
+        int[] Pos_index = new int[pieces.length/3];
+        int[] row_index = new int[pieces.length/3];
+        int[] rotDegree = new int[pieces.length/3];
         for(int i = 0; i < pieces.length; i=i+3){
-            //if
             Mask[j] = pieces[i];
+            Rot[j] = pieces[i+1];
+            if(Rot[j]>='A' && Rot[j]<'E'){
+                rotDegree[j] = 90*(Rot[j]-'A');
+                Rot[j] = 'A';
+            }
+            else if(Rot[j]>='E' && Rot[j]<='H'){
+                rotDegree[j] = 90*(Rot[j]-'A');
+                Rot[j] = 'E';
+            }
+            Pos[j] = pieces[i+2];
+            Pos_index[j] = StepsGame.BOARD_STRING.indexOf(Pos[j]);
+            row_index[j] = Pos_index[j]/10;
+            Pos_index[j] = Pos_index[j]%10;
             j++;
-        }
-        for(int i = 1; i < pieces.length; i=i+3){
-            //if
-            Rot[k] = pieces[i];
-            k++;
-        }
-        for(int i = 2; i < pieces.length; i=i+3){
-            //if
-            Pos[l] = pieces[i];
-            Pos_index = StepsGame.BOARD_STRING.indexOf(Pos[l]);
-            row_index = Pos_index/10;
-            Pos_index = Pos_index%10;
-            l++;
         }
         for(int i =0;i<pieces.length/3;i++){
             ImageView[] pc = new ImageView[pieces.length/3];
             piece = new Image(URI_BASE2+Character.toString(Mask[i])+Character.toString(Rot[i])+".png");
-
             pc[i] = new ImageView();
             pc[i].setImage(piece);
             pc[i].setFitWidth(PIECE_IMAGE_SIZE);
             pc[i].setFitHeight(PIECE_IMAGE_SIZE);
-            pc[i].setX(MARGIN_X+SQUARE_SIZE*Pos_index-SQUARE_SIZE);
-            pc[i].setY(MARGIN_Y+SQUARE_SIZE*row_index-SQUARE_SIZE);
+            pc[i].setX(MARGIN_X+SQUARE_SIZE*Pos_index[i]-SQUARE_SIZE);
+            pc[i].setY(MARGIN_Y+SQUARE_SIZE*row_index[i]-SQUARE_SIZE);
+            pc[i].setRotate(rotDegree[i]);
             controls.getChildren().add(pc[i]);
         }
     }
 
-
+    /**
+     * Initialize the "board" image as the background; list all original pieces
+     */
     void BGInitizlizor(){
         ImageView[] pc = new ImageView[16];
         for(int i =0;i<16;i++){
@@ -138,7 +140,6 @@ public class Viewer extends Application {
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
-
     }
 
     @Override
