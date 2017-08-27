@@ -50,6 +50,12 @@ public class Viewer extends Application {
     }
 
 
+
+    void BGInitizlizor(){
+
+    }
+
+
     /**
      * Create a basic text field for input and a refresh button.
      */
@@ -65,6 +71,8 @@ public class Viewer extends Application {
                 textField.clear();
             }
         });
+
+
         piece = new Image(URI_BASE2+"AA.png");
         ImageView pc = new ImageView();
         pc.setImage(piece);
