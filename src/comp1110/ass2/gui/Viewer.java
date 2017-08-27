@@ -40,6 +40,8 @@ public class Viewer extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
+    private final Group shapes = new Group();
+    private final Group initializor = new Group();
     TextField textField;
     private Image piece;
 
@@ -50,6 +52,8 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+
+        shapes.getChildren().clear();
         if(!StepsGame.isPlacementWellFormed(placement)){
             throw new IllegalArgumentException("Bad Placement: " + placement);
         }
@@ -61,6 +65,7 @@ public class Viewer extends Application {
         int[] Pos_index = new int[pieces.length/3];
         int[] row_index = new int[pieces.length/3];
         int[] rotDegree = new int[pieces.length/3];
+        ImageView[] pc = new ImageView[pieces.length/3];
         for(int i = 0; i < pieces.length; i=i+3){
             Mask[j] = pieces[i];
             Rot[j] = pieces[i+1];
@@ -79,7 +84,6 @@ public class Viewer extends Application {
             j++;
         }
         for(int i =0;i<pieces.length/3;i++){
-            ImageView[] pc = new ImageView[pieces.length/3];
             piece = new Image(URI_BASE2+Character.toString(Mask[i])+Character.toString(Rot[i])+".png");
             pc[i] = new ImageView();
             pc[i].setImage(piece);
@@ -87,9 +91,11 @@ public class Viewer extends Application {
             pc[i].setFitHeight(PIECE_IMAGE_SIZE);
             pc[i].setX(MARGIN_X+SQUARE_SIZE*Pos_index[i]-SQUARE_SIZE);
             pc[i].setY(MARGIN_Y+SQUARE_SIZE*row_index[i]-SQUARE_SIZE);
+            pc[i].setOpacity(0.75f);
             pc[i].setRotate(rotDegree[i]);
-            controls.getChildren().add(pc[i]);
+            shapes.getChildren().add(pc[i]);
         }
+        //controls.getChildren().add(shapes);
     }
 
     /**
@@ -105,7 +111,8 @@ public class Viewer extends Application {
             pc[i].setFitHeight(SQUARE_SIZE*0.75);
             pc[i].setX(15+SQUARE_SIZE*i*0.75);
             pc[i].setY(10);
-            controls.getChildren().add(pc[i]);
+            initializor.getChildren().add(pc[i]);
+            //controls.getChildren().add(pc[i]);
         }
     }
 
@@ -120,7 +127,7 @@ public class Viewer extends Application {
         bg.setFitHeight(PIECE_IMAGE_SIZE * 5/3);
         bg.setX(30);
         bg.setY(52.5);
-        controls.getChildren().add(bg);
+        initializor.getChildren().add(bg);
         BGInitizlizor();
 
         Label label1 = new Label("Placement:");
@@ -139,7 +146,7 @@ public class Viewer extends Application {
         hb.setSpacing(10);
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
-        controls.getChildren().add(hb);
+        controls.getChildren().addAll(hb,initializor,shapes);
     }
 
     @Override
