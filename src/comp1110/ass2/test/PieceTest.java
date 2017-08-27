@@ -28,5 +28,6 @@ public class PieceTest {
         }
 //Piece Rotation/Flip
         System.out.println(Arrays.toString(Pieces.A.getMaskPlacement('F')));
+        System.out.println(Pieces.A.getRotateDegree('B'));
     }
 }

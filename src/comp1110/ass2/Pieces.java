@@ -42,6 +42,16 @@ public enum Pieces {
         //TODO : rotate maskPos according to rot
         return maskPos;
     }
+    public int getRotateDegree (char rot){
+        return rotateDegree(rot);
+    }
+
+    static int rotateDegree(char rot){
+        int rotate = (int)rot-65;
+        boolean flip = (rotate-3)>0;
+        rotate = rotate%4;
+        return rotate*90;
+    }
 
 
     static int turnRightSingle(int original){
