@@ -48,7 +48,6 @@ public enum Pieces {
 
     static int rotateDegree(char rot){
         int rotate = (int)rot-65;
-        boolean flip = (rotate-3)>0;
         rotate = rotate%4;
         return rotate*90;
     }
