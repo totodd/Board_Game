@@ -6,53 +6,27 @@ import java.util.Arrays;
 
 public class PieceTest {
 
-    static int turnRightSingle(int original){
-        int j = original % 3;
-        int i = (original - j)/3;
-        int tempi = j;
-        int tempj = 2-i;
-        int output = tempi*3+tempj;
-        return output;
-    }
-
-    static int[] turnRightArray(int[] originalArray){
-        int[] outputArray = new int[9];
-        for (int i=0;i<=8;i++){
-            int i2 = turnRightSingle(i);
-            outputArray[i2]=originalArray[i];
-        }
-        return outputArray;
-    }
-
-    static int[] rotateArray(int[]originalArray,int rotateTimes){
-        int[] outputArray = originalArray;
-        for (int i=1;i<=rotateTimes;i++){
-            outputArray = turnRightArray(outputArray);
-        }
-        return outputArray;
-    }
 
     public static void main(String[] args) {
-//
-//        int [] originalArray = Pieces.A.getMaskPlacement();
-//        System.out.println("Original.A");
-//        System.out.println(Arrays.toString(originalArray));
-//
-//        int[] outputArray = turnRightArray(originalArray);
-//
-//        System.out.println("A.Output,turn,right x1");
-//        System.out.println(Arrays.toString(outputArray));
-//
-//        outputArray = turnRightArray(outputArray);
-//        System.out.println("A.Output,turn,right x2");
-//        System.out.println(Arrays.toString(outputArray));
-//
-//        outputArray = turnRightArray(outputArray);
-//        int[]rotateArray3=rotateArray(originalArray,3);
-//        System.out.println("A.Output,turn,right x3");
-//        System.out.println(Arrays.toString(outputArray));
-//        System.out.println(Arrays.toString(rotateArray3));
-
-
+//Get int value of char
+        System.out.println((int)'A');//65
+        System.out.println((int)'^');//94
+//Test Duplicate placement
+        String placement="CEQCEQ";
+        String[] piecePlacementArray = placement.split("(?<=\\G.{3})");
+        int[] pieceUsed= {0,0,0,0,0,0,0,0};
+        //                A,B,C,D,E,F,G,H
+        //                65,66,67,68,69,70,71,72
+        for (String i:piecePlacementArray){
+            if(pieceUsed[(int)i.charAt(0)-65]==0){
+                pieceUsed[(int)i.charAt(0)-65]=1;
+                System.out.println("Add");
+            }else {
+                System.out.println("Duplicate");
+            }
+            System.out.println(Arrays.toString(pieceUsed));
+        }
+//Piece Rotation/Flip
+        System.out.println(Arrays.toString(Pieces.A.getMaskPlacement('F')));
     }
 }
