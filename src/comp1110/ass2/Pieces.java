@@ -21,7 +21,7 @@ public enum Pieces {
     //down=1
     //up===2
 
-    private final int[] maskPos;
+    private int[] maskPos;
 
     Pieces(int[] maskPos){
         this.maskPos = maskPos;
@@ -32,9 +32,61 @@ public enum Pieces {
     }
 
     int[] rotate(char rot){
+        int rotate = (int)rot-65;
+        boolean flip = (rotate-3)>0;
+        rotate = rotate%4;
+        maskPos = flipArray(maskPos,flip);
+        maskPos = rotateArray(maskPos,rotate);
+
+
         //TODO : rotate maskPos according to rot
         return maskPos;
     }
+
+
+    static int turnRightSingle(int original){
+        int j = original % 3;
+        int i = (original - j)/3;
+        int tempi = j;
+        int tempj = 2-i;
+        int output = tempi*3+tempj;
+        return output;
+    }
+
+    static int[] turnRightArray(int[] originalArray){
+        int[] outputArray = new int[9];
+        for (int i=0;i<=8;i++){
+            int i2 = turnRightSingle(i);
+            outputArray[i2]=originalArray[i];
+        }
+        return outputArray;
+    }
+
+    static int[] rotateArray(int[]originalArray,int rotateTimes){
+        int[] outputArray = originalArray;
+        for (int i=1;i<=rotateTimes;i++){
+            outputArray = turnRightArray(outputArray);
+        }
+        return outputArray;
+    }
+
+    static int[] flipArray(int[] originalArray,boolean flip){
+        if(flip){
+            int[] outputArray = new int[9];
+            for(int i=0;i<9;i++){
+                if (originalArray[i]==0){
+                    outputArray[(i-i%3+2-i%3)]=0;
+                }else if(originalArray[i]==1){
+                    outputArray[(i-i%3+2-i%3)]=2;
+                }else if (originalArray[i]==2){
+                    outputArray[(i-i%3+2-i%3)]=1;
+                }
+            }
+            return outputArray;
+        }
+        return originalArray;
+    }
+
 
     int getCenter(){
         return maskPos[4];
