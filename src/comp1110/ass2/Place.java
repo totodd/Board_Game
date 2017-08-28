@@ -14,6 +14,8 @@ public class Place {
     private char position;
     private char rot;
 
+    private int[] value;
+
 
     Place(char pieceName, char rot, char position){
         for (Pieces p : Pieces.values()){
@@ -22,6 +24,7 @@ public class Place {
         }
         this.position = position;
         this.rot = rot;
+        this.value = piece.getMaskPlacement(rot);
     }
 
     public char getPosition() {
@@ -29,7 +32,7 @@ public class Place {
     }
 
     public int[] getValue() {
-        return piece.getMaskPlacement(rot);
+        return value;
     }
 
     /** set 3x3 index of BOARD according to the position and piece value

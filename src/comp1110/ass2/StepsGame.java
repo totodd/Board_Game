@@ -20,7 +20,8 @@ public class StepsGame {
     public static boolean[] BOARD_STATUS = new boolean[BOARD_LENGTH]; // false means available, true means occupied
     private static final String BOARD_UPPER = "BDFHJKMOQSVXacefhjlnqsuwy";
     private static final String BOARD_LOWER = "ACEGILNPRTUWYbdgikmoprtvx";
-
+    private static final String LEFT_EDGE = "AKUfp";
+    private static final String RIGHT_EDGE = "JTeoy";
 
     /**
      *
@@ -28,9 +29,46 @@ public class StepsGame {
      * @return if within the board
      */
     static boolean withInBoard(Place placement){
+        //TODO: finish withInBoard
         int[] position = placement.getBoardIdx();
+        int[] val = placement.getValue();
         boolean withInLeftRight = false;
-        boolean withInUpDown = false;
+        boolean withInUpDown = true;
+
+        int mid = position[4];
+        int left;
+        int right;
+        if(position[0] > 0
+                | position[3]>0
+                | position[6]>0)
+            left = mid - 1;
+        else left = mid;
+
+        if(position[2] > 0
+                | position[5]>0
+                | position[8]>0)
+            right = mid + 1;
+        else right = mid;
+
+        int left_col = left%10;
+        int mid_col = mid%10;
+        int right_col = right%10;
+
+        if(((mid_col - left_col)<=1)&(((right_col - mid_col)<=1)))
+            withInLeftRight = true;
+
+        for (int i = 0; i< placement.getBoardIdx().length; i++){
+            if (((placement.getBoardIdx()[i] < 0)&(placement.getValue()[i]>0))) {
+                withInUpDown = false;
+                break;
+            }
+
+            if(((placement.getBoardIdx()[i] >= 50)&(placement.getValue()[i]>0))){
+                withInUpDown = false;
+                break;
+            }
+        }
+
 
         return (withInLeftRight
                 &&
@@ -45,7 +83,8 @@ public class StepsGame {
     static boolean onRightLevel(Place placement){
         switch (placement.getPieceCenter()){
             case 1:
-                return BOARD_LOWER.contains(String.valueOf(placement.getPosition()));
+                boolean res = BOARD_LOWER.contains(String.valueOf(placement.getPosition()));
+                return res;
             case 2:
                 return BOARD_UPPER.contains(String.valueOf(placement.getPosition()));
             default:
@@ -67,24 +106,19 @@ public class StepsGame {
                 int boardIdx = placement.getBoardIdx()[i];
                 temp_Status[boardIdx] = (placement.getValue()[i] > 0);
                 if (placement.getValue()[i] == 2) {
-                    temp_Status[boardIdx - ROW_LENGTH] = true;
-                    temp_Status[boardIdx - 1] = true;
-                    temp_Status[boardIdx + 1] = true;
-                    temp_Status[boardIdx + ROW_LENGTH] = true;
+                    if(boardIdx - ROW_LENGTH > 0)
+                        temp_Status[boardIdx - ROW_LENGTH] = true;
+                    if(LEFT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
+                        temp_Status[boardIdx - 1] = true;
+                    if(RIGHT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
+                        temp_Status[boardIdx + 1] = true;
+                    if(boardIdx + ROW_LENGTH < 50)
+                        temp_Status[boardIdx + ROW_LENGTH] = true;
                 }
             }
         }
 
         return temp_Status;
-    }
-
-    /**
-     * Transfer String placement to Object(Place) placement
-     * @param piecePlacement (String)
-     * @return (Place)
-     */
-    static Place toObjectPlacement(String piecePlacement){
-        return new Place(piecePlacement.charAt(0),piecePlacement.charAt(1),piecePlacement.charAt(2));
     }
 
 
@@ -155,21 +189,26 @@ public class StepsGame {
     }
 
     static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
-        boardStatus = putOnBoard(placement.get(0), boardStatus);
-        if(placement.size()<1){
-            return true;
-        }
-        for(int newIdx :placement.get(0).getBoardIdx()){
-            if(boardStatus[newIdx]){
-                return false;
+        if(onRightLevel(placement.get(0)) & withInBoard(placement.get(0))){
+            for(int newIdx :placement.get(0).getBoardIdx()){
+                if(boardStatus[newIdx]){
+                    return false;
+                }
             }
+            boardStatus = putOnBoard(placement.get(0), boardStatus);
+        }else{
+            return false;
+        }
+
+        if(placement.size()<=1){
+            return true;
         }
         placement.remove(0);
         boardStatus = putOnBoard(placement.get(0),boardStatus);
         return sequenceValid(placement,boardStatus);
     }
 
-    static List<Place> turnToPlace(String placement){
+    public static List<Place> turnToPlace(String placement){
         List<Place> places = new ArrayList<Place>();
         for(int i = 0 ; i < placement.length(); i = i+3){
             places.add(new Place(placement.charAt(i), placement.charAt(i+1), placement.charAt(i+2)));
@@ -185,7 +224,7 @@ public class StepsGame {
      * @param placement A placement sequence string
      * @return True if the placement sequence is valid
      */
-    static boolean isPlacementSequenceValid(String placement) {
+    public static boolean isPlacementSequenceValid(String placement) {
         // FIXME Task 5: determine whether a placement sequence is valid
         List<Place> places = turnToPlace(placement);
         boolean [] tempStatus = new boolean[BOARD_STATUS.length];
