@@ -163,12 +163,12 @@ public class StepsGame {
         return true;
     }
     @Test
-    public void testT2_2char() {
+    public void testT2_2char_false() {
         assertFalse(isPiecePlacementWellFormed("AB"));
         //assertTrue();
     }
     @Test
-    public void testT2_3char() {
+    public void testT2_3char_true() {
         assertTrue(isPiecePlacementWellFormed("ABJ"));
         //assertTrue();
     }
@@ -208,6 +208,32 @@ public class StepsGame {
             }
         }
         return true;
+    }
+
+    @Test
+    public void testT3_empty_false(){
+        assertFalse(isPlacementWellFormed(""));
+    }
+    @Test
+    public void testT3_null_false(){
+        String temp = null;
+        assertFalse(isPlacementWellFormed(temp));
+    }
+    @Test
+    public void testT3_duplicate_false(){
+        assertFalse(isPlacementWellFormed("ABCABC"));
+    }
+    @Test
+    public void testT3_3char_true(){
+        assertTrue(isPlacementWellFormed("ABC"));
+    }
+    @Test
+    public void testT3_6char_true(){
+        assertTrue(isPlacementWellFormed("ABNBBd"));
+    }
+    @Test
+    public void testT3_5char_false(){
+        assertFalse(isPlacementWellFormed("ABNBB"));
     }
 
     static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
