@@ -286,6 +286,10 @@ public class StepsGame {
             return false;
         }
     }
+    @Test
+    public void testT5_AAWBBi_false(){
+        assertFalse(isPlacementSequenceValid("AAWBBi"));
+    }
 
     /**
      * Given a string describing a placement of pieces and a string describing
