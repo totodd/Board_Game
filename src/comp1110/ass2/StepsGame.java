@@ -195,9 +195,11 @@ public class StepsGame {
 
     static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
         if(onRightLevel(placement.get(0)) & withInBoard(placement.get(0))){
-            for(int newIdx :placement.get(0).getBoardIdx()){
+            int[] board = placement.get(0).getBoardIdx();
+            for(int i=0; i<placement.get(0).getBoardIdx().length;i++){
+                int newIdx = placement.get(0).getBoardIdx()[i];
                 if(newIdx<50 & newIdx>=0){
-                    if(boardStatus[newIdx]){
+                    if(boardStatus[newIdx]&(placement.get(0).getValue()[i]>0)){
                         return false;
                     }
                 }
@@ -211,7 +213,7 @@ public class StepsGame {
             return true;
         }
         placement.remove(0);
-        boardStatus = putOnBoard(placement.get(0),boardStatus);
+//        boardStatus = putOnBoard(placement.get(0),boardStatus);
         return sequenceValid(placement,boardStatus);
     }
 
@@ -233,9 +235,13 @@ public class StepsGame {
      */
     public static boolean isPlacementSequenceValid(String placement) {
         // FIXME Task 5: determine whether a placement sequence is valid
-        List<Place> places = turnToPlace(placement);
-        boolean [] tempStatus = new boolean[BOARD_STATUS.length];
-        return sequenceValid(places,tempStatus);
+        if(isPlacementWellFormed(placement)) {
+            List<Place> places = turnToPlace(placement);
+            boolean[] tempStatus = new boolean[BOARD_STATUS.length];
+            return sequenceValid(places, tempStatus);
+        }else{
+            return false;
+        }
     }
 
     /**
