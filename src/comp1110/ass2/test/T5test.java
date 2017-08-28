@@ -10,7 +10,8 @@ import java.util.List;
 public class T5test {
     public static void main(String[] args) {
 
-        String s = "CHSAHQ";
+        String s = "AAWBBi";
+        String false_s = "AAWBBi";
 
         List<Place> p = StepsGame.turnToPlace(s);
 
