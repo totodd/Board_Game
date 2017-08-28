@@ -97,7 +97,6 @@ public class Viewer extends Application {
                 shapes.getChildren().add(pc[i]);
             }
         }
-        //controls.getChildren().add(shapes);
     }
 
     /**
@@ -114,7 +113,6 @@ public class Viewer extends Application {
             pc[i].setX(15+SQUARE_SIZE*i*0.75);
             pc[i].setY(10);
             initializor.getChildren().add(pc[i]);
-            //controls.getChildren().add(pc[i]);
         }
     }
 
