@@ -28,7 +28,7 @@ public class StepsGame {
      * @param placement (Place)  -> int[3*3] + position
      * @return if within the board
      */
-    static boolean withInBoard(Place placement){
+    public static boolean withInBoard(Place placement){
         //TODO: finish withInBoard
         int[] position = placement.getBoardIdx();
         int[] val = placement.getValue();
@@ -38,15 +38,15 @@ public class StepsGame {
         int mid = position[4];
         int left;
         int right;
-        if(position[0] > 0
-                | position[3]>0
-                | position[6]>0)
+        if(val[0] > 0
+                | val[3]>0
+                | val[6]>0)
             left = mid - 1;
         else left = mid;
 
-        if(position[2] > 0
-                | position[5]>0
-                | position[8]>0)
+        if(val[2] > 0
+                | val[5]>0
+                | val[8]>0)
             right = mid + 1;
         else right = mid;
 
@@ -54,7 +54,10 @@ public class StepsGame {
         int mid_col = mid%10;
         int right_col = right%10;
 
-        if(((mid_col - left_col)<=1)&(((right_col - mid_col)<=1)))
+        if(((mid_col - left_col)<=1)
+                & ((mid_col - left_col)>=0)
+                & (((right_col - mid_col)<=1))
+                & (((right_col - mid_col)>=0)))
             withInLeftRight = true;
 
         for (int i = 0; i< placement.getBoardIdx().length; i++){
@@ -80,7 +83,7 @@ public class StepsGame {
      * @param placement (Place)
      * @return if on right level
      */
-    static boolean onRightLevel(Place placement){
+    public static boolean onRightLevel(Place placement){
         switch (placement.getPieceCenter()){
             case 1:
                 boolean res = BOARD_LOWER.contains(String.valueOf(placement.getPosition()));
@@ -104,13 +107,15 @@ public class StepsGame {
         if(temp_Status.length == BOARD_STATUS.length) {
             for (int i = 0; i < placement.getBoardIdx().length; i++) {
                 int boardIdx = placement.getBoardIdx()[i];
-                temp_Status[boardIdx] = (placement.getValue()[i] > 0);
+                if(boardIdx < 50 & boardIdx >= 0) {
+                    temp_Status[boardIdx] = (placement.getValue()[i] > 0);
+                }
                 if (placement.getValue()[i] == 2) {
                     if(boardIdx - ROW_LENGTH > 0)
                         temp_Status[boardIdx - ROW_LENGTH] = true;
-                    if(LEFT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
+                    if(!LEFT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
                         temp_Status[boardIdx - 1] = true;
-                    if(RIGHT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
+                    if(!RIGHT_EDGE.contains(String.valueOf(BOARD_STRING.charAt(boardIdx))))
                         temp_Status[boardIdx + 1] = true;
                     if(boardIdx + ROW_LENGTH < 50)
                         temp_Status[boardIdx + ROW_LENGTH] = true;
@@ -191,8 +196,10 @@ public class StepsGame {
     static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
         if(onRightLevel(placement.get(0)) & withInBoard(placement.get(0))){
             for(int newIdx :placement.get(0).getBoardIdx()){
-                if(boardStatus[newIdx]){
-                    return false;
+                if(newIdx<50 & newIdx>=0){
+                    if(boardStatus[newIdx]){
+                        return false;
+                    }
                 }
             }
             boardStatus = putOnBoard(placement.get(0), boardStatus);

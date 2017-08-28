@@ -5,16 +5,15 @@ import comp1110.ass2.StepsGame;
 
 import java.util.List;
 
+
+
 public class T5test {
     public static void main(String[] args) {
 
-        List<Place> p = StepsGame.turnToPlace("BDx");
-        for (int i : p.get(0).getValue()){
-            System.out.println(i);
-        }
-        for (int i : p.get(0).getBoardIdx()){
-            System.out.println(i);
-        }
+        String s = "BGK";
+
+        List<Place> p = StepsGame.turnToPlace(s);
+
 
 //        for (int i=0;i< p.get(0).getBoardIdx().length;i++){
 //            System.out.println(((p.get(0).getBoardIdx()[i] >= 50)&(p.get(0).getValue()[i]>0)));
@@ -27,9 +26,15 @@ public class T5test {
 //                    | ((p.get(0).getBoardIdx()[i] >= 50)&(p.get(0).getValue()[i]>0)));
 //        }
 
+        System.out.println("On right level: "+ StepsGame.onRightLevel(p.get(0)));
+        System.out.println("center: " + p.get(0).getPieceCenter());
+        System.out.println("Within board: " + StepsGame.withInBoard(p.get(0)));
+//        System.out.println();
+//        for (int i : p.get(0).getValue()) {
+//            System.out.println(i);
+//        }
 
-
-        System.out.println( StepsGame.isPlacementSequenceValid("BDx"));
+        System.out.println( StepsGame.isPlacementSequenceValid(s));
 
     }
 }

@@ -26,6 +26,7 @@ public enum Pieces {
 
     Pieces(int[] maskPos){
         this.maskPos = maskPos;
+//        this.maskTemp = rotate();
     }
 
     public int[] getMaskPlacement(char rot){
@@ -98,8 +99,8 @@ public enum Pieces {
     }
 
 
-    int getCenter(){
-        return maskPos[4];
+    int getCenter(char rot){
+        return getMaskPlacement(rot)[4];
     }
 
 }
