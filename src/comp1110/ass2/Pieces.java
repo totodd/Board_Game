@@ -39,9 +39,6 @@ public enum Pieces {
         rotate = rotate%4;
         maskTemp = flipArray(maskPos,flip);
         maskTemp = rotateArray(maskTemp,rotate);
-
-
-        //TODO : rotate maskPos according to rot
         return maskTemp;
     }
     public static int getRotateDegree (char rot){

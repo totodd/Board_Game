@@ -29,7 +29,6 @@ public class StepsGame {
      * @return if within the board
      */
     public static boolean withInBoard(Place placement){
-        //TODO: finish withInBoard
         int[] position = placement.getBoardIdx();
         int[] val = placement.getValue();
         boolean withInLeftRight = false;
