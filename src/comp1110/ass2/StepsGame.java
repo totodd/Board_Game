@@ -1,9 +1,14 @@
 package comp1110.ass2;
 
+import org.junit.Test;
+
 import java.util.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * This class provides the text interface for the Steps Game
@@ -138,6 +143,9 @@ public class StepsGame {
      */
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
+        if(piecePlacement.length()!=3){
+            return false;
+        }
         char first = piecePlacement.charAt(0);
         char second = piecePlacement.charAt(1);
         char third = piecePlacement.charAt(2);
@@ -153,6 +161,16 @@ public class StepsGame {
             return false;
         }
         return true;
+    }
+    @Test
+    public void testT2_2char_false() {
+        assertFalse(isPiecePlacementWellFormed("AB"));
+        //assertTrue();
+    }
+    @Test
+    public void testT2_3char_true() {
+        assertTrue(isPiecePlacementWellFormed("ABJ"));
+        //assertTrue();
     }
 
     /**
@@ -190,6 +208,32 @@ public class StepsGame {
             }
         }
         return true;
+    }
+
+    @Test
+    public void testT3_empty_false(){
+        assertFalse(isPlacementWellFormed(""));
+    }
+    @Test
+    public void testT3_null_false(){
+        String temp = null;
+        assertFalse(isPlacementWellFormed(temp));
+    }
+    @Test
+    public void testT3_duplicate_false(){
+        assertFalse(isPlacementWellFormed("ABCABC"));
+    }
+    @Test
+    public void testT3_3char_true(){
+        assertTrue(isPlacementWellFormed("ABC"));
+    }
+    @Test
+    public void testT3_6char_true(){
+        assertTrue(isPlacementWellFormed("ABNBBd"));
+    }
+    @Test
+    public void testT3_5char_false(){
+        assertFalse(isPlacementWellFormed("ABNBB"));
     }
 
     static boolean sequenceValid(List<Place> placement, boolean[] boardStatus){
@@ -241,6 +285,10 @@ public class StepsGame {
         }else{
             return false;
         }
+    }
+    @Test
+    public void testT5_AAWBBi_false(){
+        assertFalse(isPlacementSequenceValid("AAWBBi"));
     }
 
     /**
