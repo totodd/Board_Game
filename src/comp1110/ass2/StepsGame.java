@@ -106,7 +106,7 @@ public class StepsGame {
         if(temp_Status.length == BOARD_STATUS.length) {
             for (int i = 0; i < placement.getBoardIdx().length; i++) {
                 int boardIdx = placement.getBoardIdx()[i];
-                if(boardIdx < 50 & boardIdx >= 0) {
+                if(boardIdx < 50 & boardIdx >= 0 & placement.getValue()[i]>0) {
                     temp_Status[boardIdx] = (placement.getValue()[i] > 0);
                 }
                 if (placement.getValue()[i] == 2) {
