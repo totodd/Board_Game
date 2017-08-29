@@ -54,9 +54,10 @@ public class Viewer extends Application {
         // FIXME Task 4: implement the simple placement viewer
 
         shapes.getChildren().clear();
-        if(!StepsGame.isPlacementWellFormed(placement)){
+        if(!StepsGame.isPlacementSequenceValid(placement)){
             System.out.println("Invalid placement: "+placement);
             System.out.println("Please try again!");
+            //throw new IllegalArgumentException("Bad Placement: " + placement);
         }
         else {
             char[] pieces = placement.toCharArray();
@@ -138,7 +139,7 @@ public class Viewer extends Application {
             @Override
             public void handle(ActionEvent e) {
                 makePlacement(textField.getText());
-                textField.clear();
+                //textField.clear();
             }
         });
         HBox hb = new HBox();

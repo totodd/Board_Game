@@ -24,7 +24,7 @@ public class Place {
         }
         this.position = position;
         this.rot = rot;
-        this.value = piece.getMaskPlacement(rot);
+        this.value = piece.getMaskPlacement(this.rot);
     }
 
     public char getPosition() {
@@ -50,7 +50,7 @@ public class Place {
     }
 
     public int getPieceCenter(){
-        return piece.getCenter();
+        return piece.getCenter(this.rot);
     }
 
 }

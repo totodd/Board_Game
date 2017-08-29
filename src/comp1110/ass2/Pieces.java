@@ -21,10 +21,12 @@ public enum Pieces {
     //down=1
     //up===2
 
-    private int[] maskPos;
+    private final int[] maskPos;
+    private int[] maskTemp;
 
     Pieces(int[] maskPos){
         this.maskPos = maskPos;
+//        this.maskTemp = rotate();
     }
 
     public int[] getMaskPlacement(char rot){
@@ -35,12 +37,9 @@ public enum Pieces {
         int rotate = (int)rot-65;
         boolean flip = (rotate-3)>0;
         rotate = rotate%4;
-        maskPos = flipArray(maskPos,flip);
-        maskPos = rotateArray(maskPos,rotate);
-
-
-        //TODO : rotate maskPos according to rot
-        return maskPos;
+        maskTemp = flipArray(maskPos,flip);
+        maskTemp = rotateArray(maskTemp,rotate);
+        return maskTemp;
     }
     public static int getRotateDegree (char rot){
         return rotateDegree(rot);
@@ -97,8 +96,8 @@ public enum Pieces {
     }
 
 
-    int getCenter(){
-        return maskPos[4];
+    int getCenter(char rot){
+        return getMaskPlacement(rot)[4];
     }
 
 }
