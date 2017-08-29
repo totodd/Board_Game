@@ -12,6 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -32,11 +36,8 @@ public class Viewer extends Application {
     private static final int VIEWER_HEIGHT = 500;
     private static final int MARGIN_X = 50;
     private static final int MARGIN_Y = 70;
-    private final Image background = new Image(URI_BASE+"locations.png");
     private final String[] imageList = {"AA","AE","BA","BE","CA","CE","DA","DE","EA","EE","FA","FE","GA","GE","HA","HE"};
-
-    private static final String URI_BASE = "file:assets/";
-    private static final String URI_BASE2 = "file:src/comp1110/ass2/gui/assets/";
+    private static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -44,6 +45,9 @@ public class Viewer extends Application {
     private final Group initializor = new Group();
     TextField textField;
     private Image piece;
+    private Circle peg;
+    private Text T_peg;
+
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -57,7 +61,6 @@ public class Viewer extends Application {
         if(!StepsGame.isPlacementSequenceValid(placement)){
             System.out.println("Invalid placement: "+placement);
             System.out.println("Please try again!");
-            //throw new IllegalArgumentException("Bad Placement: " + placement);
         }
         else {
             char[] pieces = placement.toCharArray();
@@ -86,7 +89,7 @@ public class Viewer extends Application {
                 j++;
             }
             for (int i = 0; i < pieces.length / 3; i++) {
-                piece = new Image(URI_BASE2 + Character.toString(Mask[i]) + Character.toString(Rot[i]) + ".png");
+                piece = new Image(URI_BASE + Character.toString(Mask[i]) + Character.toString(Rot[i]) + ".png");
                 pc[i] = new ImageView();
                 pc[i].setImage(piece);
                 pc[i].setFitWidth(PIECE_IMAGE_SIZE);
@@ -106,7 +109,7 @@ public class Viewer extends Application {
     void BGInitizlizor(){
         ImageView[] pc = new ImageView[16];
         for(int i =0;i<16;i++){
-            piece = new Image(URI_BASE2+imageList[i]+".png");
+            piece = new Image(URI_BASE+imageList[i]+".png");
             pc[i] = new ImageView();
             pc[i].setImage(piece);
             pc[i].setFitWidth(SQUARE_SIZE*0.75);
@@ -115,20 +118,34 @@ public class Viewer extends Application {
             pc[i].setY(10);
             initializor.getChildren().add(pc[i]);
         }
-    }
 
+        for(int i =0; i <25; i++) {
+            if(i<15){
+                peg = new Circle(21.5, Color.LIGHTGRAY);
+                peg.setCenterX(MARGIN_X + SQUARE_SIZE + 2 * SQUARE_SIZE*(i%5));
+                peg.setCenterY(MARGIN_Y + SQUARE_SIZE + 2 * SQUARE_SIZE*(i/5));
+                initializor.getChildren().add(peg);
+            }
+            else{
+                peg = new Circle(21.5, Color.LIGHTGRAY);
+                peg.setCenterX(MARGIN_X + SQUARE_SIZE*2 + 2 * SQUARE_SIZE*(i%5));
+                peg.setCenterY(MARGIN_Y + SQUARE_SIZE*2 + 2 * SQUARE_SIZE*((i-15)/5));
+                initializor.getChildren().add(peg);
+            }
+        }
+        for(int i = 0; i < 50; i++){
+            T_peg = new Text(String.valueOf(StepsGame.BOARD_STRING.charAt(i)));
+            T_peg.setX(MARGIN_X-5 + SQUARE_SIZE + SQUARE_SIZE*(i%10));
+            T_peg.setY(MARGIN_Y+5 + SQUARE_SIZE + SQUARE_SIZE*(i/10));
+            T_peg.setFont(Font.font(20));
+            initializor.getChildren().add(T_peg);
+        }
+    }
 
     /**
      * Create a basic text field for input and a refresh button.
      */
     private void makeControls() {
-        ImageView bg = new ImageView();
-        bg.setImage(background);
-        bg.setFitWidth(PIECE_IMAGE_SIZE * 10/3.429);
-        bg.setFitHeight(PIECE_IMAGE_SIZE * 5/3);
-        bg.setX(30);
-        bg.setY(52.5);
-        initializor.getChildren().add(bg);
         BGInitizlizor();
 
         Label label1 = new Label("Placement:");
@@ -139,7 +156,7 @@ public class Viewer extends Application {
             @Override
             public void handle(ActionEvent e) {
                 makePlacement(textField.getText());
-                //textField.clear();
+                textField.clear();
             }
         });
         HBox hb = new HBox();
