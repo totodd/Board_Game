@@ -27,6 +27,8 @@ public class StepsGame {
     private static final String BOARD_LOWER = "ACEGILNPRTUWYbdgikmoprtvx";
     private static final String LEFT_EDGE = "AKUfp";
     private static final String RIGHT_EDGE = "JTeoy";
+    private static final String PIECES = "ABCDEFGH";
+
 
     /**
      *
@@ -267,6 +269,12 @@ public class StepsGame {
      */
     static Set<String> getViablePiecePlacements(String placement, String objective) {
         // FIXME Task 6: determine the correct order of piece placements
+//        String unPlaced = objective;
+//        for(int i =0; i < placement.length(); i +=3){
+//            String temp = placement.substring(i,i+3);
+//            unPlaced = unPlaced.replace(temp,"");
+//        }
+
         String[] sol = getSolutions(placement);
         Set<String> res = new HashSet<String>();
 
@@ -287,6 +295,50 @@ public class StepsGame {
      */
     static String[] getSolutions(String placement) {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
+        System.out.println("Initial board status: "+placement);
+        ArrayList<String> sols = new ArrayList<>();
+        String pcs = PIECES;
+        String viablePositions = BOARD_STRING;
+        if(isPlacementSequenceValid(placement)){
+            for(int i = 0; i < placement.length();i+=3){
+                pcs = pcs.replace(String.valueOf(placement.charAt(i)),"");
+                viablePositions = viablePositions.replace(String.valueOf(placement.charAt(i+2)),"");
+            }
+        }
+        String newPlacement = placement;
+        for(int k = 0; k < viablePositions.length(); k ++){
+            for(int i = 0; i < pcs.length(); i ++){
+                for(int j = 0; j < PIECES.length(); j ++){
+                    String newPiece = String.valueOf(pcs.charAt(i))+String.valueOf(PIECES.charAt(j))+ String.valueOf(viablePositions.charAt(k));
+                    if(isPlacementSequenceValid(placement+newPiece)){
+                        newPlacement = placement+newPiece;
+                        if((!sols.contains(newPlacement))) {
+                            sols.add(newPlacement);
+                        }
+                    }
+//                    else{
+//                        if((!sols.contains(newPlacement)) &&(newPlacement.length() == 24)){
+//                            sols.add(newPlacement);
+//                        }
+//                    }
+                }
+            }
+        }
+        String[] Sols = new String[sols.size()];
+        Sols = sols.toArray(Sols);
+        int check = Sols.length;
+        System.out.println("Found "+check+" valid next placement");
+        int v = 0;
+        for(String s: Sols){
+            if(isPlacementSequenceValid(s)){
+                v++;
+            }
+        }
+        System.out.println((check-v)+" placements are invalid.");
         return null;
+    }
+
+    public static void main(String[] args) {
+        String[] a = getSolutions("BGKFCNCFl");
     }
 }
