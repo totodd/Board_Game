@@ -239,6 +239,20 @@ public class StepsGame {
         return places;
     }
 
+    public static void setViablePositions(String placement){
+        viablePositions = BOARD_STRING;
+        List<Place> places = turnToPlace(placement);
+        for(Place p:places){
+            int[] a = p.getValue();
+            int[] b = p.getBoardIdx();
+            for(int ind = 0; ind < b.length;ind++){
+                if(b[ind]>=0 && a[ind]>0){
+                    String temp = String.valueOf(BOARD_STRING.charAt(b[ind]));
+                    viablePositions = viablePositions.replace(temp,"");
+                }
+            }
+        }
+    }
     /**
      * Determine whether a placement sequence is valid.  To be valid, the placement
      * sequence must be well-formed and each piece placement must be a valid placement
@@ -298,31 +312,30 @@ public class StepsGame {
     static String[] getSolutions(String placement) {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
         ArrayList<String> sols = new ArrayList<>();
-        pcs = PIECES;
-        viablePositions = BOARD_STRING;
-        if(isPlacementSequenceValid(placement)){
-            for(int i = 0; i < placement.length();i+=3){
-                pcs = pcs.replace(String.valueOf(placement.charAt(i)),"");
-                //following statement can be optimized: remove occupied positions by using Place.getBoardIdx
-                viablePositions = viablePositions.replace(String.valueOf(placement.charAt(i+2)),"");
+        if(isPlacementSequenceValid(placement)) {
+            pcs = PIECES;
+            setViablePositions(placement);
+            for (int i = 0; i < placement.length(); i += 3) {
+                pcs = pcs.replace(String.valueOf(placement.charAt(i)), "");
             }
-        }
-        String newPlacement = placement;
-        for(int k = 0; k < viablePositions.length(); k ++){
-            for(int i = 0; i < pcs.length(); i ++){
-                for(int j = 0; j < PIECES.length(); j ++){
-                    String newPiece = String.valueOf(pcs.charAt(i))+String.valueOf(PIECES.charAt(j))+ String.valueOf(viablePositions.charAt(k));
-                    if(isPlacementSequenceValid(placement+newPiece)){
-                        newPlacement = placement+newPiece;
-                        if((!sols.contains(newPlacement))) {
-                            sols.add(newPlacement);
+            //}
+            String newPlacement = placement;
+            for (int k = 0; k < viablePositions.length(); k++) {
+                for (int i = 0; i < pcs.length(); i++) {
+                    for (int j = 0; j < PIECES.length(); j++) {
+                        String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
+                        if (isPlacementSequenceValid(placement + newPiece)) {
+                            newPlacement = placement + newPiece;
+                            if ((!sols.contains(newPlacement))) {
+                                sols.add(newPlacement);
+                            }
                         }
-                    }
 //                    else{
 //                        if((!sols.contains(newPlacement)) &&(newPlacement.length() == 24)){
 //                            sols.add(newPlacement);
 //                        }
 //                    }
+                    }
                 }
             }
         }
@@ -350,7 +363,7 @@ public class StepsGame {
     }
 
     public static void main(String[] args) {
-        String[] a = getSolutions("BGSAHQEFBGCg");
+        String[] a = getSolutions("BGSAHQEFB");
 
     }
 }
