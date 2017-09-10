@@ -28,6 +28,8 @@ public class StepsGame {
     private static final String LEFT_EDGE = "AKUfp";
     private static final String RIGHT_EDGE = "JTeoy";
     private static final String PIECES = "ABCDEFGH";
+    private static String pcs = "";
+    private static String viablePositions = "";
 
 
     /**
@@ -295,13 +297,13 @@ public class StepsGame {
      */
     static String[] getSolutions(String placement) {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-        System.out.println("Initial board status: "+placement);
         ArrayList<String> sols = new ArrayList<>();
-        String pcs = PIECES;
-        String viablePositions = BOARD_STRING;
+        pcs = PIECES;
+        viablePositions = BOARD_STRING;
         if(isPlacementSequenceValid(placement)){
             for(int i = 0; i < placement.length();i+=3){
                 pcs = pcs.replace(String.valueOf(placement.charAt(i)),"");
+                //following statement can be optimized: remove occupied positions by using Place.getBoardIdx
                 viablePositions = viablePositions.replace(String.valueOf(placement.charAt(i+2)),"");
             }
         }
@@ -326,19 +328,29 @@ public class StepsGame {
         }
         String[] Sols = new String[sols.size()];
         Sols = sols.toArray(Sols);
-        int check = Sols.length;
-        System.out.println("Found "+check+" valid next placement");
-        int v = 0;
         for(String s: Sols){
-            if(isPlacementSequenceValid(s)){
-                v++;
+            if(s.length()!=24){
+                Sols = getSolutions(s);
             }
+            else{
+                System.out.println(s);
+            }
+
         }
-        System.out.println((check-v)+" placements are invalid.");
-        return null;
+//        for(String s: Sols){
+//            if(s.length()!=24){
+//                Sols = getSolutions(s);
+//            }
+//            else{
+//                System.out.println(s);
+//            }
+//
+//        }
+        return Sols;
     }
 
     public static void main(String[] args) {
-        String[] a = getSolutions("BGKFCNCFl");
+        String[] a = getSolutions("BGSAHQEFBGCg");
+
     }
 }
