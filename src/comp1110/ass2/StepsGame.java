@@ -1,7 +1,9 @@
 package comp1110.ass2;
 
+import comp1110.ass2.gittest.A;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,6 +30,9 @@ public class StepsGame {
     private static final String LEFT_EDGE = "AKUfp";
     private static final String RIGHT_EDGE = "JTeoy";
     private static final String PIECES = "ABCDEFGH";
+    private static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
+    private static ArrayList<String> finalSolutions = new ArrayList<>();
+
 
     /**
      *
@@ -254,11 +259,24 @@ public class StepsGame {
             return false;
         }
     }
-    /*
-    Get all possible (single) placement status
-     */
-    static void singlePlacement() {
-        ArrayList<String> singleSolutions = new ArrayList<>();
+
+    public static char[] occupiedPositions(String placement){
+        String occupiedPos = "";
+        List<Place> pieces = turnToPlace(placement);
+        for(Place p : pieces){
+            int[] circleStatus = p.getValue();
+            int[] boardIdx = p.getBoardIdx();
+            for(int ind = 0; ind < boardIdx.length;ind++){
+                if(boardIdx[ind]>=0 && circleStatus[ind]>0){
+                    String temp = String.valueOf(BOARD_STRING.charAt(boardIdx[ind]));
+                    occupiedPos += temp;
+                }
+            }
+        }
+        return occupiedPos.toCharArray();
+    }
+
+    static void viableSinglePlacement() {
         String pcs = PIECES;
         String viablePositions = BOARD_STRING;
         for (int i = 0; i < pcs.length(); i++) {
@@ -266,12 +284,39 @@ public class StepsGame {
                 for (int k = 0; k < viablePositions.length(); k++) {
                     String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
                     if (isPlacementSequenceValid(newPiece)) {
-                        if (!singleSolutions.contains(newPiece))
-                            singleSolutions.add(newPiece);
+                        if (!viableSingleSolutions.contains(newPiece))
+                            viableSingleSolutions.add(newPiece);
                     }
                 }
             }
         }
+    }
+    /*
+    Get next viable single placement
+     */
+    static ArrayList<String> nextPlacement(String placement) {
+        ArrayList<String> singleSolutions = viableSingleSolutions;
+        String[] tempSols = new String[singleSolutions.size()];
+        tempSols = singleSolutions.toArray(tempSols);
+        for(int i = 0; i<placement.length(); i+=3) {
+            for(String s : tempSols) {
+                if(s.charAt(0) == placement.charAt(i)){
+                    singleSolutions.remove(s);
+                }
+            }
+        }
+
+        char[] OP = occupiedPositions(placement);
+        tempSols = new String[singleSolutions.size()];
+        tempSols = singleSolutions.toArray(tempSols);
+        for(int i = 0; i < OP.length; i ++){
+            for(String s: tempSols){
+                if(s.charAt(2) == OP[i]){
+                    singleSolutions.remove(s);
+                }
+            }
+        }
+        return singleSolutions;
     }
 
 
@@ -300,8 +345,6 @@ public class StepsGame {
         for (String e : res){
             res.add(e.substring(placement.length(), placement.length()+2));
         }
-
-
         return res;
     }
 
@@ -314,12 +357,35 @@ public class StepsGame {
      */
     static String[] getSolutions(String placement) {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-
-        return null;
+        viableSinglePlacement();
+        ArrayList<String> viableSolutions = nextPlacement(placement);
+        String[] vSols = new String[viableSolutions.size()];
+        vSols = viableSolutions.toArray(vSols);
+            for (int i = 0; i < vSols.length; i++) {
+                vSols[i] = placement + vSols[i];
+            }
+        return vSols;
     }
 
-    public static void main(String[] args) {
-        singlePlacement();
 
+    static void findSolutions(String placement) {
+        ArrayList<String> viableSolutions = nextPlacement(placement);
+        String[] vSols = new String[viableSolutions.size()];
+        vSols = viableSolutions.toArray(vSols);
+        for (int i = 0; i < vSols.length; i++) {
+            String newPlacement = placement + vSols[i];
+            if(newPlacement.length()!=24){
+                findSolutions(newPlacement);
+            }
+            else
+                finalSolutions.add(newPlacement);
+        }
+    }
+    public static void main(String[] args) {
+        String placement = "AAL";
+        viableSinglePlacement();
+        finalSolutions = nextPlacement(placement);
+        System.out.println(finalSolutions);
+        System.out.println(finalSolutions.size());
     }
 }
