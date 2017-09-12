@@ -28,9 +28,6 @@ public class StepsGame {
     private static final String LEFT_EDGE = "AKUfp";
     private static final String RIGHT_EDGE = "JTeoy";
     private static final String PIECES = "ABCDEFGH";
-    private static String pcs = "";
-    private static String viablePositions = "";
-
 
     /**
      *
@@ -239,20 +236,6 @@ public class StepsGame {
         return places;
     }
 
-    public static void setViablePositions(String placement){
-        viablePositions = BOARD_STRING;
-        List<Place> places = turnToPlace(placement);
-        for(Place p:places){
-            int[] a = p.getValue();
-            int[] b = p.getBoardIdx();
-            for(int ind = 0; ind < b.length;ind++){
-                if(b[ind]>=0 && a[ind]>0){
-                    String temp = String.valueOf(BOARD_STRING.charAt(b[ind]));
-                    viablePositions = viablePositions.replace(temp,"");
-                }
-            }
-        }
-    }
     /**
      * Determine whether a placement sequence is valid.  To be valid, the placement
      * sequence must be well-formed and each piece placement must be a valid placement
@@ -271,6 +254,26 @@ public class StepsGame {
             return false;
         }
     }
+    /*
+    Get all possible (single) placement status
+     */
+    static void singlePlacement() {
+        ArrayList<String> singleSolutions = new ArrayList<>();
+        String pcs = PIECES;
+        String viablePositions = BOARD_STRING;
+        for (int i = 0; i < pcs.length(); i++) {
+            for (int j = 0; j < PIECES.length(); j++) {
+                for (int k = 0; k < viablePositions.length(); k++) {
+                    String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
+                    if (isPlacementSequenceValid(newPiece)) {
+                        if (!singleSolutions.contains(newPiece))
+                            singleSolutions.add(newPiece);
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Given a string describing a placement of pieces and a string describing
@@ -311,59 +314,12 @@ public class StepsGame {
      */
     static String[] getSolutions(String placement) {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-        ArrayList<String> sols = new ArrayList<>();
-        if(isPlacementSequenceValid(placement)) {
-            pcs = PIECES;
-            setViablePositions(placement);
-            for (int i = 0; i < placement.length(); i += 3) {
-                pcs = pcs.replace(String.valueOf(placement.charAt(i)), "");
-            }
-            //}
-            String newPlacement = placement;
-            for (int k = 0; k < viablePositions.length(); k++) {
-                for (int i = 0; i < pcs.length(); i++) {
-                    for (int j = 0; j < PIECES.length(); j++) {
-                        String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
-                        if (isPlacementSequenceValid(placement + newPiece)) {
-                            newPlacement = placement + newPiece;
-                            if ((!sols.contains(newPlacement))) {
-                                sols.add(newPlacement);
-                            }
-                        }
-//                    else{
-//                        if((!sols.contains(newPlacement)) &&(newPlacement.length() == 24)){
-//                            sols.add(newPlacement);
-//                        }
-//                    }
-                    }
-                }
-            }
-        }
-        String[] Sols = new String[sols.size()];
-        Sols = sols.toArray(Sols);
-        for(String s: Sols){
-            if(s.length()!=24){
-                Sols = getSolutions(s);
-            }
-            else{
-                System.out.println(s);
-            }
 
-        }
-//        for(String s: Sols){
-//            if(s.length()!=24){
-//                Sols = getSolutions(s);
-//            }
-//            else{
-//                System.out.println(s);
-//            }
-//
-//        }
-        return Sols;
+        return null;
     }
 
     public static void main(String[] args) {
-        String[] a = getSolutions("BGSAHQEFB");
+        singlePlacement();
 
     }
 }
