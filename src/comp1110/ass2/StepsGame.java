@@ -401,7 +401,6 @@ public class StepsGame {
             temp.add(nextPlacement(s));
         }
 
-
         finalSolutions.clear();
         for(int i = 0; i<temp.size(); i ++)
             tempSols.addAll(temp.get(i));
