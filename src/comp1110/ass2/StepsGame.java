@@ -299,8 +299,8 @@ public class StepsGame {
         singleSolutions.addAll(viableSingleSolutions);
         String[] tempSols = new String[singleSolutions.size()];
         tempSols = singleSolutions.toArray(tempSols);
-        for (int i = 0; i < placement.length(); i += 3) {
-            for (String s : tempSols) {
+        for (String s : tempSols) {
+            for (int i = 0; i < placement.length(); i += 3) {
                 if (s.charAt(0) == placement.charAt(i)) {
                     singleSolutions.remove(s);
                 }
@@ -309,8 +309,8 @@ public class StepsGame {
         char[] OP = occupiedPositions(placement);
         tempSols = new String[singleSolutions.size()];
         tempSols = singleSolutions.toArray(tempSols);
-        for (int i = 0; i < OP.length; i++) {
-            for (String s : tempSols) {
+        for (String s : tempSols) {
+            for (int i = 0; i < OP.length; i++) {
                 if (s.charAt(2) == OP[i]) {
                     singleSolutions.remove(s);
                 }
@@ -431,10 +431,4 @@ public class StepsGame {
         }
         return norm;
     }
-
-//    public static void main(String[] args) {
-//        String placement = "GFSEAoBBG";
-//        String[] ans = getSolutions(placement);
-//        System.out.println("Found "+ans.length+" solutions: "+Arrays.toString(ans));
-//    }
 }
