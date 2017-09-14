@@ -370,6 +370,18 @@ public class StepsGame {
         int pl = placement.length()/3;
         viableSinglePlacement();
         finalSolutions = nextPlacement(placement);
+        ArrayList<String> tempSols = new ArrayList<>();
+        ArrayList<String> norm = new ArrayList<>();
+        tempSols.addAll(finalSolutions);
+        finalSolutions.clear();
+        for(String s : tempSols){
+            String nm = normalize(s);
+            if(!norm.contains(nm)){
+                norm.add(nm);
+                finalSolutions.add(s);
+            }
+        }
+
         pl++;
         if(pl<8)
             findSolutions();
@@ -380,26 +392,50 @@ public class StepsGame {
 
 
     static void findSolutions() {
+        ArrayList<String> tempSols = new ArrayList<>();
+        ArrayList<String> norm = new ArrayList<>();
         int pl = finalSolutions.get(0).length()/3;
         temp.clear();
-        for(int i = 0; i < finalSolutions.size(); i ++){
-            String nP = finalSolutions.get(i);
-            if(isPlacementSequenceValid(nP)) {
-                temp.add(nextPlacement(nP));
-            }
+
+        for(String s: finalSolutions){
+            temp.add(nextPlacement(s));
         }
+
+
         finalSolutions.clear();
         for(int i = 0; i<temp.size(); i ++)
-            finalSolutions.addAll(temp.get(i));
+            tempSols.addAll(temp.get(i));
+        for(String s : tempSols){
+            String nm = normalize(s);
+            if(!norm.contains(nm)){
+                norm.add(nm);
+                finalSolutions.add(s);
+            }
+        }
+
         pl++;
         if(pl<8){
             findSolutions();
         }
     }
 
-    public static void main(String[] args) {
-        String placement = "DFOGGQEDI";
-        String[] ans = getSolutions(placement);
-        System.out.println("Found "+ans.length+" solutions: "+Arrays.toString(ans));
+    static String normalize(String placement) {
+        String[] pp = new String[8];
+        boolean flip = false;
+        for (int i = 0; i < placement.length(); i += 3) {
+            int idx = placement.charAt(i) - 'A';
+            pp[idx] = placement.substring(i, i + 3);
+        }
+        String norm = "";
+        for (int i = 0; i < pp.length; i++) {
+            if (pp[i] != null) norm += pp[i];
+        }
+        return norm;
     }
+
+//    public static void main(String[] args) {
+//        String placement = "GFSEAoBBG";
+//        String[] ans = getSolutions(placement);
+//        System.out.println("Found "+ans.length+" solutions: "+Arrays.toString(ans));
+//    }
 }
