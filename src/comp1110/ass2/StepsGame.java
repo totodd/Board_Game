@@ -258,6 +258,37 @@ public class StepsGame {
         }
     }
 
+
+
+
+    /**
+     * Given a string describing a placement of pieces and a string describing
+     * an (unordered) objective, return a set of all possible next viable
+     * piece placements.   A viable piece placement must be a piece that is
+     * not already placed (ie not in the placement string), and which will not
+     * obstruct any other unplaced piece.
+     *
+     * @param placement A valid sequence of piece placements where each piece placement is drawn from the objective
+     * @param objective A valid game objective, but not necessarily a valid placement string
+     * @return An set of viable piece placements
+     */
+    static Set<String> getViablePiecePlacements(String placement, String objective) {
+        // FIXME Task 6: determine the correct order of piece placements
+        String[] Objective = new String[8];
+        ArrayList<String> unUsed = new ArrayList<>();
+        for (int i = 0; i < objective.length(); i += 3) {
+            int idx = objective.charAt(i) - 'A';
+            Objective[idx] = objective.substring(i, i + 3);
+            if(!placement.contains(Objective[idx])){
+                unUsed.add(Objective[idx]);
+            }
+        }
+        System.out.println(Arrays.toString(Objective));
+        System.out.println(unUsed);
+
+        return null;
+    }
+
     public static char[] occupiedPositions(String placement) {
         String occupiedPos = "";
         List<Place> pieces = turnToPlace(placement);
@@ -326,71 +357,6 @@ public class StepsGame {
 
     }
 
-
-    /**
-     * Given a string describing a placement of pieces and a string describing
-     * an (unordered) objective, return a set of all possible next viable
-     * piece placements.   A viable piece placement must be a piece that is
-     * not already placed (ie not in the placement string), and which will not
-     * obstruct any other unplaced piece.
-     *
-     * @param placement A valid sequence of piece placements where each piece placement is drawn from the objective
-     * @param objective A valid game objective, but not necessarily a valid placement string
-     * @return An set of viable piece placements
-     */
-    static Set<String> getViablePiecePlacements(String placement, String objective) {
-        // FIXME Task 6: determine the correct order of piece placements
-//        String unPlaced = objective;
-//        for(int i =0; i < placement.length(); i +=3){
-//            String temp = placement.substring(i,i+3);
-//            unPlaced = unPlaced.replace(temp,"");
-//        }
-
-        String[] sol = getSolutions(placement);
-        Set<String> res = new HashSet<String>();
-
-        for (String e : res) {
-            res.add(e.substring(placement.length(), placement.length() + 2));
-        }
-        return res;
-    }
-
-    /**
-     * Return an array of all unique (unordered) solutions to the game, given a
-     * starting placement.   A given unique solution may have more than one than
-     * one placement sequence, however, only a single (unordered) solution should
-     * be returned for each such case.
-     *
-     * @param placement A valid piece placement string.
-     * @return An array of strings, each describing a unique unordered solution to
-     * the game given the starting point provided by placement.
-     */
-    static String[] getSolutions(String placement) {
-        // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-        int pl = placement.length()/3;
-        viableSinglePlacement();
-        finalSolutions = nextPlacement(placement);
-        ArrayList<String> tempSols = new ArrayList<>();
-        ArrayList<String> norm = new ArrayList<>();
-        tempSols.addAll(finalSolutions);
-        finalSolutions.clear();
-        for(String s : tempSols){
-            String nm = normalize(s);
-            if(!norm.contains(nm)){
-                norm.add(nm);
-                finalSolutions.add(s);
-            }
-        }
-
-        pl++;
-        if(pl<8)
-            findSolutions();
-        String[] Sols = new String[finalSolutions.size()];
-        Sols = finalSolutions.toArray(Sols);
-        return Sols;
-    }
-
-
     static void findSolutions() {
         ArrayList<String> tempSols = new ArrayList<>();
         ArrayList<String> norm = new ArrayList<>();
@@ -431,4 +397,49 @@ public class StepsGame {
         }
         return norm;
     }
+
+
+
+
+    /**
+     * Return an array of all unique (unordered) solutions to the game, given a
+     * starting placement.   A given unique solution may have more than one than
+     * one placement sequence, however, only a single (unordered) solution should
+     * be returned for each such case.
+     *
+     * @param placement A valid piece placement string.
+     * @return An array of strings, each describing a unique unordered solution to
+     * the game given the starting point provided by placement.
+     */
+    static String[] getSolutions(String placement) {
+        // FIXME Task 9: determine all solutions to the game, given a particular starting placement
+        int pl = placement.length()/3;
+        viableSinglePlacement();
+        finalSolutions = nextPlacement(placement);
+        ArrayList<String> tempSols = new ArrayList<>();
+        ArrayList<String> norm = new ArrayList<>();
+        tempSols.addAll(finalSolutions);
+        finalSolutions.clear();
+        for(String s : tempSols){
+            String nm = normalize(s);
+            if(!norm.contains(nm)){
+                norm.add(nm);
+                finalSolutions.add(s);
+            }
+        }
+
+        pl++;
+        if(pl<8)
+            findSolutions();
+        String[] Sols = new String[finalSolutions.size()];
+        Sols = finalSolutions.toArray(Sols);
+        return Sols;
+    }
+
+    public static void main(String[] args) {
+        String objective = "DFOGGQEDIBAkFHnHCiAALCAg";
+        String placement = "DFOGGQEDIBAkFHn";
+        getViablePiecePlacements(placement,objective);
+    }
+
 }
