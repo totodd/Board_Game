@@ -156,7 +156,7 @@ public class Viewer extends Application {
             @Override
             public void handle(ActionEvent e) {
                 makePlacement(textField.getText());
-                //textField.clear();
+                textField.clear();
             }
         });
         HBox hb = new HBox();
