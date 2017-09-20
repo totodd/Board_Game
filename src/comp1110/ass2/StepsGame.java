@@ -435,11 +435,4 @@ public class StepsGame {
         Sols = finalSolutions.toArray(Sols);
         return Sols;
     }
-
-    public static void main(String[] args) {
-        String objective = "DFOGGQEDIBAkFHnHCiAALCAg";
-        String placement = "DFOGGQEDIBAkFHn";
-        getViablePiecePlacements(placement,objective);
-    }
-
 }
