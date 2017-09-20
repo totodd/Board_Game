@@ -3,6 +3,7 @@ package comp1110.ass2;
 import comp1110.ass2.gittest.A;
 import org.junit.Test;
 
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import static junit.framework.TestCase.assertTrue;
  * The game is based directly on Smart Games' IQ-Steps game
  * (http://www.smartgames.eu/en/smartgames/iq-steps)
  */
-public class StepsGame {
+public class StepsGame implements Serializable{
     //    private static final int StartPieceNum = 4;
     public static final int ROW_LENGTH = 10;
     private static final int BOARD_LENGTH = 50;
@@ -411,7 +412,7 @@ public class StepsGame {
      * @return An array of strings, each describing a unique unordered solution to
      * the game given the starting point provided by placement.
      */
-    static String[] getSolutions(String placement) {
+    static String[] getSolutions(String placement) throws Exception {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
         int pl = placement.length()/3;
         viableSinglePlacement();
@@ -433,6 +434,27 @@ public class StepsGame {
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
+        write(Sols);
         return Sols;
     }
+
+
+    public static void write(String strings[]) throws Exception {
+        FileWriter fileWriter = new FileWriter("file.txt",true);
+        for (int i = 0; i < strings.length; i++) {
+            fileWriter.write(strings[i] + "\n");
+        }
+        fileWriter.close();
+    }
+
+    public static String[] read() throws Exception {
+        Scanner sc = new Scanner(new File("file.txt"));
+        List<String> lines = new ArrayList<String>();
+        while (sc.hasNextLine()) {
+            lines.add(sc.nextLine());
+        }
+        String[] strings = lines.toArray(new String[0]);
+        return strings;
+    }
+
 }
