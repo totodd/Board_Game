@@ -10,7 +10,7 @@ import java.util.List;
 public class T5test {
     public static void main(String[] args) {
 
-        String s = "AAWBBi";
+        String s = "EHu";
         String false_s = "AAWBBi";
 
         List<Place> p = StepsGame.turnToPlace(s);
@@ -28,7 +28,7 @@ public class T5test {
 //        }
 
         System.out.println("On right level: "+ StepsGame.onRightLevel(p.get(0)));
-        System.out.println("center: " + p.get(0).getPieceCenter());
+        System.out.println("center: " + p.get(0).getCenter());
         System.out.println("Within board: " + StepsGame.withInBoard(p.get(0)));
 //        System.out.println();
 //        for (int i : p.get(0).getValue()) {

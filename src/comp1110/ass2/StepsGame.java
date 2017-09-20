@@ -96,7 +96,7 @@ public class StepsGame implements Serializable{
      * @return if on right level
      */
     public static boolean onRightLevel(Place placement) {
-        switch (placement.getPieceCenter()) {
+        switch (placement.getCenter()) {
             case 1:
                 boolean res = BOARD_LOWER.contains(String.valueOf(placement.getPosition()));
                 return res;
@@ -235,7 +235,8 @@ public class StepsGame implements Serializable{
     public static List<Place> turnToPlace(String placement) {
         List<Place> places = new ArrayList<Place>();
         for (int i = 0; i < placement.length(); i = i + 3) {
-            places.add(new Place(placement.charAt(i), placement.charAt(i + 1), placement.charAt(i + 2)));
+            places.add(new Place(
+                    Pieces.valueOf(String.valueOf(placement.charAt(i))), placement.charAt(i + 1), placement.charAt(i + 2)));
         }
         return places;
     }

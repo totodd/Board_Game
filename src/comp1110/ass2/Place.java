@@ -17,14 +17,15 @@ public class Place {
     private int[] value;
 
 
-    Place(char pieceName, char rot, char position){
-        for (Pieces p : Pieces.values()){
-            if(pieceName == (p.name().charAt(0)))
-                this.piece = p;
-        }
+    Place(Pieces p, char rot, char position){
+        this.piece = p;
         this.position = position;
         this.rot = rot;
-        this.value = piece.getMaskPlacement(this.rot);
+        this.value = rotate(p,rot);
+    }
+
+    public Pieces getPiece() {
+        return piece;
     }
 
     public char getPosition() {
@@ -49,9 +50,73 @@ public class Place {
                 center + boardRow - 1, center + boardRow, center + boardRow + 1};
     }
 
-    public int getPieceCenter(){
-        return piece.getCenter(this.rot);
+    public int getCenter(){
+        return value[4];
+    }
+    public static int getRotateDegree (char rot){
+        return rotateDegree(rot);
     }
 
+
+
+    private int[] rotate(Pieces p, char rot){
+        int rotate = (int)rot-65;
+        int[] mask  = p.getMask();
+        boolean flip = (rotate-3)>0;
+        rotate = rotate%4;
+        int[] maskTemp = flipArray(mask,flip);
+        maskTemp = rotateArray(maskTemp,rotate);
+        return maskTemp;
+    }
+
+    private static int rotateDegree(char rot){
+        int rotate = (int)rot-65;
+        rotate = rotate%4;
+        return rotate*90;
+    }
+
+
+    private static int turnRightSingle(int original){
+        int j = original % 3;
+        int i = (original - j)/3;
+        int tempi = j;
+        int tempj = 2-i;
+        int output = tempi*3+tempj;
+        return output;
+    }
+
+    private static int[] turnRightArray(int[] originalArray){
+        int[] outputArray = new int[9];
+        for (int i=0;i<=8;i++){
+            int i2 = turnRightSingle(i);
+            outputArray[i2]=originalArray[i];
+        }
+        return outputArray;
+    }
+
+    private static int[] rotateArray(int[] originalArray, int rotateTimes){
+        int[] outputArray = originalArray;
+        for (int i=1;i<=rotateTimes;i++){
+            outputArray = turnRightArray(outputArray);
+        }
+        return outputArray;
+    }
+
+    private static int[] flipArray(int[] originalArray, boolean flip){
+        if(flip){
+            int[] outputArray = new int[9];
+            for(int i=0;i<9;i++){
+                if (originalArray[i]==0){
+                    outputArray[(i-i%3+2-i%3)]=0;
+                }else if(originalArray[i]==1){
+                    outputArray[(i-i%3+2-i%3)]=2;
+                }else if (originalArray[i]==2){
+                    outputArray[(i-i%3+2-i%3)]=1;
+                }
+            }
+            return outputArray;
+        }
+        return originalArray;
+    }
 }
 
