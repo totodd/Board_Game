@@ -435,20 +435,28 @@ public class StepsGame implements Serializable{
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
-        write(Sols);
+        String tmp[] = readFiletoStringArray();
+        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)));
         return Sols;
     }
 
 
-    public static void write(String strings[]) throws Exception {
+    public static void writeStringArrayAppend(String strings[]) throws Exception {
         FileWriter fileWriter = new FileWriter("file.txt",true);
         for (int i = 0; i < strings.length; i++) {
             fileWriter.write(strings[i] + "\n");
         }
         fileWriter.close();
     }
+    public static void writeStringArray(String strings[]) throws Exception {
+        FileWriter fileWriter = new FileWriter("file.txt",false);
+        for (int i = 0; i < strings.length; i++) {
+            fileWriter.write(strings[i] + "\n");
+        }
+        fileWriter.close();
+    }
 
-    public static String[] read() throws Exception {
+    public static String[] readFiletoStringArray() throws Exception {
         Scanner sc = new Scanner(new File("file.txt"));
         List<String> lines = new ArrayList<String>();
         while (sc.hasNextLine()) {
@@ -456,6 +464,43 @@ public class StepsGame implements Serializable{
         }
         String[] strings = lines.toArray(new String[0]);
         return strings;
+    }
+
+    public static String[] deduplicateStringArray(String input[]){
+        HashMap<String,String> map=new HashMap<>();
+        for (String i:input){
+            map.put(i,i);
+        }
+        String[] output=map.values().toArray(new String[map.size()]);
+        return output;
+    }
+
+    public static String[] mergeStringArray(String input1[],String input2[]){
+        HashMap<String,String> map=new HashMap<>();
+        if (!isArrayEmpty(input1)){
+            for (String i:input1){
+                map.put(i,i);
+            }
+        }
+        if (!isArrayEmpty(input2)){
+            for (String i:input2){
+                map.put(i,i);
+            }
+        }
+        String[] output=map.values().toArray(new String[map.size()]);
+        return output;
+    }
+
+    public static boolean isArrayEmpty(Object[] input){
+        if(input.length==0){
+            System.out.println("empty");
+            return true;
+        }
+        if (input==null){
+            System.out.println("null");
+            return true;
+        }
+        return false;
     }
 
 }
