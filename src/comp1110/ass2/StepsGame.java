@@ -291,6 +291,12 @@ public class StepsGame implements Serializable{
         return null;
     }
 
+    /**
+     * Given a string of placement, the function will return all the unavailable
+     * positions on board based on the shape of each single used piece
+     * @param placement
+     * @return a char array contains all occupied positions on board
+     */
     public static char[] occupiedPositions(String placement) {
         String occupiedPos = "";
         List<Place> pieces = turnToPlace(placement);
@@ -306,6 +312,10 @@ public class StepsGame implements Serializable{
         }
         return occupiedPos.toCharArray();
     }
+
+    /**
+     * Before the start of the game, the function will find out all viable piece-placements
+     */
 
     static void viableSinglePlacement() {
         String pcs = PIECES;
@@ -323,8 +333,12 @@ public class StepsGame implements Serializable{
         }
     }
 
-    /*
-    Get next viable single placement
+    /**
+     * Given an uncompleted placement (length less than 24), the function will
+     * find out all next viable piece-placements and add them to the end of the
+     * previous placement
+     * @param placement
+     * @return an Arraylist of string of all viable new placements
      */
     static ArrayList<String> nextPlacement(String placement) {
         ArrayList<String> singleSolutions = new ArrayList<>();
@@ -359,6 +373,11 @@ public class StepsGame implements Serializable{
 
     }
 
+    /*
+    After a set of new placements were figured out, solutions for each new placement will be generated, and
+    set as the new placement results; Apart from that, solutions with same piece-placements but different orders
+    would be recorded once only (unique solutions)
+     */
     static void findSolutions() {
         ArrayList<String> tempSols = new ArrayList<>();
         ArrayList<String> norm = new ArrayList<>();
