@@ -31,7 +31,7 @@ public class StepsGame implements Serializable{
     private static final String LEFT_EDGE = "AKUfp";
     private static final String RIGHT_EDGE = "JTeoy";
     private static final String PIECES = "ABCDEFGH";
-    private static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
+    public static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
     private static ArrayList<String> finalSolutions = new ArrayList<>();
     private static ArrayList<ArrayList<String>> temp = new ArrayList<>();
 
