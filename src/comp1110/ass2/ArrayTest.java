@@ -28,6 +28,8 @@ public class ArrayTest {
         String a[]={"aa","bb"};
         String b[]={"bb","dd"};
         String c[]={"aa","bb","dd"};
+        String d[]={"aa","aa","bb","bb"};
         assertTrue(StepsGame.deduplicateStringArray(StepsGame.mergeStringArray(a,b)).length==3);
+        assertTrue(StepsGame.deduplicateStringArray(d).length==2);
     }
 }
