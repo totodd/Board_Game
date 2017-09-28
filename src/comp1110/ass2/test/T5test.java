@@ -23,19 +23,19 @@ public class T5test {
     public void onWrongLevel(){
         String s = "AAh";
         List<Place> p = StepsGame.turnToPlace(s);
-        assertFalse(StepsGame.onRightLevel(p.get(0)));
+        assertFalse(s + "is not on Right level",StepsGame.onRightLevel( p.get(0)));
     }
 
     @Test
     public void isSequenceValid(){
         String s = "DFOGGQEDIBAkFHn";
-        assertTrue(StepsGame.isPlacementSequenceValid(s));
+        assertTrue(s + "is sequence valid", StepsGame.isPlacementSequenceValid(s));
     }
 
     @Test
     public void isNotSequenceValid(){
         String s = "AAWBBi";
-        assertFalse(StepsGame.isPlacementSequenceValid(s));
+        assertFalse(s + "is not sequence valid", StepsGame.isPlacementSequenceValid(s));
     }
 
     @Test
