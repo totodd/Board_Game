@@ -15,7 +15,7 @@ public class T9_Test {
     @Test
     public void test_SinglePlacement(){
         StepsGame.viableSinglePlacement();
-        assertTrue(StepsGame.viableSingleSolutions.size()==812);
+        assertTrue("The total number of viable single placement should be 812!",StepsGame.viableSingleSolutions.size()==812);
     }
     @Test
     public void test_occupiedPositions(){
