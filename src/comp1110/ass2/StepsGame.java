@@ -521,5 +521,4 @@ public class StepsGame implements Serializable{
         }
         return false;
     }
-
 }
