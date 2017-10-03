@@ -454,35 +454,48 @@ public class StepsGame implements Serializable{
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
-        String tmp[] = readFiletoStringArray();
-        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)));
+        String tmp[] = readFiletoStringArray("FullSol.txt");
+        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt",false);
         return Sols;
     }
-
-
-    public static void writeStringArrayAppend(String strings[]) throws Exception {
-        FileWriter fileWriter = new FileWriter("file.txt",true);
+    public static void writeStringArray(String strings[],String filename,boolean append) throws Exception {
+        try {
+            File file = new File(filename);
+            boolean fvar = file.createNewFile();
+            if (fvar){
+                System.out.println("File has been created successfully");
+            }
+            else{
+                System.out.println("File already present at the specified location");
+            }
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
+        FileWriter fileWriter = new FileWriter(filename,append);
         for (int i = 0; i < strings.length; i++) {
             fileWriter.write(strings[i] + "\n");
         }
         fileWriter.close();
     }
-    public static void writeStringArray(String strings[]) throws Exception {
-        FileWriter fileWriter = new FileWriter("file.txt",false);
-        for (int i = 0; i < strings.length; i++) {
-            fileWriter.write(strings[i] + "\n");
-        }
-        fileWriter.close();
+    public static void writeStringArray(String strings[],String filename) throws Exception {
+        writeStringArray(strings,filename,false);
     }
 
-    public static String[] readFiletoStringArray() throws Exception {
-        Scanner sc = new Scanner(new File("file.txt"));
-        List<String> lines = new ArrayList<String>();
-        while (sc.hasNextLine()) {
-            lines.add(sc.nextLine());
+
+    public static String[] readFiletoStringArray(String filename) throws Exception {
+        File f = new File(filename);
+        if(f.exists() && !f.isDirectory()) {
+            Scanner sc = new Scanner(new java.io.File(filename));
+            List<String> lines = new ArrayList<String>();
+            while (sc.hasNextLine()) {
+                lines.add(sc.nextLine());
+            }
+            String[] strings = lines.toArray(new String[0]);
+            return strings;
         }
-        String[] strings = lines.toArray(new String[0]);
-        return strings;
+        return new String[0];
+
     }
 
     public static String[] deduplicateStringArray(String input[]){
@@ -521,5 +534,4 @@ public class StepsGame implements Serializable{
         }
         return false;
     }
-
 }
