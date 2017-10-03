@@ -24,15 +24,16 @@ public class Board extends Application {
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 60;
     public static final int PIECE_IMAGE_SIZE = (int) ((3*SQUARE_SIZE)*1.33);
-    private static final int MARGIN_X = 50;
-    private static final int MARGIN_Y = 70;
+    private static final int MARGIN_X = BOARD_WIDTH/20;
+    private static final int MARGIN_Y = BOARD_HEIGHT/20;
     public static final String[] imageList = {"AA","AE","BA","BE","CA","CE","DA","DE","EA","EE","FA","FE","GA","GE","HA","HE"};
     public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
 
-    static final Group root = new Group();
+    private final Group root = new Group();
+    private Group button = new Group();
     private final Group controls = new Group();
     private final Group shapes = new Group();
-    static final Group initializor = new Group();
+    private final Group initializor = new Group();
     TextField textField;
     private static Image piece;
     private static Circle peg;
@@ -53,6 +54,7 @@ public class Board extends Application {
      * @param placement  A valid placement string
      */
     void makePlacement(String placement) {
+
         shapes.getChildren().clear();
         if(!StepsGame.isPlacementSequenceValid(placement)){
             System.out.println("Invalid placement: "+placement);
@@ -98,23 +100,23 @@ public class Board extends Application {
             }
         }
     }
-    static void pieceInitializor(){
+    void pieceInitializor(){
         ImageView[] pc = new ImageView[16];
         for(int i =0;i<16;i++){
             piece = new Image(URI_BASE+imageList[i]+".png");
             pc[i] = new ImageView();
             pc[i].setImage(piece);
-            pc[i].setFitWidth(SQUARE_SIZE*0.75);
-            pc[i].setFitHeight(SQUARE_SIZE*0.75);
-            pc[i].setX(15+SQUARE_SIZE*i*0.75);
-            pc[i].setY(10);
-            //initializor.getChildren().add(pc[i]);
+            pc[i].setFitWidth(PIECE_IMAGE_SIZE*0.5);
+            pc[i].setFitHeight(PIECE_IMAGE_SIZE*0.5);
+            pc[i].setX(PIECE_IMAGE_SIZE*0.45*(i%8));
+            pc[i].setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
+            initializor.getChildren().add(pc[i]);
         }
     }
     /**
      * Initialize the "board" image as the background; list all original pieces
      */
-    static void BGInitizlizor(){
+    void BGInitizlizor(){
         for(int i =0; i <25; i++) {
             if(i<15){
                 peg = new Circle(21.5, Color.LIGHTGRAY);
@@ -144,24 +146,36 @@ public class Board extends Application {
     private void makeControls() {
         pieceInitializor();
         BGInitizlizor();
-
-        Label label1 = new Label("Placement:");
-        textField = new TextField ();
-        textField.setPrefWidth(300);
-        Button button = new Button("Refresh");
-        button.setOnAction(new EventHandler<ActionEvent>() {
+//        controls.getChildren().addAll(initializor);
+//        Label label1 = new Label("Placement:");
+//        textField = new TextField ();
+//        textField.setPrefWidth(300);
+        Button reset = new Button("Reset");
+        reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                makePlacement(textField.getText());
-                textField.clear();
+                shapes.getChildren().clear();
+                makePlacement("");
             }
         });
-        HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button);
-        hb.setSpacing(10);
-        hb.setLayoutX(130);
-        hb.setLayoutY(BOARD_HEIGHT - 50);
-        controls.getChildren().addAll(hb,initializor,shapes);
+        reset.setLayoutX(BOARD_WIDTH * 0.85);
+        reset.setLayoutY(MARGIN_Y*2);
+        Button hint = new Button("Hint");
+        hint.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                // display all viable pieces
+            }
+        });
+        hint.setLayoutX(BOARD_WIDTH * 0.85);
+        hint.setLayoutY(MARGIN_Y*3);
+        button.getChildren().addAll(hint,reset);
+//        HBox hb = new HBox();
+//        hb.getChildren().add(button);
+//        hb.setSpacing(100);
+//        hb.setLayoutX(BOARD_WIDTH * 0.85);
+//        hb.setLayoutY(MARGIN_Y);
+        controls.getChildren().addAll(button,initializor,shapes);
     }
 
     @Override
