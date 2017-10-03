@@ -1,17 +1,10 @@
 package comp1110.ass2;
 
-import comp1110.ass2.gittest.A;
-import org.junit.Test;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
-
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 
 /**
  * This class provides the text interface for the Steps Game
@@ -455,9 +448,10 @@ public class StepsGame implements Serializable{
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
         String tmp[] = readFiletoStringArray("FullSol.txt");
-        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt",false);
+        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
         return Sols;
     }
+
     public static void writeStringArray(String strings[],String filename,boolean append) throws Exception {
         try {
             File file = new File(filename);
