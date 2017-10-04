@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -38,6 +40,7 @@ public class Board extends Application {
     private static Image piece;
     private static Circle peg;
     private static Text T_peg;
+    private double oldX, oldY;
 
 
     // FIXME Task 7: Implement a basic playable Steps Game in JavaFX that only allows pieces to be placed in valid places
@@ -100,6 +103,8 @@ public class Board extends Application {
             }
         }
     }
+
+
     void pieceInitializor(){
         ImageView[] pc = new ImageView[16];
         for(int i =0;i<16;i++){
@@ -111,6 +116,17 @@ public class Board extends Application {
             pc[i].setX(PIECE_IMAGE_SIZE*0.45*(i%8));
             pc[i].setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
             initializor.getChildren().add(pc[i]);
+            pc[i].setOnMousePressed(event -> {
+                oldX = event.getSceneX();
+                oldY = event.getSceneY();
+            });
+            pc[i].setOnMouseDragged(event -> {
+                double X = event.getSceneX() - oldX;
+                double Y = event.getSceneY() - oldY;
+                pc[i].setLayoutX(pc[i].getLayoutX()+X);
+                pc[i].setLayoutY(pc[i].getLayoutY()+Y);
+                event.consume();
+            });
         }
     }
     /**
@@ -144,12 +160,7 @@ public class Board extends Application {
      * Create a basic text field for input and a refresh button.
      */
     private void makeControls() {
-        pieceInitializor();
-        BGInitizlizor();
-//        controls.getChildren().addAll(initializor);
-//        Label label1 = new Label("Placement:");
-//        textField = new TextField ();
-//        textField.setPrefWidth(300);
+
         Button reset = new Button("Reset");
         reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -169,12 +180,17 @@ public class Board extends Application {
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
         hint.setLayoutY(MARGIN_Y*3);
-        button.getChildren().addAll(hint,reset);
-//        HBox hb = new HBox();
-//        hb.getChildren().add(button);
-//        hb.setSpacing(100);
-//        hb.setLayoutX(BOARD_WIDTH * 0.85);
-//        hb.setLayoutY(MARGIN_Y);
+        Button starting = new Button("Starting\nPlacements");
+        starting.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                // set starting placements
+            }
+        });
+        starting.setLayoutX(BOARD_WIDTH * 0.85);
+        starting.setLayoutY(MARGIN_Y*4);
+
+        button.getChildren().addAll(hint,reset,starting);
         controls.getChildren().addAll(button,initializor,shapes);
     }
 
@@ -184,7 +200,8 @@ public class Board extends Application {
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         root.getChildren().add(controls);
-
+        pieceInitializor();
+        BGInitizlizor();
         makeControls();
 
         primaryStage.setScene(scene);
