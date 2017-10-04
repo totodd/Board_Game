@@ -39,6 +39,7 @@ public class StepsGame implements Serializable{
         boolean withInLeftRight = false;
         boolean withInUpDown = true;
 
+
         int mid = position[4];
         int left;
         int right;
@@ -326,6 +327,38 @@ public class StepsGame implements Serializable{
         }
     }
 
+    static ArrayList viableSinglePlacement2() {
+        ArrayList<String> single = new ArrayList<>();
+        String pcs = PIECES;
+        String viablePositions = BOARD_STRING;
+        for (int i = 0; i < pcs.length(); i++) {
+            for (int j = 0; j < PIECES.length(); j++) {
+                for (int k = 0; k < viablePositions.length(); k++) {
+                    String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
+                    if (isPlacementSequenceValid(newPiece)) {
+                        if (!single.contains(newPiece))
+                            single.add(newPiece);
+                    }
+                }
+            }
+        }
+        return single;
+    }
+
+
+    static String[] viableSinglePlacement2SeperateFile() throws Exception {
+        String output[]=readFiletoStringArray("1.txt");
+
+        for(int i=0;i<output.length;i++){
+            char piece=output[i].charAt(0);
+            String newFileName=String.valueOf(piece)+".txt";
+            System.out.println(newFileName);
+            writeString(output[i],newFileName,true);
+        }
+        return output;
+    }
+
+
     /**
      * Given an uncompleted placement (length less than 24), the function will
      * find out all next viable piece-placements and add them to the end of the
@@ -451,6 +484,28 @@ public class StepsGame implements Serializable{
         writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
         return Sols;
     }
+    public static void writeString(String strings,String filename,boolean append) throws Exception {
+        try {
+            File file = new File(filename);
+            boolean fvar = file.createNewFile();
+/*            if (fvar){
+                System.out.println("File has been created successfully");
+            }
+            else{
+                System.out.println("File already present at the specified location");
+            }*/
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
+        FileWriter fileWriter = new FileWriter(filename,append);
+            fileWriter.write(strings + "\n");
+        fileWriter.close();
+    }
+    public static void writeString(String strings,String filename) throws Exception {
+        writeString(strings, filename,false);
+    }
+
 
     public static void writeStringArray(String strings[],String filename,boolean append) throws Exception {
         try {
