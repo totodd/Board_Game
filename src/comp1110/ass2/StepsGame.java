@@ -27,6 +27,7 @@ public class StepsGame implements Serializable{
     public static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
     private static ArrayList<String> finalSolutions = new ArrayList<>();
     private static ArrayList<ArrayList<String>> temp = new ArrayList<>();
+    private static List<String> sol = new ArrayList<>();
 
 
     /**
@@ -270,19 +271,46 @@ public class StepsGame implements Serializable{
      */
     static Set<String> getViablePiecePlacements(String placement, String objective) {
         // FIXME Task 6: determine the correct order of piece placements
-        String[] Objective = new String[8];
-        ArrayList<String> unUsed = new ArrayList<>();
-        for (int i = 0; i < objective.length(); i += 3) {
-            int idx = objective.charAt(i) - 'A';
-            Objective[idx] = objective.substring(i, i + 3);
-            if(!placement.contains(Objective[idx])){
-                unUsed.add(Objective[idx]);
+        List<Place> placed = turnToPlace(placement);
+        List<Place> toPlace = turnToPlace(objective);
+
+//        validTale(placed, toPlace);
+        Set<String> nextPlace = new HashSet<>();
+//        nextPlace.add(sol.get(1).toString());
+//        List<List<Place>> s = sol;
+//        System.out.println(s);
+        return nextPlace;
+    }
+
+    @Test
+    public void isValidTale(){
+        String placement = "";
+        String objective = "CEQEHuGEOBDxFGSHCiAALDBg";
+        List<Place> placed = turnToPlace(placement);
+        List<Place> toPlace = turnToPlace(objective);
+        findTale(placed, toPlace);
+        System.out.println(sol);
+    }
+
+
+    static void findTale(List<Place> placed, List<Place>toPlace){
+        String res = "";
+        for (Place s : placed) res = res + s;
+
+        if(placed.size() == 0 | isPlacementSequenceValid(res)){
+            if(placed.size() == 8) {
+                sol.add(res);
+                return;
+            }
+            for(Place p : toPlace){
+                List<Place> temp = new LinkedList<>(placed);
+                temp.add(p);
+                List<Place> tempToPlace = new LinkedList<>(toPlace);
+                toPlace.remove(p);
+                findTale(temp, tempToPlace);
             }
         }
-        System.out.println(Arrays.toString(Objective));
-        System.out.println(unUsed);
 
-        return null;
     }
 
     /**

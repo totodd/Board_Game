@@ -58,6 +58,10 @@ public class Place {
     }
 
 
+    @Override
+    public String toString() {
+        return piece.name()+String.valueOf(rot)+String.valueOf(position);
+    }
 
     private int[] rotate(Pieces p, char rot){
         int rotate = (int)rot-65;
