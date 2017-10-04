@@ -15,14 +15,14 @@ public class T9_Test {
     @Test
     public void test_SinglePlacement(){
         StepsGame.viableSinglePlacement();
-        assertTrue(StepsGame.viableSingleSolutions.size()==812);
+        assertTrue("The total number of viable single placement should be 812!",StepsGame.viableSingleSolutions.size()==812);
     }
     @Test
     public void test_occupiedPositions(){
-        assertTrue(StepsGame.occupiedPositions("").length==0);
+        assertTrue("No positions should be occupied for initial board status!",StepsGame.occupiedPositions("").length==0);
 
         char[] tOP = StepsGame.occupiedPositions("DFOGGQEDIBAkFHnHCiAALCAg");
-        assertTrue(tOP.length==43);
+        assertTrue("There should be 43 positions occupied!",tOP.length==43);
         String top = Arrays.toString(tOP);
         assertFalse(top.contains("C")||top.contains("E")||top.contains("d")||top.contains("f")
                 ||top.contains("m")||top.contains("t")||top.contains("y"));

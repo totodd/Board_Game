@@ -1,17 +1,10 @@
 package comp1110.ass2;
 
-import comp1110.ass2.gittest.A;
-import org.junit.Test;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
-
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 
 /**
  * This class provides the text interface for the Steps Game
@@ -46,6 +39,7 @@ public class StepsGame implements Serializable{
         int[] val = placement.getValue();
         boolean withInLeftRight = false;
         boolean withInUpDown = true;
+
 
         int mid = position[4];
         int left;
@@ -361,6 +355,38 @@ public class StepsGame implements Serializable{
         }
     }
 
+    static ArrayList viableSinglePlacement2() {
+        ArrayList<String> single = new ArrayList<>();
+        String pcs = PIECES;
+        String viablePositions = BOARD_STRING;
+        for (int i = 0; i < pcs.length(); i++) {
+            for (int j = 0; j < PIECES.length(); j++) {
+                for (int k = 0; k < viablePositions.length(); k++) {
+                    String newPiece = String.valueOf(pcs.charAt(i)) + String.valueOf(PIECES.charAt(j)) + String.valueOf(viablePositions.charAt(k));
+                    if (isPlacementSequenceValid(newPiece)) {
+                        if (!single.contains(newPiece))
+                            single.add(newPiece);
+                    }
+                }
+            }
+        }
+        return single;
+    }
+
+
+    static String[] viableSinglePlacement2SeperateFile() throws Exception {
+        String output[]=readFiletoStringArray("1/1.txt");
+
+        for(int i=0;i<output.length;i++){
+            char piece=output[i].charAt(0);
+            String newFileName="1/"+String.valueOf(piece)+".txt";
+            System.out.println(newFileName);
+            writeString(output[i],newFileName,true);
+        }
+        return output;
+    }
+
+
     /**
      * Given an uncompleted placement (length less than 24), the function will
      * find out all next viable piece-placements and add them to the end of the
@@ -482,35 +508,71 @@ public class StepsGame implements Serializable{
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
-        String tmp[] = readFiletoStringArray();
-        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)));
+        String tmp[] = readFiletoStringArray("FullSol.txt");
+        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
         return Sols;
     }
+    public static void writeString(String strings,String filename,boolean append) throws Exception {
+        try {
+            File file = new File(filename);
+            boolean fvar = file.createNewFile();
+/*            if (fvar){
+                System.out.println("File has been created successfully");
+            }
+            else{
+                System.out.println("File already present at the specified location");
+            }*/
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
+        FileWriter fileWriter = new FileWriter(filename,append);
+            fileWriter.write(strings + "\n");
+        fileWriter.close();
+    }
+    public static void writeString(String strings,String filename) throws Exception {
+        writeString(strings, filename,false);
+    }
 
 
-    public static void writeStringArrayAppend(String strings[]) throws Exception {
-        FileWriter fileWriter = new FileWriter("file.txt",true);
+    public static void writeStringArray(String strings[],String filename,boolean append) throws Exception {
+        try {
+            File file = new File(filename);
+            boolean fvar = file.createNewFile();
+            if (fvar){
+                System.out.println("File has been created successfully");
+            }
+            else{
+                System.out.println("File already present at the specified location");
+            }
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
+        FileWriter fileWriter = new FileWriter(filename,append);
         for (int i = 0; i < strings.length; i++) {
             fileWriter.write(strings[i] + "\n");
         }
         fileWriter.close();
     }
-    public static void writeStringArray(String strings[]) throws Exception {
-        FileWriter fileWriter = new FileWriter("file.txt",false);
-        for (int i = 0; i < strings.length; i++) {
-            fileWriter.write(strings[i] + "\n");
-        }
-        fileWriter.close();
+    public static void writeStringArray(String strings[],String filename) throws Exception {
+        writeStringArray(strings,filename,false);
     }
 
-    public static String[] readFiletoStringArray() throws Exception {
-        Scanner sc = new Scanner(new File("file.txt"));
-        List<String> lines = new ArrayList<String>();
-        while (sc.hasNextLine()) {
-            lines.add(sc.nextLine());
+
+    public static String[] readFiletoStringArray(String filename) throws Exception {
+        File f = new File(filename);
+        if(f.exists() && !f.isDirectory()) {
+            Scanner sc = new Scanner(new java.io.File(filename));
+            List<String> lines = new ArrayList<String>();
+            while (sc.hasNextLine()) {
+                lines.add(sc.nextLine());
+            }
+            String[] strings = lines.toArray(new String[0]);
+            return strings;
         }
-        String[] strings = lines.toArray(new String[0]);
-        return strings;
+        return new String[0];
+
     }
 
     public static String[] deduplicateStringArray(String input[]){
@@ -549,5 +611,4 @@ public class StepsGame implements Serializable{
         }
         return false;
     }
-
 }
