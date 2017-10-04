@@ -16,7 +16,7 @@ public class Generate {
             boolean successful = dir.mkdir();
         }
         generateBase();
-        generateSeq("AB",2);
+        generateSeq("",2);
         /*
         * This will generate from the Base point to the depth
         * Example Base = "" depth 1
