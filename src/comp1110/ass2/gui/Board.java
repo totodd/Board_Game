@@ -20,6 +20,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Board extends Application {
     private static final int BOARD_WIDTH = 933;
@@ -105,29 +108,43 @@ public class Board extends Application {
     }
 
 
-    void pieceInitializor(){
-        ImageView[] pc = new ImageView[16];
-        for(int i =0;i<16;i++){
-            piece = new Image(URI_BASE+imageList[i]+".png");
-            pc[i] = new ImageView();
-            pc[i].setImage(piece);
-            pc[i].setFitWidth(PIECE_IMAGE_SIZE*0.5);
-            pc[i].setFitHeight(PIECE_IMAGE_SIZE*0.5);
-            pc[i].setX(PIECE_IMAGE_SIZE*0.45*(i%8));
-            pc[i].setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
-            initializor.getChildren().add(pc[i]);
-            pc[i].setOnMousePressed(event -> {
+    void pieceInitializor(ImageView pc, int count){
+        //ImageView[] pc = new ImageView[16];
+
+
+        //for(int i =0;i<16;i++){
+            //piece = new Image(URI_BASE+imageList[i]+".png");
+            //pc[i] = new ImageView();
+            //pc[i].setImage(piece);
+        //    pc[i].setFitWidth(PIECE_IMAGE_SIZE*0.5);
+//            pc[i].setFitHeight(PIECE_IMAGE_SIZE*0.5);
+//            pc[i].setX(PIECE_IMAGE_SIZE*0.45*(i%8));
+//            pc[i].setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
+        piece = new Image(URI_BASE+imageList[count]+".png");
+        pc.setImage(piece);
+        pc.setFitWidth(PIECE_IMAGE_SIZE*0.5);
+        pc.setFitHeight(PIECE_IMAGE_SIZE*0.5);
+        pc.setX(PIECE_IMAGE_SIZE*0.45*(count%8));
+        pc.setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(count/8));
+
+            initializor.getChildren().add(pc);
+            pc.setOnMousePressed(event -> {
                 oldX = event.getSceneX();
                 oldY = event.getSceneY();
+                pc.setFitWidth(PIECE_IMAGE_SIZE);
+                pc.setFitHeight(PIECE_IMAGE_SIZE);
             });
-            pc[i].setOnMouseDragged(event -> {
+            pc.setOnMouseDragged(event -> {
                 double X = event.getSceneX() - oldX;
                 double Y = event.getSceneY() - oldY;
-                pc[i].setLayoutX(pc[i].getLayoutX()+X);
-                pc[i].setLayoutY(pc[i].getLayoutY()+Y);
+                pc.setLayoutX(pc.getLayoutX()+X);
+                pc.setLayoutY(pc.getLayoutY()+Y);
+                oldX = event.getSceneX();
+                oldY = event.getSceneY();
                 event.consume();
             });
-        }
+
+        //}
     }
     /**
      * Initialize the "board" image as the background; list all original pieces
@@ -200,7 +217,9 @@ public class Board extends Application {
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         root.getChildren().add(controls);
-        pieceInitializor();
+        for(int i = 0; i <16; i ++) {
+            pieceInitializor(new ImageView(), i);
+        }
         BGInitizlizor();
         makeControls();
 
