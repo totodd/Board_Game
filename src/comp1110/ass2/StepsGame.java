@@ -347,11 +347,11 @@ public class StepsGame implements Serializable{
 
 
     static String[] viableSinglePlacement2SeperateFile() throws Exception {
-        String output[]=readFiletoStringArray("1.txt");
+        String output[]=readFiletoStringArray("1/1.txt");
 
         for(int i=0;i<output.length;i++){
             char piece=output[i].charAt(0);
-            String newFileName=String.valueOf(piece)+".txt";
+            String newFileName="1/"+String.valueOf(piece)+".txt";
             System.out.println(newFileName);
             writeString(output[i],newFileName,true);
         }

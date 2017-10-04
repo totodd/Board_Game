@@ -2,12 +2,21 @@ package comp1110.ass2;
 
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
 public class Generate {
+
+
     public static void main(String[] args) throws Exception {
-        generateSeq("",4);
+        for(int i=1;i<9;i++){
+            File dir = new File(String.valueOf(i));
+            boolean successful = dir.mkdir();
+        }
+        generateBase();
+        generateSeq("AB",2);
         /*
         * This will generate from the Base point to the depth
         * Example Base = "" depth 1
@@ -25,13 +34,16 @@ public class Generate {
         if (depth!=0){
             String base2[]=nextSeq(base);
             for (String i:base2){
-                System.out.println(i);
+                //System.out.println(i);
                 generateSeq(i,depth-1);
             }
         }
     }
 
     static String[] nextSeq(String base) throws Exception {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+
         String add[]={"A","B","C","D","E","F","G","H"};
         char baseChar[]=base.toCharArray();
         ArrayList<Character> baseList = new ArrayList<>();
@@ -42,7 +54,8 @@ public class Generate {
         for (int i=0;i<add.length;i++){
             if (!baseList.contains(add[i].charAt(0))){
                 String next=base+add[i];
-                System.out.println(base+add[i]+"  "+"Current Length:"+next.length());
+                LocalDateTime now = LocalDateTime.now();
+                System.out.println(base+add[i]+"  "+"Current Length:"+next.length()+"  "+dtf.format(now));
                 output.add(next);
                 File file = new File((base.length()+1)+"/"+base+add[i]+".txt");
                 if (!file.exists()){
@@ -70,7 +83,7 @@ public class Generate {
                 placement = startbase[a] + startadd[b];
                 if (StepsGame.isPlacementSequenceValid(placement)) {
                     count++;
-                    System.out.println(base+add+" "+count+" "+placement);
+                    //System.out.println(base+add+" "+count+" "+placement);
                     StepsGame.writeString(placement,(base.length()+1)+"/"+base+add+".txt",true);
                 }
             }
@@ -81,7 +94,7 @@ public class Generate {
     static void generateBase() throws Exception {
         ArrayList<String> single = StepsGame.viableSinglePlacement2();
         String[] start = single.toArray(new String[single.size()]);
-        StepsGame.writeStringArray(start,"1.txt");
+        StepsGame.writeStringArray(start,"1/1.txt");
         StepsGame.viableSinglePlacement2SeperateFile();
     }
 }
