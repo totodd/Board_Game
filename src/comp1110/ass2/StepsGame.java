@@ -347,13 +347,13 @@ public class StepsGame implements Serializable{
 
 
     static String[] viableSinglePlacement2SeperateFile() throws Exception {
-        String output[]=readFiletoStringArray("1/1.txt");
+        String output[]=Utility.readFiletoStringArray("1/1.txt");
 
         for(int i=0;i<output.length;i++){
             char piece=output[i].charAt(0);
             String newFileName="1/"+String.valueOf(piece)+".txt";
             System.out.println(newFileName);
-            writeString(output[i],newFileName,true);
+            Utility.writeString(output[i],newFileName,true);
         }
         return output;
     }
@@ -407,6 +407,9 @@ public class StepsGame implements Serializable{
     static void findSolutions() {
         ArrayList<String> tempSols = new ArrayList<>();
         ArrayList<String> norm = new ArrayList<>();
+        if(finalSolutions.size()==0){
+            return;
+        }
         int pl = finalSolutions.get(0).length()/3;
         temp.clear();
 
@@ -480,107 +483,9 @@ public class StepsGame implements Serializable{
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
-        String tmp[] = readFiletoStringArray("FullSol.txt");
-        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
+        String tmp[] = Utility.readFiletoStringArray("FullSol2.txt");
+        Utility.writeStringArray(Utility.mergeStringArray(tmp,Sols),"FullSol2.txt");
         return Sols;
     }
-    public static void writeString(String strings,String filename,boolean append) throws Exception {
-        try {
-            File file = new File(filename);
-            boolean fvar = file.createNewFile();
-/*            if (fvar){
-                System.out.println("File has been created successfully");
-            }
-            else{
-                System.out.println("File already present at the specified location");
-            }*/
-        } catch (IOException e) {
-            System.out.println("Exception Occurred:");
-            e.printStackTrace();
-        }
-        FileWriter fileWriter = new FileWriter(filename,append);
-            fileWriter.write(strings + "\n");
-        fileWriter.close();
-    }
-    public static void writeString(String strings,String filename) throws Exception {
-        writeString(strings, filename,false);
-    }
 
-
-    public static void writeStringArray(String strings[],String filename,boolean append) throws Exception {
-        try {
-            File file = new File(filename);
-            boolean fvar = file.createNewFile();
-            if (fvar){
-                System.out.println("File has been created successfully");
-            }
-            else{
-                System.out.println("File already present at the specified location");
-            }
-        } catch (IOException e) {
-            System.out.println("Exception Occurred:");
-            e.printStackTrace();
-        }
-        FileWriter fileWriter = new FileWriter(filename,append);
-        for (int i = 0; i < strings.length; i++) {
-            fileWriter.write(strings[i] + "\n");
-        }
-        fileWriter.close();
-    }
-    public static void writeStringArray(String strings[],String filename) throws Exception {
-        writeStringArray(strings,filename,false);
-    }
-
-
-    public static String[] readFiletoStringArray(String filename) throws Exception {
-        File f = new File(filename);
-        if(f.exists() && !f.isDirectory()) {
-            Scanner sc = new Scanner(new java.io.File(filename));
-            List<String> lines = new ArrayList<String>();
-            while (sc.hasNextLine()) {
-                lines.add(sc.nextLine());
-            }
-            String[] strings = lines.toArray(new String[0]);
-            return strings;
-        }
-        return new String[0];
-
-    }
-
-    public static String[] deduplicateStringArray(String input[]){
-        HashMap<String,String> map=new HashMap<>();
-        for (String i:input){
-            map.put(i,i);
-        }
-        String[] output=map.values().toArray(new String[map.size()]);
-        return output;
-    }
-
-    public static String[] mergeStringArray(String input1[],String input2[]){
-        HashMap<String,String> map=new HashMap<>();
-        if (!isArrayEmpty(input1)){
-            for (String i:input1){
-                map.put(i,i);
-            }
-        }
-        if (!isArrayEmpty(input2)){
-            for (String i:input2){
-                map.put(i,i);
-            }
-        }
-        String[] output=map.values().toArray(new String[map.size()]);
-        return output;
-    }
-
-    public static boolean isArrayEmpty(Object[] input){
-        if(input.length==0){
-            System.out.println("empty");
-            return true;
-        }
-        if (input==null){
-            System.out.println("null");
-            return true;
-        }
-        return false;
-    }
 }
