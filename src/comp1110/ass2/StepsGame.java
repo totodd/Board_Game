@@ -36,7 +36,6 @@ public class StepsGame implements Serializable{
     public static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
     private static ArrayList<String> finalSolutions = new ArrayList<>();
     private static ArrayList<ArrayList<String>> temp = new ArrayList<>();
-    private static List<List<Place>> sol = new ArrayList<>();
 
 
     /**
@@ -282,13 +281,17 @@ public class StepsGame implements Serializable{
         // FIXME Task 6: determine the correct order of piece placements
         List<Place> placed = turnToPlace(placement);
         List<Place> toPlace = turnToPlace(objective);
+        List<List<Place>> sol = new ArrayList<>();
 
-        findTale(placed, toPlace);
+
+        sol = findTail(placed, toPlace, sol);
         Set<Place> nextPlace = new HashSet<>();
         Set<String> res = new HashSet<>();
-        for(List<Place> s : sol) {
-            if (!nextPlace.contains(s.get(placed.size())))
-                nextPlace.add(s.get(placed.size()));
+        if(placed.size()<8){
+            for(List<Place> s : sol) {
+                if (!nextPlace.contains(s.get(placed.size())))
+                    nextPlace.add(s.get(placed.size()));
+            }
         }
         for(Place p : nextPlace){
             res.add(p.toString());
@@ -300,15 +303,21 @@ public class StepsGame implements Serializable{
     @Test
     public void isValidTale(){
         String placement = "";
-        String objective = "CEQEHuGEOBDxFGSHCiAALDBg";
+        String objective = "EEfCHSAHQFDNGBLDAiHFlBDx";
         List<Place> placed = turnToPlace(placement);
         List<Place> toPlace = turnToPlace(objective);
-        findTale(placed, toPlace);
-        System.out.println(sol);
+        List<List<Place>> sol = new ArrayList<>();
+        sol = findTail(placed, toPlace, sol);
+        Set<Place> nextPlace = new HashSet<>();
+        for(List<Place> s : sol) {
+            if (!nextPlace.contains(s.get(placed.size())))
+                nextPlace.add(s.get(placed.size()));
+        }
+        System.out.println(nextPlace);
     }
 
 
-    static void findTale(List<Place> placed, List<Place>toPlace){
+    static List<List<Place>> findTail(List<Place> placed, List<Place>toPlace, List<List<Place>> sol){
         String res = "";
         for (Place s : placed) res = res + s;
 
@@ -321,9 +330,10 @@ public class StepsGame implements Serializable{
                 temp.add(p);
                 List<Place> tempToPlace = new LinkedList<>(toPlace);
                 tempToPlace.remove(p);
-                findTale(temp, tempToPlace);
+                findTail(temp, tempToPlace, sol);
             }
         }
+        return sol;
     }
 
     /**
