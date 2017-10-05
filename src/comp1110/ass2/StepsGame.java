@@ -36,7 +36,7 @@ public class StepsGame implements Serializable{
     public static final ArrayList<String> viableSingleSolutions = new ArrayList<>();
     private static ArrayList<String> finalSolutions = new ArrayList<>();
     private static ArrayList<ArrayList<String>> temp = new ArrayList<>();
-    private static List<String> sol = new ArrayList<>();
+    private static List<List<Place>> sol = new ArrayList<>();
 
 
     /**
@@ -283,12 +283,18 @@ public class StepsGame implements Serializable{
         List<Place> placed = turnToPlace(placement);
         List<Place> toPlace = turnToPlace(objective);
 
-//        validTale(placed, toPlace);
-        Set<String> nextPlace = new HashSet<>();
-//        nextPlace.add(sol.get(1).toString());
-//        List<List<Place>> s = sol;
-//        System.out.println(s);
-        return nextPlace;
+        findTale(placed, toPlace);
+        Set<Place> nextPlace = new HashSet<>();
+        Set<String> res = new HashSet<>();
+        for(List<Place> s : sol) {
+            if (!nextPlace.contains(s.get(placed.size())))
+                nextPlace.add(s.get(placed.size()));
+        }
+        for(Place p : nextPlace){
+            res.add(p.toString());
+        }
+
+        return res;
     }
 
     @Test
@@ -306,20 +312,18 @@ public class StepsGame implements Serializable{
         String res = "";
         for (Place s : placed) res = res + s;
 
-        if(placed.size() == 0 | isPlacementSequenceValid(res)){
-            if(placed.size() == 8) {
-                sol.add(res);
-                return;
+        if(placed.size() == 0 | isPlacementSequenceValid(res)) {
+            if (placed.size() == 8) {
+                sol.add(placed);
             }
             for(Place p : toPlace){
                 List<Place> temp = new LinkedList<>(placed);
                 temp.add(p);
                 List<Place> tempToPlace = new LinkedList<>(toPlace);
-                toPlace.remove(p);
+                tempToPlace.remove(p);
                 findTale(temp, tempToPlace);
             }
         }
-
     }
 
     /**
