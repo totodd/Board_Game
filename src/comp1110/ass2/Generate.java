@@ -22,7 +22,7 @@ public class Generate {
             boolean successful = dir.mkdir();
         }
         generateBase();
-        generateSeq("",2);
+        generateSeq("H",3);
         /*
         * This will generate from the Base point to the depth
         * Example Base = "" depth 1
@@ -77,8 +77,8 @@ public class Generate {
     }
 
     static void addPiece(String base,String add) throws Exception {
-        String startbase[] = StepsGame.readFiletoStringArray(base.length()+"/"+base+".txt");
-        String startadd[] = StepsGame.readFiletoStringArray("1/"+add+".txt");
+        String startbase[] = Utility.readFiletoStringArray(base.length()+"/"+base+".txt");
+        String startadd[] = Utility.readFiletoStringArray("1/"+add+".txt");
         String placement;
         int[] pieceUsed = {0, 0, 0, 0, 0, 0, 0, 0};
         //                A,B,C,D,E,F,G,H
@@ -90,7 +90,7 @@ public class Generate {
                 if (StepsGame.isPlacementSequenceValid(placement)) {
                     count++;
                     //System.out.println(base+add+" "+count+" "+placement);
-                    StepsGame.writeString(placement,(base.length()+1)+"/"+base+add+".txt",true);
+                    Utility.writeString(placement,(base.length()+1)+"/"+base+add+".txt",true);
                 }
             }
         }
@@ -100,7 +100,7 @@ public class Generate {
     static void generateBase() throws Exception {
         ArrayList<String> single = StepsGame.viableSinglePlacement2();
         String[] start = single.toArray(new String[single.size()]);
-        StepsGame.writeStringArray(start,"1/1.txt");
+        Utility.writeStringArray(start,"1/1.txt");
         StepsGame.viableSinglePlacement2SeperateFile();
     }
 }

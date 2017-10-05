@@ -2,7 +2,7 @@ package comp1110.ass2;
 
 import org.junit.Test;
 
-import static comp1110.ass2.StepsGame.isArrayEmpty;
+import static comp1110.ass2.Utility.isArrayEmpty;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -20,7 +20,7 @@ public class ArrayTest {
         String a[]={"aa","bb"};
         String b[]={"cc","dd"};
         String c[]={"aa","bb","cc","dd"};
-        assertTrue(StepsGame.mergeStringArray(a,b).length==4);
+        assertTrue(Utility.mergeStringArray(a,b).length==4);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ArrayTest {
         String b[]={"bb","dd"};
         String c[]={"aa","bb","dd"};
         String d[]={"aa","aa","bb","bb"};
-        assertTrue(StepsGame.deduplicateStringArray(StepsGame.mergeStringArray(a,b)).length==3);
-        assertTrue(StepsGame.deduplicateStringArray(d).length==2);
+        assertTrue(Utility.deduplicateStringArray(Utility.mergeStringArray(a,b)).length==3);
+        assertTrue(Utility.deduplicateStringArray(d).length==2);
     }
 }
