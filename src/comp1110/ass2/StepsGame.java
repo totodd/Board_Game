@@ -210,8 +210,15 @@ public class StepsGame implements Serializable{
         return true;
     }
 
+    /**
+     *  finished and responsible by Tao Chen u6074544
 
-    static boolean sequenceValid(List<Place> placement, boolean[] boardStatus) {
+     * Recursion to check if the sequence is valid, try to put on board piece by piece and check the conflict
+     * @param placement placement to put on board
+     * @param boardStatus if the board is occupied or not
+     * @return true if all pieces have no conflict
+     */
+    private static boolean sequenceValid(List<Place> placement, boolean[] boardStatus) {
         if (onRightLevel(placement.get(0)) & withInBoard(placement.get(0))) {
             int[] board = placement.get(0).getBoardIdx();
             for (int i = 0; i < placement.get(0).getBoardIdx().length; i++) {
@@ -244,7 +251,11 @@ public class StepsGame implements Serializable{
         return places;
     }
 
+
+
     /**
+     *    finished and responsible by Tao Chen u6074544
+     *
      * Determine whether a placement sequence is valid.  To be valid, the placement
      * sequence must be well-formed and each piece placement must be a valid placement
      * (with the pieces ordered according to the order in which they are played).
@@ -267,6 +278,9 @@ public class StepsGame implements Serializable{
 
 
     /**
+     *   finished and responsible by Tao Chen u6074544
+
+     *
      * Given a string describing a placement of pieces and a string describing
      * an (unordered) objective, return a set of all possible next viable
      * piece placements.   A viable piece placement must be a piece that is
@@ -316,7 +330,10 @@ public class StepsGame implements Serializable{
         System.out.println(nextPlace);
     }
 
-    /** Recursion to get all solutions of Task 6, viable placements
+    /**
+     *   finished and responsible by Tao Chen u6074544
+     *
+     * Recursion to get all solutions of Task 6, viable placements
      *
      * @param placed Initial placement
      * @param toPlace the placements haven't placed on board
