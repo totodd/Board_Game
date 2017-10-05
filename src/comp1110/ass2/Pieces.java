@@ -1,3 +1,9 @@
+// This code and its idea are created and own by the following authors:
+// Tao Chen (u6074544),
+// Sheng Xu (u5538588),
+// Chen Chen (u6032167).
+// All the responsibility are preserved by the authors.
+
 package comp1110.ass2;
 
 public enum Pieces {

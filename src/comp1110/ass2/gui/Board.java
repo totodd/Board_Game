@@ -1,3 +1,9 @@
+// This code and its idea are created and own by the following authors:
+// Tao Chen (u6074544),
+// Sheng Xu (u5538588),
+// Chen Chen (u6032167).
+// All the responsibility are preserved by the authors.
+
 package comp1110.ass2.gui;
 
 import comp1110.ass2.StepsGame;
@@ -38,6 +44,7 @@ public class Board extends Application {
     private static Image piece;
     private static Circle peg;
     private static Text T_peg;
+    double oldX,oldY;
 
 
     // FIXME Task 7: Implement a basic playable Steps Game in JavaFX that only allows pieces to be placed in valid places
@@ -100,17 +107,41 @@ public class Board extends Application {
             }
         }
     }
+    void pieceEvents(ImageView pc, double homeX, double homeY){
+        pc.setOnMousePressed(event -> {
+            oldX = event.getSceneX();
+            oldY = event.getSceneY();
+            pc.setFitWidth(PIECE_IMAGE_SIZE);
+            pc.setFitHeight(PIECE_IMAGE_SIZE);
+        });
+        pc.setOnMouseDragged(event -> {
+            double X = event.getSceneX() - oldX;
+            double Y = event.getSceneY() - oldY;
+            pc.setLayoutX(pc.getLayoutX()+X);
+            pc.setLayoutY(pc.getLayoutY()+Y);
+            oldX = event.getSceneX();
+            oldY = event.getSceneY();
+            event.consume();
+        });
+        pc.setOnMouseReleased(event -> {     // drag is complete
+            //snapToGrid();
+
+        });
+    }
     void pieceInitializor(){
-        ImageView[] pc = new ImageView[16];
+        ImageView pc;
         for(int i =0;i<16;i++){
+            double homeX = PIECE_IMAGE_SIZE*0.45*(i%8);
+            double homeY = BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8);
             piece = new Image(URI_BASE+imageList[i]+".png");
-            pc[i] = new ImageView();
-            pc[i].setImage(piece);
-            pc[i].setFitWidth(PIECE_IMAGE_SIZE*0.5);
-            pc[i].setFitHeight(PIECE_IMAGE_SIZE*0.5);
-            pc[i].setX(PIECE_IMAGE_SIZE*0.45*(i%8));
-            pc[i].setY(BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
-            initializor.getChildren().add(pc[i]);
+            pc = new ImageView();
+            pc.setImage(piece);
+            pc.setFitWidth(PIECE_IMAGE_SIZE*0.5);
+            pc.setFitHeight(PIECE_IMAGE_SIZE*0.5);
+            pc.setX(homeX);
+            pc.setY(homeY);
+            initializor.getChildren().add(pc);
+            pieceEvents(pc,homeX,homeY);
         }
     }
     /**
