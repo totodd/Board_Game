@@ -1,3 +1,8 @@
+// This code and its idea are created and own by the following authors:
+// Chen Chen (u6032167).
+// All the responsibility are preserved by the authors.
+
+
 package comp1110.ass2;
 
 import java.io.File;
