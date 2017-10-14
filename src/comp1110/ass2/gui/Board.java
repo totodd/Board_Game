@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -32,9 +33,9 @@ public class Board extends Application {
     public static final int PIECE_IMAGE_SIZE = (int) ((3*SQUARE_SIZE)*1.33);
     private static final int MARGIN_X = BOARD_WIDTH/20;
     private static final int MARGIN_Y = BOARD_HEIGHT/20;
-    public static final String[] imageList = {"AA","AE","BA","BE","CA","CE","DA","DE","EA","EE","FA","FE","GA","GE","HA","HE"};
+    public static String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
     public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
-
+    public static String img = "";
     private final Group root = new Group();
     private Group button = new Group();
     private final Group controls = new Group();
@@ -107,12 +108,38 @@ public class Board extends Application {
             }
         }
     }
-    void pieceEvents(ImageView pc, double homeX, double homeY){
+    void pieceEvents(ImageView pc, double homeX, double homeY,String img){
+        pc.setOnScroll(event -> {            // scroll to change orientation
+            pc.setRotate((pc.getRotate()+90)%360);;
+            event.consume();
+        });
         pc.setOnMousePressed(event -> {
-            oldX = event.getSceneX();
-            oldY = event.getSceneY();
-            pc.setFitWidth(PIECE_IMAGE_SIZE);
-            pc.setFitHeight(PIECE_IMAGE_SIZE);
+            if(event.getButton()== MouseButton.PRIMARY) {
+                if (pc.getFitWidth() != PIECE_IMAGE_SIZE) {
+                    pc.setFitWidth(PIECE_IMAGE_SIZE);
+                    pc.setFitHeight(PIECE_IMAGE_SIZE);
+                    pc.setLayoutX(pc.getLayoutX() - PIECE_IMAGE_SIZE / 4);
+                    pc.setLayoutY(pc.getLayoutY() - PIECE_IMAGE_SIZE / 4);
+                } else {
+                    pc.setLayoutX(pc.getLayoutX());
+                    pc.setLayoutY(pc.getLayoutY());
+                }
+                oldX = event.getSceneX();
+                oldY = event.getSceneY();
+            }
+            else if(event.getButton()== MouseButton.SECONDARY){ //change image (flip) when right click
+                System.out.println(img);
+                String piec = String.valueOf(img.charAt(0));
+                if(img.charAt(1) == 'A'){
+                    img.replace(img.charAt(1), 'E');
+                }
+                if(img.charAt(1) == 'E'){
+                    img.replace(img.charAt(1), 'A');
+                }
+                System.out.println(img);
+                piece = new Image(URI_BASE+img+".png");
+                pc.setImage(piece);
+            }
         });
         pc.setOnMouseDragged(event -> {
             double X = event.getSceneX() - oldX;
@@ -123,25 +150,30 @@ public class Board extends Application {
             oldY = event.getSceneY();
             event.consume();
         });
-        pc.setOnMouseReleased(event -> {     // drag is complete
-            //snapToGrid();
+
+        pc.setOnMouseReleased(event -> {     // snap to nearest peg or home position
+            snapToPeg(pc);
 
         });
     }
+    private void snapToPeg(ImageView pc){
+
+    }
     void pieceInitializor(){
         ImageView pc;
-        for(int i =0;i<16;i++){
+        for(int i =0;i<imageList.length;i++){
             double homeX = PIECE_IMAGE_SIZE*0.45*(i%8);
             double homeY = BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8);
-            piece = new Image(URI_BASE+imageList[i]+".png");
+            img = imageList[i];
+            piece = new Image(URI_BASE+img+".png");
             pc = new ImageView();
             pc.setImage(piece);
-            pc.setFitWidth(PIECE_IMAGE_SIZE*0.5);
-            pc.setFitHeight(PIECE_IMAGE_SIZE*0.5);
+            pc.setFitWidth(PIECE_IMAGE_SIZE/2);
+            pc.setFitHeight(PIECE_IMAGE_SIZE/2);
             pc.setX(homeX);
             pc.setY(homeY);
+            pieceEvents(pc,homeX,homeY,img);
             initializor.getChildren().add(pc);
-            pieceEvents(pc,homeX,homeY);
         }
     }
     /**
