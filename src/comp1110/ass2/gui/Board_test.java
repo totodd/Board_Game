@@ -68,6 +68,8 @@ public class Board_test extends Application{
 
         public DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
+            if (name.charAt(1) =='E')
+                check = 1;
             this.posX = posX;
             this.posY = posY;
             this.setX(this.posX);
