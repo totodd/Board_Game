@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -76,6 +77,10 @@ public class Board_test extends Application{
                 event.consume();
             });
             this.setOnMousePressed(event -> {
+                if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
+                    System.out.println(this.toString());
+                    this.setImage(new Image(URI_BASE+"AA.png"));
+                }
                 this.mouseX = event.getSceneX();
                 this.mouseY = event.getSceneY();
                 this.setLayoutX(this.posX-mouseX);
