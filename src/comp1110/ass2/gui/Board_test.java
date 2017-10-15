@@ -78,8 +78,12 @@ public class Board_test extends Application{
             });
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
-                    System.out.println(this.toString());
-                    this.setImage(new Image(URI_BASE+"AA.png"));
+                    //String current_img = getImageName()   //get name of the current image
+                    //if(current_img.charAt(1) == 'A')
+                    //  String flipped_img = current_img.replace(current_img.charAt(1), 'E');
+                    //else if(current_img.charAt(1) == 'E')
+                    //  String flipped_img = current_img.replace(current_img.charAt(1), 'A');
+                    //this.setImage(new Image(URI_BASE+flipped_img+".png"));
                 }
                 this.mouseX = event.getSceneX();
                 this.mouseY = event.getSceneY();
