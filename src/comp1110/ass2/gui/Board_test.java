@@ -71,6 +71,10 @@ public class Board_test extends Application{
 
             this.setX(this.posX);
             this.setY(this.posY);
+            this.setOnScroll(event -> {            // scroll to change orientation
+                this.setRotate((this.getRotate()+90)%360);;
+                event.consume();
+            });
             this.setOnMousePressed(event -> {
                 this.mouseX = event.getSceneX();
                 this.mouseY = event.getSceneY();
