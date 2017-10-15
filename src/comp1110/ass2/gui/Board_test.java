@@ -23,7 +23,7 @@ public class Board_test extends Application{
     public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
-
+    String flipped_img;
     private Group setBoard(){
         int distance = 60;
         double margin_x = BOARD_WIDTH/20;
@@ -51,7 +51,7 @@ public class Board_test extends Application{
         Group pieces = new Group();
         for(int i = 0; i < imageList.length; i++){
             Image im = new Image(URI_BASE + imageList[i] + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8));
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),imageList[i]);
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
             pieces.getChildren().add(pc);
@@ -64,12 +64,12 @@ public class Board_test extends Application{
         private double mouseY;
         private double posX;
         private double posY;
+        private int check = 0;
 
-        public DraggbleImageView(Image image, double posX, double posY) {
+        public DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
             this.posX = posX;
             this.posY = posY;
-
             this.setX(this.posX);
             this.setY(this.posY);
             this.setOnScroll(event -> {            // scroll to change orientation
@@ -78,12 +78,7 @@ public class Board_test extends Application{
             });
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
-                    //String current_img = getImageName()   //get name of the current image
-                    //if(current_img.charAt(1) == 'A')
-                    //  String flipped_img = current_img.replace(current_img.charAt(1), 'E');
-                    //else if(current_img.charAt(1) == 'E')
-                    //  String flipped_img = current_img.replace(current_img.charAt(1), 'A');
-                    //this.setImage(new Image(URI_BASE+flipped_img+".png"));
+                    Flip(name.charAt(0));
                 }
                 this.mouseX = event.getSceneX();
                 this.mouseY = event.getSceneY();
@@ -116,6 +111,13 @@ public class Board_test extends Application{
                 }
             });
 
+        }
+        void Flip(char pcs){
+            if(check % 2 == 0)
+                this.setImage(new Image(URI_BASE + pcs + "E.png"));
+            else if(check % 2 == 1)
+                this.setImage(new Image(URI_BASE + pcs + "A.png"));
+            check ++;
         }
     }
 
