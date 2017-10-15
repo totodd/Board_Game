@@ -186,7 +186,7 @@ public class Board extends Application {
             @Override
             public void handle(ActionEvent e) {
                 shapes.getChildren().clear();
-                makePlacement("");
+//                makePlacement("");
             }
         });
         reset.setLayoutX(BOARD_WIDTH * 0.85);
