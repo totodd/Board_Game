@@ -125,11 +125,12 @@ public class Board_test extends Application{
                     this.setLayoutY(getLayoutY() + event.getSceneY() - mouseY);
                     mouseX = event.getSceneX();
                     mouseY = event.getSceneY();
-
                     nearPeg = findNearestPeg(this, pegList);
-                    Circle x = (Circle) nearPeg.getChildren().get(0);
+                    Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
+                    Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
-                        highlightNearestPeg(x);
+//                        highlightNearestPeg(nearCircle);
+                        System.out.println(nearText.getText());
                     }
                 }
             });
