@@ -106,9 +106,9 @@ public class Board_test extends Application{
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
                     Flip(this.name.charAt(0),this.posX, this.posY);
                 }else {
+                    this.mouseX = event.getSceneX();
+                    this.mouseY = event.getSceneY();
                     if(!pieceBigFlag) {
-                        this.mouseX = event.getSceneX();
-                        this.mouseY = event.getSceneY();
                         this.posX = this.getLayoutX();
                         this.posY = this.getLayoutY();
                         this.setLayoutX(2 * this.posX - mouseX);
@@ -180,7 +180,7 @@ public class Board_test extends Application{
     }
 
 
-    StackPane findNearestPeg(DraggbleImageView piece, List<StackPane> pegs) {
+    private StackPane findNearestPeg(DraggbleImageView piece, List<StackPane> pegs) {
         double minDis = 10000;
         StackPane res = pegs.get(0);
         for (StackPane tryPeg : pegs) {
@@ -194,7 +194,7 @@ public class Board_test extends Application{
         return res;
     }
 
-    void highlightNearestPeg(Circle nearPeg){
+    private void highlightNearestPeg(Circle nearPeg){
         if(highlighted!=null){
             highlighted.setFill(Color.LIGHTGRAY);
         }
