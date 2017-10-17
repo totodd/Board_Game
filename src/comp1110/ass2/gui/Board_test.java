@@ -15,7 +15,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board_test extends Application{
+    private double FIND_RANGE = 60;
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
@@ -23,7 +27,12 @@ public class Board_test extends Application{
     public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
-    String flipped_img;
+    private static ArrayList<StackPane> pegList = new ArrayList<>();
+    private boolean findNearFlag = false;
+    private boolean pieceBigFlag = false;
+    private Circle highlighted = null;
+
+
     private Group setBoard(){
         int distance = 60;
         double margin_x = BOARD_WIDTH/20;
@@ -34,15 +43,16 @@ public class Board_test extends Application{
             Color color = Color.LIGHTGRAY;
             if((i/10)%2==0) { //row 0 2 4
                 if(i%2 != 0)
-                    color = Color.TRANSPARENT;
+                    color = Color.GRAY;
             }else{
                 if(i%2 == 0) // row 1 3
-                    color = Color.TRANSPARENT;
+                    color = Color.GRAY;
             }
             pegs.getChildren().addAll(new Circle(PEG_SIZE,color), new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)) ));
             pegs.setLayoutX(margin_x + i%10*distance);
             pegs.setLayoutY(margin_y + i/10*distance);
             board.getChildren().add(pegs);
+            pegList.add(pegs);
         }
         return board;
     }
@@ -59,70 +69,139 @@ public class Board_test extends Application{
         return pieces;
     }
 
+
+
     class DraggbleImageView extends ImageView{
         private double mouseX;
         private double mouseY;
         private double posX;
+        private double orig_posX;
+        private double orig_posY;
         private double posY;
         private int check = 0;
+        private double dragX;
+        private double dragY;
+        private String name;
 
-        public DraggbleImageView(Image image, double posX, double posY, String name) {
+        private StackPane nearPeg;
+
+        DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
             if (name.charAt(1) =='E')
                 check = 1;
+            this.name = name;
+            this.orig_posX = posX;
+            this.orig_posY = posY;
             this.posX = posX;
             this.posY = posY;
-            this.setX(this.posX);
-            this.setY(this.posY);
+            this.setLayoutX(this.orig_posX);
+            this.setLayoutY(this.orig_posY);
+
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);;
                 event.consume();
             });
+
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
-                    Flip(name.charAt(0));
+                    Flip(this.name.charAt(0),this.posX, this.posY);
+                }else {
+                    if(!pieceBigFlag) {
+                        this.mouseX = event.getSceneX();
+                        this.mouseY = event.getSceneY();
+                        this.posX = this.getLayoutX();
+                        this.posY = this.getLayoutY();
+                        this.setLayoutX(2 * this.posX - mouseX);
+                        this.setLayoutY(2 * this.posY - mouseY);
+                        this.setFitHeight(PIECE_IMAGE_SIZE);
+                        this.setFitWidth(PIECE_IMAGE_SIZE);
+                    }
                 }
-                this.mouseX = event.getSceneX();
-                this.mouseY = event.getSceneY();
-                this.setLayoutX(this.posX-mouseX);
-                this.setLayoutY(this.posY-mouseY);
-                this.setFitHeight(PIECE_IMAGE_SIZE);
-                this.setFitWidth(PIECE_IMAGE_SIZE);
             });
 
             this.setOnMouseDragged(event -> {
-                double diffX = event.getSceneX() - mouseX;
-                double diffY = event.getSceneY() - mouseY;
-                this.setLayoutX(diffX + this.posX - mouseX);
-                this.setLayoutY(diffY + this.posY - mouseY);
+                if(event.getButton()!= MouseButton.SECONDARY) { // drag only for left click
+                    this.setLayoutX(getLayoutX() + event.getSceneX() - mouseX);
+                    this.setLayoutY(getLayoutY() + event.getSceneY() - mouseY);
+                    mouseX = event.getSceneX();
+                    mouseY = event.getSceneY();
+
+                    nearPeg = findNearestPeg(this, pegList);
+                    Circle x = (Circle) nearPeg.getChildren().get(0);
+                    if (findNearFlag) {
+                        highlightNearestPeg(x);
+                    }
+                }
             });
 
             this.setOnMouseReleased((MouseEvent event) -> {
                 boolean pegFlag = false;
-
-
-
-                if(pegFlag){
+                if(event.getButton()!= MouseButton.SECONDARY) { // only for left click
+                    if(pegFlag){
 //                    Node nearPeg = NearestPeg();
-                    //put on nearPeg
-                }else {
-                    this.setLayoutX(0);
-                    this.setLayoutY(0);
-                    this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
-                    this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
+                        //put on nearPeg
+                    }else {
+                        if(findNearFlag){
+                            this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                            this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                            this.setLayoutX(this.posX);
+                            this.setLayoutY(this.posY);
+                            pieceBigFlag = true;
+                        }else {
+                            this.setLayoutX(this.orig_posX);
+                            this.setLayoutY(this.orig_posY);
+                            this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
+                            this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
+                            pieceBigFlag = false;
+                        }
+                    }
                 }
             });
 
+
         }
-        void Flip(char pcs){
+        void Flip(char pcs, double x, double y){
             if(check % 2 == 0)
                 this.setImage(new Image(URI_BASE + pcs + "E.png"));
             else if(check % 2 == 1)
                 this.setImage(new Image(URI_BASE + pcs + "A.png"));
             check ++;
+            this.setLayoutX(x);
+            this.setLayoutY(y);
+        }
+
+        private double distance(double x, double y){
+            double centerX = getLayoutX()+PIECE_IMAGE_SIZE/2;
+            double centerY = getLayoutY()+PIECE_IMAGE_SIZE/2;
+            double deltaX = (x+PEG_SIZE/2) - centerX;
+            double deltaY = (y+PEG_SIZE/2) - centerY;
+            return Math.sqrt(deltaX*deltaX + deltaY*deltaY);
         }
     }
 
+
+    StackPane findNearestPeg(DraggbleImageView piece, List<StackPane> pegs) {
+        double minDis = 10000;
+        StackPane res = pegs.get(0);
+        for (StackPane tryPeg : pegs) {
+            double temp = piece.distance(tryPeg.getLayoutX(), tryPeg.getLayoutY());
+            if (temp < minDis) {
+                res = tryPeg;
+                minDis = temp;
+            }
+        }
+        findNearFlag = minDis<FIND_RANGE;
+        return res;
+    }
+
+    void highlightNearestPeg(Circle nearPeg){
+        if(highlighted!=null){
+            highlighted.setFill(Color.LIGHTGRAY);
+        }
+        highlighted = nearPeg;
+        highlighted.setFill(Color.GREEN);
+
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
@@ -130,8 +209,7 @@ public class Board_test extends Application{
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         Group board = setBoard();
-        for(Node st : board.getChildren()){
-        }
+
         Group pieces = setPieces();
 //        String url = URI_BASE + imageList[0] + ".png";
 
