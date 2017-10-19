@@ -127,6 +127,7 @@ public class Board_test extends Application{
                     mouseX = event.getSceneX();
                     mouseY = event.getSceneY();
                     nearPeg = findNearestPeg(this, pegList);
+                    this.toFront();
                     Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
