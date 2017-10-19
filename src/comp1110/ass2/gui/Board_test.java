@@ -29,7 +29,7 @@ public class Board_test extends Application{
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
     private static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
-    private String startString;
+    private String startString = "";
     private static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
@@ -66,12 +66,16 @@ public class Board_test extends Application{
 
     private Group setPieces(){
         Group pieces = new Group();
-        String[] startArray = startString.split("(?<=\\G.{3})");
-        Collections.addAll(pieceOnBoard, startArray);
+        String[] startArray = null;
         ArrayList<Character> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
-        for(String s : startArray){
-            usedPiece.add(s.charAt(0));
+        if(startString!="") {
+            startArray = startString.split("(?<=\\G.{3})");
+            Collections.addAll(pieceOnBoard, startArray);
+
+            for (String s : startArray) {
+                usedPiece.add(s.charAt(0));
+            }
         }
         for(String s : imageList){
             if(!usedPiece.contains(s.charAt(0)))
@@ -147,9 +151,7 @@ public class Board_test extends Application{
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
                     placeFlag = false;
-                    this.posX = this.getLayoutX();
-                    this.posY = this.getLayoutY();
-                    Flip(this.name,this.posX, this.posY);
+                    Flip(this.name,this.getLayoutX(), this.getLayoutY());
                     this.flipState = !this.flipState;
                 }else { //left click
                     this.mouseX = event.getSceneX();
@@ -310,7 +312,7 @@ public class Board_test extends Application{
 //        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
-        String start = "CGOGGQEDI";
+        String start = "";
         startString = start;
 
         Group board = setBoard();
