@@ -78,6 +78,31 @@ public class Board_test extends Application{
         }
         return board;
     }
+    private void addFixed(String placement,Group pieces){
+        Image im = new Image(URI_BASE + placement.charAt(0)+"A" + ".png");
+        DraggbleImageView pc = new DraggbleImageView(im, 10,10,placement,placement.charAt(1));
+        pc.setFitWidth(PIECE_IMAGE_SIZE);
+        pc.setFitHeight(PIECE_IMAGE_SIZE);
+        int x;
+        x=placement.charAt(2);
+        if(x>90){
+            x=x-65-7;
+        }else{
+            x=x-65;
+        }
+
+        pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+        pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+
+
+        pc.setRotate(((int)placement.charAt(1)-65)%4*90);
+
+        if((int)placement.charAt(1)>=69){
+//                System.out.println(i);
+            pc.setImage(new Image(URI_BASE + placement.charAt(0) + "E.png"));
+        }
+        pieces.getChildren().add(pc);
+    }
 
     private Group setPieces(){
         Group pieces = new Group();
@@ -94,29 +119,7 @@ public class Board_test extends Application{
         }
 
         for(int i = 0; i < usedPiece.size(); i++){
-            Image im = new Image(URI_BASE + usedPiece.get(i).charAt(0)+"A" + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),usedPiece.get(i),usedPiece.get(i).charAt(1));
-            pc.setFitWidth(PIECE_IMAGE_SIZE);
-            pc.setFitHeight(PIECE_IMAGE_SIZE);
-            int x;
-            x=usedPiece.get(i).charAt(2);
-            if(x>90){
-                x=x-65-7;
-            }else{
-                x=x-65;
-            }
-
-            pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
-            pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
-
-
-            pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
-
-            if((int)usedPiece.get(i).charAt(1)>=69){
-//                System.out.println(i);
-                pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
-            }
-            pieces.getChildren().add(pc);
+            addFixed(usedPiece.get(i),pieces);
         }
 
         for(String s : imageList){
