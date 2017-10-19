@@ -6,22 +6,14 @@
 
 package comp1110.ass2;
 
-import com.sun.deploy.util.ArrayUtil;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
-/**
- * all placement are saved in object Place
- */
-
+    /**
+     * This class is used to manipulate the enum class
+     */
 public class Place {
     private Pieces piece;
     private char position;
     private char rot;
-
     private int[] value;
-
 
     Place(Pieces p, char rot, char position){
         this.piece = p;
@@ -69,6 +61,13 @@ public class Place {
         return piece.name()+String.valueOf(rot)+String.valueOf(position);
     }
 
+    /**
+     * Author: Chen Chen
+     * rotate the original piece positions according to the rotation
+     * @param p Pieces
+     * @param rot a char from 'A','B','C','D','E','F','G','H'
+     * @return int array representing the nine space a piece after rotation
+     */
     private int[] rotate(Pieces p, char rot){
         int rotate = (int)rot-65;
         int[] mask  = p.getMask();
@@ -104,6 +103,13 @@ public class Place {
         return outputArray;
     }
 
+    /**
+     * Author: Chen Chen
+     * flip the original piece positions
+     * @param originalArray original int array of 9 positions
+     * @param rotateTimes how many time to rotate 90 degrees
+     * @return int array representing the nine space a piece after rotation
+     */
     private static int[] rotateArray(int[] originalArray, int rotateTimes){
         int[] outputArray = originalArray;
         for (int i=1;i<=rotateTimes;i++){
@@ -111,7 +117,13 @@ public class Place {
         }
         return outputArray;
     }
-
+    /**
+     * Author: Chen Chen
+     * flip the original piece positions
+     * @param originalArray original int array of 9 positions
+     * @param flip true to do the flip
+     * @return int array representing the nine space a piece after flip
+     */
     private static int[] flipArray(int[] originalArray, boolean flip){
         if(flip){
             int[] outputArray = new int[9];
