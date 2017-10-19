@@ -433,6 +433,10 @@ public class Board_test extends Application{
 
         return button;
     }
+
+    double reduceOpa(double opa, double reduceAmount){
+        return opa-reduceAmount;
+    }
     /* the difficulty slider */
     private final Slider difficulty = new Slider();
     @Override
@@ -440,16 +444,11 @@ public class Board_test extends Application{
         primaryStage.setTitle("StepsGame Viewer");
 //        StackPane t = new StackPane();
 
-
-
-
-
-
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         setStart();
         Group board = setBoard();
-
+        Group hint = new Group();
         Group pieces = setPieces();
         Group button = setButtons();
 
@@ -458,15 +457,25 @@ public class Board_test extends Application{
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                System.out.println("start calculating");
                 Set<String> hintPlaces = getHint();
+                for(String s:hintPlaces) addFixed(s, hint);
+                double red = 0.05;
+                Double count = (1-0.3)/red;
 
+                root.getChildren().add(hint);
 
-                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000),
+                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
                         ae -> {
-                            root.getChildren().addAll(hintPlaces);
-                            root.getChildren().removeAll(hintPlaces);
+
+                        hint.setOpacity(reduceOpa(hint.getOpacity(),red));
+                        if(hint.getOpacity()<0.4) {
+                            root.getChildren().remove(hint);
+                            hint.setOpacity(1.0);
+                        }
                         }));
-                timeline.setCycleCount(1);
+
+                timeline.setCycleCount(count.intValue());
                 timeline.play();
 
             }
