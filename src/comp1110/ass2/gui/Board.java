@@ -169,7 +169,7 @@ public class Board extends Application{
 
 
     /**
-     * Author: Tao Chen, Chen Chen, Xu Shen
+     * Author: Tao Chen, Chen Chen, Sheng Xu
      *
      * Make the pieces draggable and full function for the use of mouse
      */
@@ -371,11 +371,11 @@ public class Board extends Application{
         }
 
         /**
-         * Author: Xu Shen
-         *
-         * @param pcs
-         * @param x
-         * @param y
+         * Author: Sheng Xu
+         * Flip the piece image according to the click times
+         * @param pcs   First character of the current piece
+         * @param x     X layout of the piece
+         * @param y     Y layout of the piece
          */
         void Flip(char pcs, double x, double y){
             if(check % 2 == 0)
@@ -439,7 +439,7 @@ public class Board extends Application{
     }
 
     /**
-     * Author: Xu Shen
+     * Author: Sheng Xu
      * Get the viable hint by given placed pieces
      * @return set of viable pieces
      */

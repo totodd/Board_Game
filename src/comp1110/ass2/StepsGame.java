@@ -365,6 +365,7 @@ public class StepsGame implements Serializable{
     }
 
     /**
+     * Author: Sheng Xu
      * Given a string of placement, the function will return all the unavailable
      * positions on board based on the shape of each single used piece
      * @param placement
@@ -387,9 +388,9 @@ public class StepsGame implements Serializable{
     }
 
     /**
+     * Author: Sheng Xu
      * Before the start of the game, the function will find out all viable piece-placements
      */
-
     public static void viableSinglePlacement() {
         String pcs = PIECES;
         String viablePositions = BOARD_STRING;
@@ -439,6 +440,7 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Sheng Xu
      * Given an uncompleted placement (length less than 24), the function will
      * find out all next viable piece-placements and add them to the end of the
      * previous placement
@@ -479,10 +481,11 @@ public class StepsGame implements Serializable{
     }
 
     /**
-    After a set of new placements were figured out, solutions for each new placement will be generated, and
-    set as the new placement results; Apart from that, solutions with same piece-placements but different orders
-    would be recorded once only (unique solutions)
-     **/
+     * Author: Sheng Xu
+     * After a set of new placements were figured out, solutions for each new placement will be generated, and
+     * set as the new placement results; Apart from that, solutions with same piece-placements but different orders
+     * would be recorded once only (unique solutions)
+     */
     static void findSolutions() {
         ArrayList<String> tempSols = new ArrayList<>();
         ArrayList<String> norm = new ArrayList<>();
@@ -510,6 +513,12 @@ public class StepsGame implements Serializable{
         }
     }
 
+    /**
+     * Credict to Steve
+     * Sort the pieces in the placement based on the alphabetically
+     * @param placement string of a valid placement
+     * @return Unique placement (without order)
+     */
     static String normalize(String placement) {
         String[] pp = new String[8];
         boolean flip = false;
@@ -528,6 +537,7 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Sheng Xu
      * Return an array of all unique (unordered) solutions to the game, given a
      * starting placement.   A given unique solution may have more than one than
      * one placement sequence, however, only a single (unordered) solution should
