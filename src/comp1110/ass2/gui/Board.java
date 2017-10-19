@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
+
+// music source http://www.orangefreesounds.com/short-electronic-backgroud-music/
 
 public class Board extends Application{
     private double FIND_RANGE = 60;
