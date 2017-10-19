@@ -68,14 +68,48 @@ public class Board_test extends Application{
         Group pieces = new Group();
         String[] startArray = startString.split("(?<=\\G.{3})");
         Collections.addAll(pieceOnBoard, startArray);
-        ArrayList<Character> usedPiece = new ArrayList<>();
+        ArrayList<String> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
         for(String s : startArray){
-            usedPiece.add(s.charAt(0));
+            usedPiece.add(s);
         }
+
+        for(int i = 0; i < usedPiece.size(); i++){
+            Image im = new Image(URI_BASE + usedPiece.get(i).charAt(0)+"A" + ".png");
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),usedPiece.get(i),usedPiece.get(i).charAt(1));
+            pc.setFitWidth(PIECE_IMAGE_SIZE);
+            pc.setFitHeight(PIECE_IMAGE_SIZE);
+            int x;
+            x=usedPiece.get(i).charAt(2);
+            if(x>90){
+                x=x-65-7;
+            }else{
+                x=x-65;
+            }
+
+            pegList.get(x).getLayoutX();
+            pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+            pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+
+
+            pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
+
+            if((int)usedPiece.get(i).charAt(1)>68){
+                pc.Flip(usedPiece.get(i).charAt(0),pc.getLayoutX(),pc.getLayoutY());
+            }
+            pieces.getChildren().add(pc);
+        }
+
         for(String s : imageList){
-            if(!usedPiece.contains(s.charAt(0)))
+            boolean isUsed=false;
+            for(int i=0;i<usedPiece.size();i++){
+                if((int)s.charAt(0)==(int)usedPiece.get(i).charAt(0)){
+                    isUsed=true;
+                }
+            }
+            if(!isUsed){
                 viablePiece.add(s);
+            }
         }
 
         for(int i = 0; i < viablePiece.size(); i++){
@@ -108,6 +142,22 @@ public class Board_test extends Application{
         private char nearPegText;
 
         private StackPane nearPeg;
+        DraggbleImageView(Image image, double posX, double posY, String name,char rotate){
+            super(image);
+            if (name.charAt(1) =='E')
+                check = 1;
+            this.name = name.charAt(0);
+            this.orig_posX = posX;
+            this.orig_posY = posY;
+            this.posX = posX;
+            this.posY = posY;
+            this.setLayoutX(this.orig_posX);
+            this.setLayoutY(this.orig_posY);
+            this.rot = rotate;
+            this.flipState = false;
+            this.rotAdd = 0;
+            this.placeFlag = false;
+        }
 
         DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
