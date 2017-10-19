@@ -532,7 +532,7 @@ public class StepsGame implements Serializable{
      * @return An array of strings, each describing a unique unordered solution to
      * the game given the starting point provided by placement.
      */
-    static String[] getSolutions(String placement) throws Exception {
+    public static String[] getSolutions(String placement) throws Exception {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
         int pl = placement.length()/3;
         viableSinglePlacement();
