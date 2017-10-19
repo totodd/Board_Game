@@ -462,24 +462,24 @@ public class Board_test extends Application{
         difficulty.setSnapToTicks(true);
 
         difficulty.setLayoutX(BOARD_WIDTH/2 - 80);
-        difficulty.setLayoutY(BOARD_HEIGHT - 40);
+        difficulty.setLayoutY(BOARD_HEIGHT - 80);
         button.getChildren().add(difficulty);
 
         final Label difficultyCaption = new Label("Difficulty:");
         difficultyCaption.setTextFill(Color.GREY);
         difficultyCaption.setLayoutX(BOARD_WIDTH/2 - 150);
-        difficultyCaption.setLayoutY(BOARD_HEIGHT - 40);
+        difficultyCaption.setLayoutY(BOARD_HEIGHT - 80);
         button.getChildren().add(difficultyCaption);
 
         final Label difficultyEasy = new Label("Easy");
         difficultyEasy.setTextFill(Color.GREY);
         difficultyEasy.setLayoutX(BOARD_WIDTH/2 - 80);
-        difficultyEasy.setLayoutY(BOARD_HEIGHT - 20);
+        difficultyEasy.setLayoutY(BOARD_HEIGHT - 60);
         button.getChildren().add(difficultyEasy);
         final Label difficultyHard = new Label("Hard");
         difficultyHard.setTextFill(Color.GREY);
         difficultyHard.setLayoutX(BOARD_WIDTH/2+40);
-        difficultyHard.setLayoutY(BOARD_HEIGHT - 20);
+        difficultyHard.setLayoutY(BOARD_HEIGHT - 60);
         button.getChildren().add(difficultyHard);
         return button;
     }
