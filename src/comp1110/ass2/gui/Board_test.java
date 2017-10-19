@@ -124,6 +124,8 @@ public class Board_test extends Application{
 
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
+                    this.posX = this.getLayoutX();
+                    this.posY = this.getLayoutY();
                     Flip(this.name,this.posX, this.posY);
                     this.flipState = !this.flipState;
 
