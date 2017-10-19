@@ -8,6 +8,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -39,6 +41,9 @@ public class Board_test extends Application{
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
 
     private void setStart(){
+
+        difficulty.getValue();
+
         int n;
         Random rnd =new Random();
         n=rnd.nextInt(startDictionary.length);
@@ -381,13 +386,39 @@ public class Board_test extends Application{
         hint.setLayoutY(BOARD_HEIGHT*0.3);
         button.getChildren().addAll(hint,newGame,retry);
 
+        difficulty.setMin(0);
+        difficulty.setMax(10);
+        //difficulty.setValue(0);
+        difficulty.setShowTickLabels(true);
+        difficulty.setShowTickMarks(true);
+        difficulty.setMajorTickUnit(5);
+        difficulty.setMinorTickCount(1);
+        difficulty.setSnapToTicks(true);
+
+        difficulty.setLayoutX(BOARD_WIDTH/2 - 80);
+        difficulty.setLayoutY(BOARD_HEIGHT - 40);
+        button.getChildren().add(difficulty);
+
+        final Label difficultyCaption = new Label("Difficulty:");
+        difficultyCaption.setTextFill(Color.GREY);
+        difficultyCaption.setLayoutX(BOARD_WIDTH/2 - 150);
+        difficultyCaption.setLayoutY(BOARD_HEIGHT - 40);
+        button.getChildren().add(difficultyCaption);
+
         return button;
     }
-
+    /* the difficulty slider */
+    private final Slider difficulty = new Slider();
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
 //        StackPane t = new StackPane();
+
+
+
+
+
+
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         setStart();
