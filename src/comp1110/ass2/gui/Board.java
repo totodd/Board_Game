@@ -39,6 +39,7 @@ public class Board extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
+    private int hintCount;
     //    private boolean requireCal = false;
 //    private Set<String> lastHint = null;
     private Circle highlighted = null;
@@ -487,6 +488,20 @@ public class Board extends Application{
         return congra;
     }
 
+    private Group instruction(){
+        Group inst = new Group();
+        String inst_text = "left mouse click --> pick up piece\n" +
+                "right mouse click --> flip the piece\n" +
+                "mouse scroll --> rotate the piece\n" +
+                "left mouse release --> drop the piece\n";
+        Text congText = new Text( BOARD_WIDTH - 240,BOARD_HEIGHT -120,inst_text);
+        congText.setFill(Color.GRAY);
+        congText.setFont(Font.font ("Serif", 12));
+        inst.getChildren().add(congText);
+
+        return inst;
+    }
+
     private Group setButtons(){
         Group button = new Group();
         Button newGame = new Button("NewGame");
@@ -497,6 +512,7 @@ public class Board extends Application{
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
 //                lastHint = null;
+                hintCount = 5;
             }
         });
         newGame.setLayoutX(BOARD_WIDTH * 0.85);
@@ -508,6 +524,7 @@ public class Board extends Application{
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+                hintCount = 5;
 //                lastHint = null;
             }
         });
@@ -522,7 +539,8 @@ public class Board extends Application{
                 System.out.println("start calculating hint");
                 Group hint = new Group();
                 Set<String> hintPlaces = getHint();
-                if(hintPlaces != null) {
+                if(hintPlaces != null & hintCount != 0) {
+                    hintCount -= 1;
                     for (String s : hintPlaces) addFixed(s, hint);
                     double red = 0.05;
                     Double count = (1 - 0.3) / red;
@@ -547,7 +565,10 @@ public class Board extends Application{
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
         hint.setLayoutY(BOARD_HEIGHT*0.3);
-        button.getChildren().addAll(hint,newGame,retry);
+        Text count = new Text(BOARD_WIDTH * 0.9, BOARD_HEIGHT*0.3, "Chances: "+String.valueOf(hintCount));
+        count.setFill(Color.BLACK);
+        count.setFont(Font.font ("Serif", 12));
+        button.getChildren().addAll(hint,newGame,retry,count);
 
         difficulty.setMin(1);
         difficulty.setMax(3);
@@ -596,8 +617,9 @@ public class Board extends Application{
         setStart();
         Group board = setBoard();
         Group pieces = setPieces();
+        Group inst = instruction();
 
-        root.getChildren().addAll(board,pieces,button);
+        root.getChildren().addAll(board,pieces,button, inst);
 
         primaryStage.setScene(scene);
         primaryStage.show();
