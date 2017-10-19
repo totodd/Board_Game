@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Board_test extends Application{
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
     private Circle highlighted = null;
-//    private LinkedList<String> pieceOnBoard =
+    private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private Group root = new Group();
 
 
@@ -46,13 +47,13 @@ public class Board_test extends Application{
         Group board = new Group();
         for (int i = 0; i < StepsGame.BOARD_STRING.length();i++){
             StackPane pegs = new StackPane();
-            Color color = Color.LIGHTGRAY;
+            Color color = Color.GRAY;
             if((i/10)%2==0) { //row 0 2 4
                 if(i%2 != 0)
-                    color = Color.GRAY;
+                    color = Color.LIGHTGRAY;
             }else{
                 if(i%2 == 0) // row 1 3
-                    color = Color.GRAY;
+                    color = Color.LIGHTGRAY;
             }
             pegs.getChildren().addAll(new Circle(PEG_SIZE,color), new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)) ));
             pegs.setLayoutX(margin_x + i%10*distance);
@@ -66,6 +67,7 @@ public class Board_test extends Application{
     private Group setPieces(){
         Group pieces = new Group();
         String[] startArray = startString.split("(?<=\\G.{3})");
+        Collections.addAll(pieceOnBoard, startArray);
         ArrayList<Character> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
         for(String s : startArray){
@@ -164,13 +166,13 @@ public class Board_test extends Application{
                     mouseY = event.getSceneY();
                     nearPeg = findNearestPeg(this, pegList);
                     this.toFront();
-                    Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
+//                    Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
                         this.nearPegText = nearText.getText().charAt(0);
-                        System.out.println(name);
-                        System.out.println(nearText.getText());
+//                        System.out.println(name);
+//                        System.out.println(nearText.getText());
                     }
                 }
             });
@@ -190,6 +192,7 @@ public class Board_test extends Application{
                             pieceBigFlag = true;
                             placeFlag = true;
                             this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                            pieceOnBoard.add(this.pieceString);
                         }else {
                             this.setLayoutX(this.orig_posX);
                             this.setLayoutY(this.orig_posY);
@@ -197,6 +200,8 @@ public class Board_test extends Application{
                             this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                             pieceBigFlag = false;
                             placeFlag = false;
+                            if(pieceOnBoard.contains(this.pieceString))
+                                pieceOnBoard.remove(this.pieceString);
                         }
                     }
                 }
@@ -311,7 +316,7 @@ public class Board_test extends Application{
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println(p.pieceString);
+                System.out.println(pieceOnBoard.toString());
             }
         });
 
