@@ -238,6 +238,7 @@ public class Board_test extends Application{
                     if (this.rotAdd > 3) this.rotAdd = 0;
                     this.rot = (char) ((int) startChar + this.rotAdd);
                     this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                    event.consume();
                 }
             });
 
@@ -252,8 +253,10 @@ public class Board_test extends Application{
                 }else { //left click
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-                    this.setLayoutX(2 * this.posX - mouseX);
-                    this.setLayoutY(2 * this.posY - mouseY);
+                    if(!pieceBigFlag) {
+                        this.setLayoutX(2 * this.posX - mouseX);
+                        this.setLayoutY(2 * this.posY - mouseY);
+                    }
                 }
             });
 
