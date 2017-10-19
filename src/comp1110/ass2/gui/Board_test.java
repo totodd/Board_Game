@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -258,7 +259,12 @@ public class Board_test extends Application{
                         this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                     }
                 }
+                if(pieceOnBoardMap.size() == 8){
+                    root.getChildren().get(2).setOpacity(0);
+                    root.getChildren().add(completion());
+                }
                 System.out.println(pieceOnBoardMap.values().toString());
+                System.out.println(nearPegText);
             });
 
             this.setOnScroll(event -> {            // scroll to change orientation
@@ -271,6 +277,7 @@ public class Board_test extends Application{
                     if (this.rotAdd > 3) this.rotAdd = 0;
                     this.rot = (char) ((int) startChar + this.rotAdd);
                     this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                    event.consume();
                 }
             });
 
@@ -278,15 +285,23 @@ public class Board_test extends Application{
             this.setOnMousePressed(event -> {
                 moveFlag = false;
                 placeFlag = false;
-                pieceBigFlag = true;
                 if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
                     Flip(this.name,this.getLayoutX(), this.getLayoutY());
                     this.flipState = !this.flipState;
                 }else { //left click
+                    pieceBigFlag = true;
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-                    this.setLayoutX(2 * this.posX - mouseX);
-                    this.setLayoutY(2 * this.posY - mouseY);
+                    if(!pieceBigFlag) {
+                        this.posX = this.getLayoutX();
+                        this.posY = this.getLayoutY();
+                        this.setLayoutX(2 * this.posX - mouseX);
+                        this.setLayoutY(2 * this.posY - mouseY);
+                    }
+                    else{
+                        this.setLayoutX(event.getSceneX()-PIECE_IMAGE_SIZE/2);
+                        this.setLayoutY(event.getSceneY()-PIECE_IMAGE_SIZE/2);
+                    }
                 }
             });
 
@@ -336,6 +351,7 @@ public class Board_test extends Application{
 //                        pieceOnBoard.add(this.pieceString);
                         pieceOnBoardMap.put(this.name,this.pieceString);
 //                        requireCal = true;
+
 
                     }else {
                         // return to stock
@@ -453,6 +469,19 @@ public class Board_test extends Application{
 //        }
     }
 
+    /**
+     * Author: Tao Chen
+     * Print the congratulation message after game finished
+     * @return the congratulation group
+     */
+    private Group completion(){
+        Group congra = new Group();
+        Text congText = new Text(BOARD_WIDTH/2 - 40,BOARD_HEIGHT/2 +20,"Congratulations!!!");
+        congText.setFill(Color.RED);
+        congText.setFont(Font.font ("Verdana", 80));
+        congra.getChildren().add(congText);
+        return congra;
+    }
 
     private Group setButtons(){
         Group button = new Group();
