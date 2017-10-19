@@ -275,10 +275,8 @@ public class Board_test extends Application{
                         // put on peg
                         this.setFitHeight(PIECE_IMAGE_SIZE);
                         this.setFitWidth(PIECE_IMAGE_SIZE);
-                        this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                        this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                        this.setLayoutX(this.posX);
-                        this.setLayoutY(this.posY);
+                        this.setLayoutX(nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+                        this.setLayoutY(nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE);
 
                         pieceBigFlag = true;
                         placeFlag = true;
