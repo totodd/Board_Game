@@ -27,7 +27,7 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-public class Board_test extends Application{
+public class Board extends Application{
     private double FIND_RANGE = 60;
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
