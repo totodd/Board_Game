@@ -39,6 +39,8 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Tao Chen
+     * check if the placement is within the board
      * @param placement (Place)  -> int[3*3] + position
      * @return if within the board
      */
@@ -93,6 +95,7 @@ public class StepsGame implements Serializable{
     }
 
     /**
+     * Author: Tao Chen
      * Check if the center of the piece is on the right level, etc: lower level center should be at lower level board
      *
      * @param placement (Place)
@@ -112,6 +115,8 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Tao Chen
+     * put the placement on the board the return the board index occupied
      * @param placement (Place)
      * @return 3x3 -> [50] to add on BOARD_STRING, then update the conflict UPPER area on [50]
      */
