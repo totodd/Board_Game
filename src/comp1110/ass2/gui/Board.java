@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
+
+// music source http://www.orangefreesounds.com/short-electronic-backgroud-music/
 
 public class Board extends Application{
     private double FIND_RANGE = 60;
@@ -664,7 +667,7 @@ public class Board extends Application{
     }
 
     /* Loop in public domain CC 0 http://www.freesound.org/people/oceanictrancer/sounds/211684/ */
-    private static final String LOOP_URI = Board.class.getResource("assets/" + "211684__oceanictrancer__classic-house-loop-128-bpm.wav").toString();
+    private static final String LOOP_URI = Board.class.getResource("assets/" + "Short-electronic-background-music (1).wav").toString();
     private AudioClip loop;
 
     /* game variables */
