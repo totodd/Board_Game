@@ -11,6 +11,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -43,6 +45,9 @@ public class Board_test extends Application{
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
 
     private void setStart(){
+
+        difficulty.getValue();
+
         int n;
         Random rnd =new Random();
         n=rnd.nextInt(startDictionary.length);
@@ -77,6 +82,31 @@ public class Board_test extends Application{
         }
         return board;
     }
+    private void addFixed(String placement,Group pieces){
+        Image im = new Image(URI_BASE + placement.charAt(0)+"A" + ".png");
+        DraggbleImageView pc = new DraggbleImageView(im, 10,10,placement,placement.charAt(1));
+        pc.setFitWidth(PIECE_IMAGE_SIZE);
+        pc.setFitHeight(PIECE_IMAGE_SIZE);
+        int x;
+        x=placement.charAt(2);
+        if(x>90){
+            x=x-65-7;
+        }else{
+            x=x-65;
+        }
+
+        pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+        pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+
+
+        pc.setRotate(((int)placement.charAt(1)-65)%4*90);
+
+        if((int)placement.charAt(1)>=69){
+//                System.out.println(i);
+            pc.setImage(new Image(URI_BASE + placement.charAt(0) + "E.png"));
+        }
+        pieces.getChildren().add(pc);
+    }
 
     private Group setPieces(){
         Group pieces = new Group();
@@ -93,29 +123,7 @@ public class Board_test extends Application{
         }
 
         for(int i = 0; i < usedPiece.size(); i++){
-            Image im = new Image(URI_BASE + usedPiece.get(i).charAt(0)+"A" + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),usedPiece.get(i),usedPiece.get(i).charAt(1));
-            pc.setFitWidth(PIECE_IMAGE_SIZE);
-            pc.setFitHeight(PIECE_IMAGE_SIZE);
-            int x;
-            x=usedPiece.get(i).charAt(2);
-            if(x>90){
-                x=x-65-7;
-            }else{
-                x=x-65;
-            }
-
-            pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
-            pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
-
-
-            pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
-
-            if((int)usedPiece.get(i).charAt(1)>=69){
-//                System.out.println(i);
-                pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
-            }
-            pieces.getChildren().add(pc);
+            addFixed(usedPiece.get(i),pieces);
         }
 
         for(String s : imageList){
@@ -404,13 +412,39 @@ public class Board_test extends Application{
         hint.setLayoutY(BOARD_HEIGHT*0.3);
         button.getChildren().addAll(hint,newGame,retry);
 
+        difficulty.setMin(0);
+        difficulty.setMax(10);
+        //difficulty.setValue(0);
+        difficulty.setShowTickLabels(true);
+        difficulty.setShowTickMarks(true);
+        difficulty.setMajorTickUnit(5);
+        difficulty.setMinorTickCount(1);
+        difficulty.setSnapToTicks(true);
+
+        difficulty.setLayoutX(BOARD_WIDTH/2 - 80);
+        difficulty.setLayoutY(BOARD_HEIGHT - 40);
+        button.getChildren().add(difficulty);
+
+        final Label difficultyCaption = new Label("Difficulty:");
+        difficultyCaption.setTextFill(Color.GREY);
+        difficultyCaption.setLayoutX(BOARD_WIDTH/2 - 150);
+        difficultyCaption.setLayoutY(BOARD_HEIGHT - 40);
+        button.getChildren().add(difficultyCaption);
+
         return button;
     }
-
+    /* the difficulty slider */
+    private final Slider difficulty = new Slider();
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
 //        StackPane t = new StackPane();
+
+
+
+
+
+
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         setStart();
