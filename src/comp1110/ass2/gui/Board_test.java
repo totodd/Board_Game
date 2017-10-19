@@ -297,6 +297,18 @@ public class Board_test extends Application{
 
         root.getChildren().addAll(board,pieces,button);
 
+        String start = "CGOGGQEDIBAkFHn";
+        String[] startArray = start.split("(?<=\\G.{3})");
+        
+//        for startArray[0].charAt(0)
+//        startArray[0].charAt(2)
+//                pegList.get(0).getLayoutX()
+
+
+
+
+
+
 
 
 
