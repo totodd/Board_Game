@@ -300,12 +300,15 @@ public class Board extends Application{
 
 
             this.setOnMousePressed(event -> {
-                moveFlag = false;
-                placeFlag = false;
                 if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
-                    Flip(this.name,this.getLayoutX(), this.getLayoutY());
-                    this.flipState = !this.flipState;
+                    if(!placeFlag) {
+//                        moveFlag = true;
+                        Flip(this.name, this.getLayoutX(), this.getLayoutY());
+                        this.flipState = !this.flipState;
+                    }
                 }else { //left click
+                    moveFlag = true;
+                    placeFlag = false;
                     pieceBigFlag = true;
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
@@ -525,12 +528,13 @@ public class Board extends Application{
     private Group setButtons(){
         Group button = new Group();
         Button newGame = new Button("NewGame");
+        Group inst = instruction();
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 setStart();
                 root.getChildren().clear();
-                root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+                root.getChildren().addAll(setBoard(),setPieces(),setButtons(), inst);
 //                lastHint = null;
                 hintCount = 5;
             }
@@ -543,7 +547,7 @@ public class Board extends Application{
             @Override
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
-                root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+                root.getChildren().addAll(setBoard(),setPieces(),setButtons(), inst);
                 hintCount = 5;
 //                lastHint = null;
             }
