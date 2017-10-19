@@ -86,7 +86,10 @@ public class Board extends Application{
                 if(i%2 == 0) // row 1 3
                     color = Color.LIGHTGRAY;
             }
-            pegs.getChildren().addAll(new Circle(PEG_SIZE,color), new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)) ));
+
+            Text text=new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)));
+            text.setOpacity(0);
+            pegs.getChildren().addAll(new Circle(PEG_SIZE,color),text);
             pegs.setLayoutX(margin_x + i%10*distance);
             pegs.setLayoutY(margin_y + i/10*distance);
             board.getChildren().add(pegs);
@@ -163,7 +166,7 @@ public class Board extends Application{
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE_SMALL+PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
             pieces.getChildren().add(pc);
