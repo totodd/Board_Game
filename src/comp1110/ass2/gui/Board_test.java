@@ -103,7 +103,6 @@ public class Board_test extends Application{
                 x=x-65;
             }
 
-            pegList.get(x).getLayoutX();
             pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
             pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
 
@@ -111,7 +110,6 @@ public class Board_test extends Application{
             pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
 
             if((int)usedPiece.get(i).charAt(1)>=69){
-                System.out.println(i);
                 pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
             }
             pieces.getChildren().add(pc);
