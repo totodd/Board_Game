@@ -125,6 +125,14 @@ public class Board_test extends Application{
             this.rotAdd = 0;
             this.placeFlag = false;
 
+            this.addEventHandler(MouseEvent.ANY, event -> {
+                if(!placeFlag){
+                    if(pieceOnBoard.contains(this.pieceString))
+                        pieceOnBoard.remove(this.pieceString);
+                }
+//                System.out.println(pieceOnBoard);
+            });
+
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
                 this.rotAdd += 1;
@@ -137,43 +145,38 @@ public class Board_test extends Application{
             });
 
             this.setOnMousePressed(event -> {
-                if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
+                if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
+                    placeFlag = false;
                     this.posX = this.getLayoutX();
                     this.posY = this.getLayoutY();
-                    System.out.println(name);
                     Flip(this.name,this.posX, this.posY);
                     this.flipState = !this.flipState;
-                    System.out.println(name);
-
-                }else {
+                }else { //left click
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-                    if(!pieceBigFlag) {
-                        this.posX = this.getLayoutX();
-                        this.posY = this.getLayoutY();
-                        this.setLayoutX(2 * this.posX - mouseX);
-                        this.setLayoutY(2 * this.posY - mouseY);
-                        this.setFitHeight(PIECE_IMAGE_SIZE);
-                        this.setFitWidth(PIECE_IMAGE_SIZE);
-                    }
+
+                    this.setLayoutX(2 * this.posX - mouseX);
+                    this.setLayoutY(2 * this.posY - mouseY);
+                    this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
+                    this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
                 }
             });
 
             this.setOnMouseDragged(event -> {
                 if(event.getButton()!= MouseButton.SECONDARY) { // drag only for left click
+                    placeFlag = false;
                     this.setLayoutX(getLayoutX() + event.getSceneX() - mouseX);
                     this.setLayoutY(getLayoutY() + event.getSceneY() - mouseY);
                     mouseX = event.getSceneX();
                     mouseY = event.getSceneY();
                     nearPeg = findNearestPeg(this, pegList);
                     this.toFront();
+                    this.pieceString = placeFlag?  "" + this.name + this.rot + this.nearPegText :"" + this.name + this.rot;
 //                    Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
                         this.nearPegText = nearText.getText().charAt(0);
-//                        System.out.println(name);
-//                        System.out.println(nearText.getText());
                     }
                 }
             });
@@ -183,18 +186,23 @@ public class Board_test extends Application{
                 if(event.getButton()!= MouseButton.SECONDARY) { // only for left click
                     String tryPlacement = "";
                     for(String s:pieceOnBoard) tryPlacement += s;
+                    tryPlacement += this.pieceString + this.nearPegText;
                     System.out.println(tryPlacement);
                     pegFlag = StepsGame.isPlacementSequenceValid(tryPlacement);
                     if(pegFlag){
                         // put on peg
+                        this.setFitHeight(PIECE_IMAGE_SIZE);
+                        this.setFitWidth(PIECE_IMAGE_SIZE);
                         this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
                         this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
                         this.setLayoutX(this.posX);
                         this.setLayoutY(this.posY);
-                        pieceBigFlag = true;
-                        placeFlag = true;
-                        this.pieceString = "" + this.name + this.rot + this.nearPegText;
-                        pieceOnBoard.add(this.pieceString);
+                        if(!placeFlag) {
+                            pieceBigFlag = true;
+                            placeFlag = true;
+                            this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                            pieceOnBoard.add(this.pieceString);
+                        }
                     }else {
                         // return to stock
                         this.setLayoutX(this.orig_posX);
@@ -319,6 +327,9 @@ public class Board_test extends Application{
             }
         });
 
+        scene.addEventHandler(MouseEvent.ANY,event -> {
+
+        });
 
 
 
