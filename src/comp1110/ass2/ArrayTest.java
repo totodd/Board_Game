@@ -22,5 +22,5 @@ public class ArrayTest {
         String c[]={"aa","bb","cc","dd"};
         assertTrue(Utility.mergeStringArray(a,b).length==4);
     }
-    
+
 }
