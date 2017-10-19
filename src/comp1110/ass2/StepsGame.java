@@ -385,7 +385,7 @@ public class StepsGame implements Serializable{
      * Before the start of the game, the function will find out all viable piece-placements
      */
 
-    static void viableSinglePlacement() {
+    public static void viableSinglePlacement() {
         String pcs = PIECES;
         String viablePositions = BOARD_STRING;
         for (int i = 0; i < pcs.length(); i++) {
@@ -440,7 +440,7 @@ public class StepsGame implements Serializable{
      * @param placement
      * @return an Arraylist of string of all viable new placements
      */
-    static ArrayList<String> nextPlacement(String placement) {
+    public static ArrayList<String> nextPlacement(String placement) {
         ArrayList<String> singleSolutions = new ArrayList<>();
         ArrayList<String> newPlacements = new ArrayList<>();
         singleSolutions.addAll(viableSingleSolutions);
