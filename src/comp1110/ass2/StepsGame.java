@@ -554,8 +554,8 @@ public class StepsGame implements Serializable{
             findSolutions();
         String[] Sols = new String[finalSolutions.size()];
         Sols = finalSolutions.toArray(Sols);
-        String tmp[] = readFiletoStringArray("FullSol.txt");
-        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
+//        String tmp[] = readFiletoStringArray("FullSol.txt");
+//        writeStringArray(deduplicateStringArray(mergeStringArray(tmp,Sols)),"FullSol.txt");
         return Sols;
     }
     public static void writeString(String strings,String filename,boolean append) throws Exception {
