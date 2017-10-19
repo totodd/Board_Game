@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -258,7 +259,12 @@ public class Board_test extends Application{
                         this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                     }
                 }
+                if(pieceOnBoardMap.size() == 8){
+                    root.getChildren().get(2).setOpacity(0);
+                    root.getChildren().add(completion());
+                }
                 System.out.println(pieceOnBoardMap.values().toString());
+                System.out.println(nearPegText);
             });
 
             this.setOnScroll(event -> {            // scroll to change orientation
@@ -336,6 +342,7 @@ public class Board_test extends Application{
 //                        pieceOnBoard.add(this.pieceString);
                         pieceOnBoardMap.put(this.name,this.pieceString);
 //                        requireCal = true;
+
 
                     }else {
                         // return to stock
@@ -453,6 +460,19 @@ public class Board_test extends Application{
 //        }
     }
 
+    /**
+     * Author: Tao Chen
+     * Print the congratulation message after game finished
+     * @return the congratulation group
+     */
+    private Group completion(){
+        Group congra = new Group();
+        Text congText = new Text(BOARD_WIDTH/2 - 40,BOARD_HEIGHT/2 +20,"Congratulations!!!");
+        congText.setFill(Color.RED);
+        congText.setFont(Font.font ("Verdana", 80));
+        congra.getChildren().add(congText);
+        return congra;
+    }
 
     private Group setButtons(){
         Group button = new Group();
