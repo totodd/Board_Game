@@ -1,8 +1,7 @@
 We declare that the work toward our submission of Stage G was distributed among the group members as follows:
 
-* u2345678 30
-* u3456789 40
-* u0123456 30
+* u6074544 33
+* u5538588 33
+* u6032167 33
 
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
-
+Signed: Tao Chen(u6074544), Sheng Xu(u5538588), and Chen Chen (u6032167)
