@@ -29,7 +29,6 @@ public class Board_test extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    private boolean pieceBigFlag = false;
     private Circle highlighted = null;
 
 
@@ -72,6 +71,7 @@ public class Board_test extends Application{
 
 
     class DraggbleImageView extends ImageView{
+        private boolean pieceBigFlag = false;
         private double mouseX;
         private double mouseY;
         private double posX;
@@ -99,6 +99,7 @@ public class Board_test extends Application{
 
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
+
                 event.consume();
             });
 
