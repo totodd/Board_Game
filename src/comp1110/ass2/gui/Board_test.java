@@ -422,28 +422,28 @@ public class Board_test extends Application{
         hint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                    System.out.println("start calculating");
-                    Group hint = new Group();
-                    Set<String> hintPlaces = getHint();
-                    if(hintPlaces != null) {
-                        for (String s : hintPlaces) addFixed(s, hint);
-                        double red = 0.05;
-                        Double count = (1 - 0.3) / red;
+                System.out.println("start calculating hint");
+                Group hint = new Group();
+                Set<String> hintPlaces = getHint();
+                if(hintPlaces != null) {
+                    for (String s : hintPlaces) addFixed(s, hint);
+                    double red = 0.05;
+                    Double count = (1 - 0.3) / red;
 
-                        root.getChildren().add(hint);
+                    root.getChildren().add(hint);
 
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
-                                ae -> {
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
+                            ae -> {
 
-                                    hint.setOpacity(reduceOpa(hint.getOpacity(), red));
-                                    if (hint.getOpacity() < 0.4) {
-                                        root.getChildren().remove(hint);
-                                        hint.setOpacity(1.0);
-                                    }
-                                }));
+                                hint.setOpacity(reduceOpa(hint.getOpacity(), red));
+                                if (hint.getOpacity() < 0.4) {
+                                    root.getChildren().remove(hint);
+                                    hint.setOpacity(1.0);
+                                }
+                            }));
 
-                        timeline.setCycleCount(count.intValue());
-                        timeline.play();
+                    timeline.setCycleCount(count.intValue());
+                    timeline.play();
                     }
                 }
 
