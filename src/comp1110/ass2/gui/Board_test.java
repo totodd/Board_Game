@@ -28,6 +28,7 @@ public class Board_test extends Application{
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
     private static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
+    private String startString;
     private static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
@@ -64,8 +65,19 @@ public class Board_test extends Application{
 
     private Group setPieces(){
         Group pieces = new Group();
-        for(int i = 0; i < imageList.length; i++){
-            Image im = new Image(URI_BASE + imageList[i] + ".png");
+        String[] startArray = startString.split("(?<=\\G.{3})");
+        ArrayList<Character> usedPiece = new ArrayList<>();
+        ArrayList<String> viablePiece = new ArrayList<>();
+        for(String s : startArray){
+            usedPiece.add(s.charAt(0));
+        }
+        for(String s : imageList){
+            if(!usedPiece.contains(s.charAt(0)))
+                viablePiece.add(s);
+        }
+
+        for(int i = 0; i < viablePiece.size(); i++){
+            Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
             DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),imageList[i]);
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
@@ -286,6 +298,9 @@ public class Board_test extends Application{
 //        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+        String start = "CGOGGQEDI";
+        startString = start;
+
         Group board = setBoard();
 
         Group pieces = setPieces();
@@ -309,8 +324,7 @@ public class Board_test extends Application{
 
         root.getChildren().addAll(board,pieces,button);
 
-        String start = "CGOGGQEDIBAkFHn";
-        String[] startArray = start.split("(?<=\\G.{3})");
+//        String[] startArray = start.split("(?<=\\G.{3})");
         
 //        for startArray[0].charAt(0)
 //        startArray[0].charAt(2)
