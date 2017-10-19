@@ -5,7 +5,14 @@
 // All the responsibility are preserved by the authors.
 
 package comp1110.ass2;
-
+/**
+ * Author: Chen Chen
+ * a enum class containing all the piece information
+ * int array with size 9 representing the nine space a piece can occupy
+ * 0 means empty
+ * 1 means on lower layer
+ * 2 means on top layer
+ */
 public enum Pieces {
     A(new int[] {1,2,0,2,1,2,1,0,0}),
     B(new int[] {0,2,0,0,1,2,0,2,1}),
