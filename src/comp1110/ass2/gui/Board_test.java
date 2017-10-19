@@ -45,23 +45,19 @@ public class Board_test extends Application{
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
+    private final Slider difficulty = new Slider(1,3,2);
 
     private void setStart(){
-
 
         Double a = difficulty.getValue();
         int b =(6-a.intValue())*3;
         int n;
         Random rnd =new Random();
-
         do{
             n=rnd.nextInt(startDictionary.length);
             startString = startDictionary[n];
         }while(startString.length()!=b);
 
-
-//        System.out.println(pieceOnBoard.toString());
-//        pieceOnBoard.clear();
         pieceOnBoardMap.clear();
     }
 
@@ -489,7 +485,7 @@ public class Board_test extends Application{
         return opa-reduceAmount;
     }
     /* the difficulty slider */
-    private final Slider difficulty = new Slider();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
