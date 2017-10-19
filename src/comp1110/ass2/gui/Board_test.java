@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Board_test extends Application{
@@ -26,15 +27,15 @@ public class Board_test extends Application{
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
-    public static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
-    public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
+    private static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
+    private static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    private boolean pieceBigFlag = false;
     private Circle highlighted = null;
-    Group root = new Group();
+//    private LinkedList<String> pieceOnBoard =
+    private Group root = new Group();
 
 
     private Group setBoard(){
@@ -275,8 +276,19 @@ public class Board_test extends Application{
         Group board = setBoard();
 
         Group pieces = setPieces();
-
         Group button = setButtons();
+
+        DraggbleImageView p =  (DraggbleImageView) pieces.getChildren().get(0);
+        Button b = (Button) button.getChildren().get(0);
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println(p.pieceString);
+            }
+        });
+
+
+
 
 //        String url = URI_BASE + imageList[0] + ".png";
 
