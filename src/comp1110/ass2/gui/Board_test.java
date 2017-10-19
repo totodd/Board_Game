@@ -43,6 +43,7 @@ public class Board_test extends Application{
         n=rnd.nextInt(startDictionary.length);
         startString = startDictionary[n];
         System.out.println(startString);
+        pieceOnBoard.clear();
     }
 
 
