@@ -448,7 +448,7 @@ public class Board_test extends Application{
 
         setStart();
         Group board = setBoard();
-        Group hint = new Group();
+
         Group pieces = setPieces();
         Group button = setButtons();
 
@@ -458,6 +458,7 @@ public class Board_test extends Application{
             @Override
             public void handle(ActionEvent e) {
                 System.out.println("start calculating");
+                Group hint = new Group();
                 Set<String> hintPlaces = getHint();
                 for(String s:hintPlaces) addFixed(s, hint);
                 double red = 0.05;
