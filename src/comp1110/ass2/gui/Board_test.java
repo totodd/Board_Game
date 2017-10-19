@@ -1,6 +1,9 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.StepsGame;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.*;
 
@@ -266,7 +270,7 @@ public class Board_test extends Application{
                     for(String s:pieceOnBoardMap.values()) tryPlacement += s;
 //                    for(String s:pieceOnBoard) tryPlacement += s;
                     tryPlacement += "" + this.name + this.rot + this.nearPegText;
-                    System.out.println(tryPlacement);
+//                    System.out.println(tryPlacement);
                     pegFlag = StepsGame.isPlacementSequenceValid(tryPlacement);
 
                     if(pegFlag){
@@ -342,6 +346,27 @@ public class Board_test extends Application{
 
     }
 
+    private Set<String> getHint(){
+        String a = "";
+        for(String s:pieceOnBoardMap.values()) a += s;
+        StepsGame.viableSinglePlacement();
+        Set<String> nextPc = new HashSet<>();
+        String [] fin;
+        try {
+            fin = StepsGame.getSolutions(a);
+            for(String f : fin){
+                Set<String> temp = StepsGame.getViablePiecePlacements(a,f);
+                nextPc.addAll(temp);
+            }
+            return nextPc;
+        }catch (IndexOutOfBoundsException x){
+            System.out.println("Bad placement, not solution!");
+        }catch (Exception x) {
+            x.printStackTrace();
+        }
+        return null;
+    }
+
     private Group setButtons(){
         Group button = new Group();
         Button newGame = new Button("NewGame");
@@ -399,7 +424,17 @@ public class Board_test extends Application{
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println(pieceOnBoardMap.values().toString());
+                Set<String> hintPlaces = getHint();
+
+
+                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000),
+                        ae -> {
+                            root.getChildren().addAll(hintPlaces);
+                            root.getChildren().removeAll(hintPlaces);
+                        }));
+                timeline.setCycleCount(1);
+                timeline.play();
+
             }
         });
 
