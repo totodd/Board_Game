@@ -29,7 +29,7 @@ public class Board_test extends Application{
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
     private static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
-    private String startString;
+    private String startString = "";
     private static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
@@ -66,12 +66,21 @@ public class Board_test extends Application{
 
     private Group setPieces(){
         Group pieces = new Group();
-        String[] startArray = startString.split("(?<=\\G.{3})");
-        Collections.addAll(pieceOnBoard, startArray);
+        //String[] startArray = startString.split("(?<=\\G.{3})");
+        //Collections.addAll(pieceOnBoard, startArray);
         ArrayList<String> usedPiece = new ArrayList<>();
+        String[] startArray = null;
+        //ArrayList<Character> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
-        for(String s : startArray){
-            usedPiece.add(s);
+        //for(String s : startArray){
+            //usedPiece.add(s);
+        if(startString!="") {
+            startArray = startString.split("(?<=\\G.{3})");
+            Collections.addAll(pieceOnBoard, startArray);
+
+            for (String s : startArray) {
+                usedPiece.add(s);
+            }
         }
 
         for(int i = 0; i < usedPiece.size(); i++){
@@ -109,8 +118,7 @@ public class Board_test extends Application{
             }
             if(!isUsed){
                 viablePiece.add(s);
-            }
-        }
+        }}
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
@@ -175,9 +183,16 @@ public class Board_test extends Application{
             this.rotAdd = 0;
             this.placeFlag = false;
 
+            this.addEventHandler(MouseEvent.ANY, event -> {
+                if(!placeFlag){
+                    if(pieceOnBoard.contains(this.pieceString))
+                        pieceOnBoard.remove(this.pieceString);
+                }
+//                System.out.println(pieceOnBoard);
+            });
+
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
-
                 this.rotAdd += 1;
                 char startChar = this.flipState? 'E':'A';
                 if(this.rotAdd > 3) this.rotAdd = 0;
@@ -188,43 +203,36 @@ public class Board_test extends Application{
             });
 
             this.setOnMousePressed(event -> {
-                if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
-                    this.posX = this.getLayoutX();
-                    this.posY = this.getLayoutY();
-                    System.out.println(name);
-                    Flip(this.name,this.posX, this.posY);
+                if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
+                    placeFlag = false;
+                    Flip(this.name,this.getLayoutX(), this.getLayoutY());
                     this.flipState = !this.flipState;
-                    System.out.println(name);
-
-                }else {
+                }else { //left click
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-                    if(!pieceBigFlag) {
-                        this.posX = this.getLayoutX();
-                        this.posY = this.getLayoutY();
-                        this.setLayoutX(2 * this.posX - mouseX);
-                        this.setLayoutY(2 * this.posY - mouseY);
-                        this.setFitHeight(PIECE_IMAGE_SIZE);
-                        this.setFitWidth(PIECE_IMAGE_SIZE);
-                    }
+
+                    this.setLayoutX(2 * this.posX - mouseX);
+                    this.setLayoutY(2 * this.posY - mouseY);
+                    this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
+                    this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
                 }
             });
 
             this.setOnMouseDragged(event -> {
                 if(event.getButton()!= MouseButton.SECONDARY) { // drag only for left click
+                    placeFlag = false;
                     this.setLayoutX(getLayoutX() + event.getSceneX() - mouseX);
                     this.setLayoutY(getLayoutY() + event.getSceneY() - mouseY);
                     mouseX = event.getSceneX();
                     mouseY = event.getSceneY();
                     nearPeg = findNearestPeg(this, pegList);
                     this.toFront();
+                    this.pieceString = placeFlag?  "" + this.name + this.rot + this.nearPegText :"" + this.name + this.rot;
 //                    Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
                         this.nearPegText = nearText.getText().charAt(0);
-//                        System.out.println(name);
-//                        System.out.println(nearText.getText());
                     }
                 }
             });
@@ -232,29 +240,35 @@ public class Board_test extends Application{
             this.setOnMouseReleased((MouseEvent event) -> {
                 boolean pegFlag = false;
                 if(event.getButton()!= MouseButton.SECONDARY) { // only for left click
+                    String tryPlacement = "";
+                    for(String s:pieceOnBoard) tryPlacement += s;
+                    tryPlacement += this.pieceString + this.nearPegText;
+                    System.out.println(tryPlacement);
+                    pegFlag = StepsGame.isPlacementSequenceValid(tryPlacement);
                     if(pegFlag){
-//                    Node nearPeg = NearestPeg();
-                        //put on nearPeg
-                    }else {
-                        if(findNearFlag){
-                            this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                            this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                            this.setLayoutX(this.posX);
-                            this.setLayoutY(this.posY);
+                        // put on peg
+                        this.setFitHeight(PIECE_IMAGE_SIZE);
+                        this.setFitWidth(PIECE_IMAGE_SIZE);
+                        this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                        this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                        this.setLayoutX(this.posX);
+                        this.setLayoutY(this.posY);
+                        if(!placeFlag) {
                             pieceBigFlag = true;
                             placeFlag = true;
                             this.pieceString = "" + this.name + this.rot + this.nearPegText;
                             pieceOnBoard.add(this.pieceString);
-                        }else {
-                            this.setLayoutX(this.orig_posX);
-                            this.setLayoutY(this.orig_posY);
-                            this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
-                            this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
-                            pieceBigFlag = false;
-                            placeFlag = false;
-                            if(pieceOnBoard.contains(this.pieceString))
-                                pieceOnBoard.remove(this.pieceString);
                         }
+                    }else {
+                        // return to stock
+                        this.setLayoutX(this.orig_posX);
+                        this.setLayoutY(this.orig_posY);
+                        this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
+                        this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
+                        pieceBigFlag = false;
+                        placeFlag = false;
+                        if(pieceOnBoard.contains(this.pieceString))
+                            pieceOnBoard.remove(this.pieceString);
                     }
                 }
             });
@@ -369,6 +383,9 @@ public class Board_test extends Application{
             }
         });
 
+        scene.addEventHandler(MouseEvent.ANY,event -> {
+
+        });
 
 
 
