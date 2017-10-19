@@ -2,6 +2,8 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.StepsGame;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -32,6 +34,7 @@ public class Board_test extends Application{
     private boolean findNearFlag = false;
     private boolean pieceBigFlag = false;
     private Circle highlighted = null;
+    Group root = new Group();
 
 
     private Group setBoard(){
@@ -73,6 +76,7 @@ public class Board_test extends Application{
 
 
     class DraggbleImageView extends ImageView{
+        private boolean pieceBigFlag = false;
         private double mouseX;
         private double mouseY;
         private double posX;
@@ -105,6 +109,7 @@ public class Board_test extends Application{
 
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
+
                 this.rotAdd += 1;
                 char startChar = this.flipState? 'E':'A';
                 if(this.rotAdd > 3) this.rotAdd = 0;
@@ -113,7 +118,6 @@ public class Board_test extends Application{
                 System.out.println(pieceString);
                 event.consume();
             });
-
 
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
@@ -141,11 +145,12 @@ public class Board_test extends Application{
                     mouseX = event.getSceneX();
                     mouseY = event.getSceneY();
                     nearPeg = findNearestPeg(this, pegList);
+                    this.toFront();
                     Circle nearCircle = (Circle) nearPeg.getChildren().get(0);
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
-                        System.out.println(this.name + this.rot);
+                        System.out.println(name);
                         System.out.println(nearText.getText());
                     }
                 }
@@ -225,20 +230,57 @@ public class Board_test extends Application{
         highlighted.setFill(Color.GREEN);
 
     }
+
+    private Group setButtons(){
+        Group button = new Group();
+        Button reset = new Button("Reset");
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                root.getChildren().clear();
+                root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+            }
+        });
+        reset.setLayoutX(BOARD_WIDTH * 0.85);
+        reset.setLayoutY(BOARD_HEIGHT*0.2);
+
+
+        Button hint = new Button("Hint");
+        hint.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                // display all viable pieces
+            }
+        });
+        hint.setLayoutX(BOARD_WIDTH * 0.85);
+        hint.setLayoutY(BOARD_HEIGHT*0.3);
+        button.getChildren().addAll(hint,reset);
+
+        return button;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
-        Group root = new Group();//        StackPane t = new StackPane();
+//        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         Group board = setBoard();
 
         Group pieces = setPieces();
 
+        Group button = setButtons();
+
 //        String url = URI_BASE + imageList[0] + ".png";
 
 //        pieces.getChildren().add(pi);
-        root.getChildren().addAll(board,pieces);
+
+        root.getChildren().addAll(board,pieces,button);
+
+
+
+
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
