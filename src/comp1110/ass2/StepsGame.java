@@ -291,7 +291,7 @@ public class StepsGame implements Serializable{
      * @param objective A valid game objective, but not necessarily a valid placement string
      * @return An set of viable piece placements
      */
-    static Set<String> getViablePiecePlacements(String placement, String objective) {
+    public static Set<String> getViablePiecePlacements(String placement, String objective) {
         // FIXME Task 6: determine the correct order of piece placements
         List<Place> placed = turnToPlace(placement);
         List<Place> toPlace = turnToPlace(objective);
