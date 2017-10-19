@@ -31,7 +31,7 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-// music source http://www.orangefreesounds.com/short-electronic-backgroud-music/
+
 
 public class Board extends Application{
     private double FIND_RANGE = 60;
@@ -54,6 +54,13 @@ public class Board extends Application{
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
     private final Slider difficulty = new Slider(1,3,2);
+
+    // music source http://www.orangefreesounds.com/short-electronic-backgroud-music/
+    private static final String LOOP_URI = Board.class.getResource("assets/" + "Short-electronic-background-music (1).wav").toString();
+    private AudioClip loop;
+
+    /* game variables */
+    private boolean loopPlaying = false;
 
     private void setStart(){
 
@@ -479,7 +486,7 @@ public class Board extends Application{
         } catch (IndexOutOfBoundsException x) {
             System.out.println("Bad placement, not solution!");
         } catch (Exception x) {
-            x.printStackTrace();
+            System.out.println("Bad placement, not solution!");
         }
         return null;
 //        }else{
@@ -688,12 +695,7 @@ public class Board extends Application{
         loopPlaying = !loopPlaying;
     }
 
-    /* Loop in public domain CC 0 http://www.freesound.org/people/oceanictrancer/sounds/211684/ */
-    private static final String LOOP_URI = Board.class.getResource("assets/" + "Short-electronic-background-music (1).wav").toString();
-    private AudioClip loop;
 
-    /* game variables */
-    private boolean loopPlaying = false;
 
     /**
      * Author: Chen Chen, Tao Chen, Xu Sheng
