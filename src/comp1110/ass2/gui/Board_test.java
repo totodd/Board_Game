@@ -2,9 +2,12 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.StepsGame;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -30,6 +33,7 @@ public class Board_test extends Application{
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
     private Circle highlighted = null;
+    Group root = new Group();
 
 
     private Group setBoard(){
@@ -208,19 +212,57 @@ public class Board_test extends Application{
         highlighted.setFill(Color.GREEN);
 
     }
+
+    private Group setButtons(){
+        Group button = new Group();
+        Button reset = new Button("Reset");
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                root.getChildren().clear();
+                root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+            }
+        });
+        reset.setLayoutX(BOARD_WIDTH * 0.85);
+        reset.setLayoutY(BOARD_HEIGHT*0.2);
+
+
+        Button hint = new Button("Hint");
+        hint.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                // display all viable pieces
+            }
+        });
+        hint.setLayoutX(BOARD_WIDTH * 0.85);
+        hint.setLayoutY(BOARD_HEIGHT*0.3);
+        button.getChildren().addAll(hint,reset);
+
+        return button;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
-        Group root = new Group();//        StackPane t = new StackPane();
+//        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
         Group board = setBoard();
 
         Group pieces = setPieces();
+
+        Group button = setButtons();
+        
 //        String url = URI_BASE + imageList[0] + ".png";
 
 //        pieces.getChildren().add(pi);
-        root.getChildren().addAll(board,pieces);
+
+        root.getChildren().addAll(board,pieces,button);
+
+
+
+
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
