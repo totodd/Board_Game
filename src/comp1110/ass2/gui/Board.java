@@ -85,7 +85,10 @@ public class Board extends Application{
                 if(i%2 == 0) // row 1 3
                     color = Color.LIGHTGRAY;
             }
-            pegs.getChildren().addAll(new Circle(PEG_SIZE,color), new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)) ));
+
+            Text text=new Text(Character.toString(StepsGame.BOARD_STRING.charAt(i)));
+            text.setOpacity(0);
+            pegs.getChildren().addAll(new Circle(PEG_SIZE,color),text);
             pegs.setLayoutX(margin_x + i%10*distance);
             pegs.setLayoutY(margin_y + i/10*distance);
             board.getChildren().add(pegs);
