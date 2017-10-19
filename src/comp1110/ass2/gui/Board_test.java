@@ -38,10 +38,10 @@ public class Board_test extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    private boolean requireCal = false;
-    private Set<String> lastHint = null;
+//    private boolean requireCal = false;
+//    private Set<String> lastHint = null;
     private Circle highlighted = null;
-    private LinkedList<String> pieceOnBoard = new LinkedList<>();
+//    private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
@@ -61,7 +61,11 @@ public class Board_test extends Application{
         pieceOnBoardMap.clear();
     }
 
-
+    /**
+     * Author: Tao Chen
+     * set all the pegs on the board and make them aligned with each other
+     * @return board group
+     */
     private Group setBoard(){
         int distance = 60;
         double margin_x = BOARD_WIDTH/20;
@@ -85,6 +89,13 @@ public class Board_test extends Application{
         }
         return board;
     }
+
+    /**
+     *
+     *
+     * @param placement
+     * @param pieces
+     */
     private void addFixed(String placement,Group pieces){
         Image im = new Image(URI_BASE + placement.charAt(0)+"A" + ".png");
         DraggbleImageView pc = new DraggbleImageView(im, 10,10,placement,placement.charAt(1));
@@ -111,6 +122,11 @@ public class Board_test extends Application{
         pieces.getChildren().add(pc);
     }
 
+    /**
+     * Author: Tao Chen, Chen Chen
+     * set the pieces in default rotation both in the stock and on the board
+     * @return piece group
+     */
     private Group setPieces(){
         Group pieces = new Group();
         ArrayList<String> usedPiece = new ArrayList<>();
@@ -151,7 +167,11 @@ public class Board_test extends Application{
     }
 
 
-
+    /**
+     * Author: Tao Chen, Chen Chen, Xu Shen
+     *
+     * Make the pieces draggable and full function for the use of mouse
+     */
     class DraggbleImageView extends ImageView{
         private boolean pieceBigFlag = false;
         private boolean moveFlag = false;
@@ -171,6 +191,15 @@ public class Board_test extends Application{
         private char nearPegText;
 
         private StackPane nearPeg;
+
+        /**
+         *  Constructor for pieces with initial rotation and will keep fixed on board
+         * @param image image of piece
+         * @param posX location x to put
+         * @param posY location y to put
+         * @param name piece name
+         * @param rotate piece rotation
+         */
         DraggbleImageView(Image image, double posX, double posY, String name,char rotate){
             super(image);
             if (name.charAt(1) =='E')
@@ -188,6 +217,13 @@ public class Board_test extends Application{
             this.placeFlag = false;
         }
 
+        /**
+         *  Constructor for pieces in the stock,  are movable pieces, with mouse functions
+         * @param image image of piece
+         * @param posX location x to put
+         * @param posY location y to put
+         * @param name piece name
+         */
         DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
             if (name.charAt(1) =='E')
@@ -209,6 +245,7 @@ public class Board_test extends Application{
                     if(pieceOnBoardMap.containsKey(this.name))
                         pieceOnBoardMap.remove(this.name);
                 }
+
                 if(moveFlag){
                     this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
                     this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
@@ -307,7 +344,7 @@ public class Board_test extends Application{
                         this.pieceString = "" + this.name + this.rot + this.nearPegText;
 //                        pieceOnBoard.add(this.pieceString);
                         pieceOnBoardMap.put(this.name,this.pieceString);
-                        requireCal = true;
+//                        requireCal = true;
 
                     }else {
                         // return to stock
@@ -321,6 +358,14 @@ public class Board_test extends Application{
 
 
         }
+
+        /**
+         * Author: Xu Shen
+         *
+         * @param pcs
+         * @param x
+         * @param y
+         */
         void Flip(char pcs, double x, double y){
             if(check % 2 == 0)
                 this.setImage(new Image(URI_BASE + pcs + "E.png"));
@@ -330,6 +375,14 @@ public class Board_test extends Application{
             this.setLayoutX(x);
             this.setLayoutY(y);
         }
+
+        /**
+         * Author: Tao Chen
+         * Calculate the distance between piece and given location
+         * @param x location x
+         * @param y location y
+         * @return the distance
+         */
         private double distance(double x, double y){
             double centerX = getLayoutX()+PIECE_IMAGE_SIZE/2;
             double centerY = getLayoutY()+PIECE_IMAGE_SIZE/2;
@@ -339,7 +392,13 @@ public class Board_test extends Application{
         }
     }
 
-
+    /**
+     * Author: Tao Chen
+     * find the nearest peg from the dragged piece
+     * @param piece the dragged piece
+     * @param pegs the peg list on the board
+     * @return the nearest peg
+     */
     private StackPane findNearestPeg(DraggbleImageView piece, List<StackPane> pegs) {
         double minDis = 10000;
         StackPane res = pegs.get(0);
@@ -355,7 +414,8 @@ public class Board_test extends Application{
     }
 
     /**
-     * hightlight the nearest Peg for debug
+     * Author: Tao Chen
+     * hightlight the nearest Peg for DEBUG
      * @param nearPeg nearest peg
      */
     private void highlightNearestPeg(Circle nearPeg){
@@ -367,10 +427,15 @@ public class Board_test extends Application{
 
     }
 
+    /**
+     * Author: Xu Shen
+     * Get the viable hint by given placed pieces
+     * @return set of viable pieces
+     */
     private Set<String> getHint(){
-        if(lastHint==null | requireCal) {
+//        if(lastHint==null) {
             System.out.println("new hint");
-            requireCal = false;
+//            requireCal = false;
             String a = "";
             for (String s : pieceOnBoardMap.values()) a += s;
             StepsGame.viableSinglePlacement();
@@ -382,7 +447,7 @@ public class Board_test extends Application{
                     Set<String> temp = StepsGame.getViablePiecePlacements(a, f);
                     nextPc.addAll(temp);
                 }
-                lastHint = nextPc;
+//                lastHint = nextPc;
                 return nextPc;
             } catch (IndexOutOfBoundsException x) {
                 System.out.println("Bad placement, not solution!");
@@ -390,12 +455,13 @@ public class Board_test extends Application{
                 x.printStackTrace();
             }
             return null;
-        }else{
-            System.out.println("old hint");
-            System.out.println(lastHint.toString());
-            return lastHint;
-        }
+//        }else{
+//            System.out.println("old hint");
+//            System.out.println(lastHint.toString());
+//            return lastHint;
+//        }
     }
+
 
     private Group setButtons(){
         Group button = new Group();
@@ -406,6 +472,7 @@ public class Board_test extends Application{
                 setStart();
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+//                lastHint = null;
             }
         });
         newGame.setLayoutX(BOARD_WIDTH * 0.85);
@@ -417,6 +484,7 @@ public class Board_test extends Application{
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+//                lastHint = null;
             }
         });
         retry.setLayoutX(BOARD_WIDTH * 0.85);
@@ -488,12 +556,12 @@ public class Board_test extends Application{
         button.getChildren().add(difficultyHard);
         return button;
     }
-    
+
 
     double reduceOpa(double opa, double reduceAmount){
         return opa-reduceAmount;
     }
-    /* the difficulty slider */
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
