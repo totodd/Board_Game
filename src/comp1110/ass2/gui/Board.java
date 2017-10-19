@@ -303,7 +303,7 @@ public class Board extends Application{
                         this.setLayoutY(2 * this.posY - mouseY);
                     }
                     else{
-                        this.setLayoutX(event.getSceneX()-PIECE_IMAGE_SIZE/2);
+                        this.setLayoutX(event.getSceneX()-PIECE_IMAGE_SIZE/2-PEG_SIZE*1.4);
                         this.setLayoutY(event.getSceneY()-PIECE_IMAGE_SIZE/2);
                     }
                 }
