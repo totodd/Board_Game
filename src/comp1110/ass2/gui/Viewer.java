@@ -56,6 +56,8 @@ public class Viewer extends Application {
 
 
     /**
+     * Author: Sheng Xu
+     *
      * Draw a placement in the window, removing any previously drawn one
      *
      * @param placement  A valid placement string
@@ -110,6 +112,8 @@ public class Viewer extends Application {
     }
 
     /**
+     * Author: Sheng Xu
+     *
      * Initialize the "board" image as the background; list all original pieces
      */
     void BGInitizlizor(){
@@ -149,11 +153,12 @@ public class Viewer extends Application {
     }
 
     /**
+     * Author: Sheng Xu
+     *
      * Create a basic text field for input and a refresh button.
      */
     private void makeControls() {
         BGInitizlizor();
-
         Label label1 = new Label("Placement:");
         textField = new TextField ();
         textField.setPrefWidth(300);
@@ -177,11 +182,8 @@ public class Viewer extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
-
         root.getChildren().add(controls);
-
         makeControls();
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -42,6 +42,7 @@ public class Board extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
+    private int hintCount;
     //    private boolean requireCal = false;
 //    private Set<String> lastHint = null;
     private Circle highlighted = null;
@@ -72,8 +73,8 @@ public class Board extends Application{
      */
     private Group setBoard(){
         int distance = 60;
-        double margin_x = BOARD_WIDTH/20;
-        double margin_y = BOARD_HEIGHT/20;
+        double margin_x = BOARD_WIDTH/5.5;
+        double margin_y = BOARD_HEIGHT/8;
         Group board = new Group();
         for (int i = 0; i < StepsGame.BOARD_STRING.length();i++){
             StackPane pegs = new StackPane();
@@ -165,7 +166,7 @@ public class Board extends Application{
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE_SMALL+PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
             pieces.getChildren().add(pc);
@@ -175,7 +176,7 @@ public class Board extends Application{
 
 
     /**
-     * Author: Tao Chen, Chen Chen, Xu Shen
+     * Author: Tao Chen, Chen Chen, Sheng Xu
      *
      * Make the pieces draggable and full function for the use of mouse
      */
@@ -377,11 +378,11 @@ public class Board extends Application{
         }
 
         /**
-         * Author: Xu Shen
-         *
-         * @param pcs
-         * @param x
-         * @param y
+         * Author: Sheng Xu
+         * Flip the piece image according to the click times
+         * @param pcs   First character of the current piece
+         * @param x     X layout of the piece
+         * @param y     Y layout of the piece
          */
         void Flip(char pcs, double x, double y){
             if(check % 2 == 0)
@@ -445,7 +446,7 @@ public class Board extends Application{
     }
 
     /**
-     * Author: Xu Shen
+     * Author: Sheng Xu
      * Get the viable hint by given placed pieces
      * @return set of viable pieces
      */
@@ -493,6 +494,20 @@ public class Board extends Application{
         return congra;
     }
 
+    private Group instruction(){
+        Group inst = new Group();
+        String inst_text = "left mouse click --> pick up piece\n" +
+                "right mouse click --> flip the piece\n" +
+                "mouse scroll --> rotate the piece\n" +
+                "left mouse release --> drop the piece\n";
+        Text congText = new Text( BOARD_WIDTH - 240,BOARD_HEIGHT -120,inst_text);
+        congText.setFill(Color.GRAY);
+        congText.setFont(Font.font ("Serif", 12));
+        inst.getChildren().add(congText);
+
+        return inst;
+    }
+
     private Group setButtons(){
         Group button = new Group();
         Button newGame = new Button("NewGame");
@@ -503,6 +518,7 @@ public class Board extends Application{
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
 //                lastHint = null;
+                hintCount = 5;
             }
         });
         newGame.setLayoutX(BOARD_WIDTH * 0.85);
@@ -514,6 +530,7 @@ public class Board extends Application{
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+                hintCount = 5;
 //                lastHint = null;
             }
         });
@@ -528,7 +545,8 @@ public class Board extends Application{
                 System.out.println("start calculating hint");
                 Group hint = new Group();
                 Set<String> hintPlaces = getHint();
-                if(hintPlaces != null) {
+                if(hintPlaces != null & hintCount != 0) {
+                    hintCount -= 1;
                     for (String s : hintPlaces) addFixed(s, hint);
                     double red = 0.05;
                     Double count = (1 - 0.3) / red;
@@ -553,7 +571,10 @@ public class Board extends Application{
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
         hint.setLayoutY(BOARD_HEIGHT*0.3);
-        button.getChildren().addAll(hint,newGame,retry);
+        Text count = new Text(BOARD_WIDTH * 0.9, BOARD_HEIGHT*0.3, "Chances: "+String.valueOf(hintCount));
+        count.setFill(Color.BLACK);
+        count.setFont(Font.font ("Serif", 12));
+        button.getChildren().addAll(hint,newGame,retry,count);
 
         difficulty.setMin(1);
         difficulty.setMax(3);
@@ -660,8 +681,9 @@ public class Board extends Application{
         setStart();
         Group board = setBoard();
         Group pieces = setPieces();
+        Group inst = instruction();
 
-        root.getChildren().addAll(board,pieces,button);
+        root.getChildren().addAll(board,pieces,button, inst);
 
         primaryStage.setScene(scene);
         primaryStage.show();
