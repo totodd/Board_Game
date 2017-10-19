@@ -166,7 +166,7 @@ public class Board extends Application{
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE_SMALL+PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE_SMALL+PIECE_IMAGE_SIZE*0.45*(i%8),20+BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
             pieces.getChildren().add(pc);
@@ -500,7 +500,7 @@ public class Board extends Application{
                 "right mouse click --> flip the piece\n" +
                 "mouse scroll --> rotate the piece\n" +
                 "left mouse release --> drop the piece\n";
-        Text congText = new Text( BOARD_WIDTH - 240,BOARD_HEIGHT -120,inst_text);
+        Text congText = new Text( BOARD_WIDTH/2.8,BOARD_HEIGHT -278,inst_text);
         congText.setFill(Color.GRAY);
         congText.setFont(Font.font ("Serif", 12));
         inst.getChildren().add(congText);
@@ -521,8 +521,8 @@ public class Board extends Application{
                 hintCount = 5;
             }
         });
-        newGame.setLayoutX(BOARD_WIDTH * 0.85);
-        newGame.setLayoutY(BOARD_HEIGHT*0.2);
+        newGame.setLayoutX(BOARD_WIDTH * 0.85-100);
+        newGame.setLayoutY(355+BOARD_HEIGHT*0.2);
 
         Button retry = new Button("Retry");
         retry.setOnAction(new EventHandler<ActionEvent>() {
@@ -534,8 +534,8 @@ public class Board extends Application{
 //                lastHint = null;
             }
         });
-        retry.setLayoutX(BOARD_WIDTH * 0.85);
-        retry.setLayoutY(BOARD_HEIGHT*0.25);
+        retry.setLayoutX(BOARD_WIDTH * 0.85-100);
+        retry.setLayoutY(355+BOARD_HEIGHT*0.25);
 
 
         Button hint = new Button("Hint");
@@ -569,9 +569,9 @@ public class Board extends Application{
             }
 
         });
-        hint.setLayoutX(BOARD_WIDTH * 0.85);
-        hint.setLayoutY(BOARD_HEIGHT*0.3);
-        Text count = new Text(BOARD_WIDTH * 0.9, BOARD_HEIGHT*0.3, "Chances: "+String.valueOf(hintCount));
+        hint.setLayoutX(BOARD_WIDTH * 0.85-100);
+        hint.setLayoutY(355+BOARD_HEIGHT*0.3);
+        Text count = new Text(BOARD_WIDTH * 0.745, BOARD_HEIGHT*0.68, "Chances: "+String.valueOf(hintCount));
         count.setFill(Color.BLACK);
         count.setFont(Font.font ("Serif", 12));
         button.getChildren().addAll(hint,newGame,retry,count);
@@ -670,7 +670,7 @@ public class Board extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("StepsGame Viewer");
+        primaryStage.setTitle("IQ-STEPS");
 
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
