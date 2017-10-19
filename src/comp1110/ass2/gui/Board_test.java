@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -79,9 +80,11 @@ public class Board_test extends Application{
         private double orig_posY;
         private double posY;
         private int check = 0;
-        private double dragX;
-        private double dragY;
         private String name;
+        private char rot;
+        private boolean flipState;
+        private int rotAdd;
+        private String pieceString;
 
         private StackPane nearPeg;
 
@@ -96,15 +99,27 @@ public class Board_test extends Application{
             this.posY = posY;
             this.setLayoutX(this.orig_posX);
             this.setLayoutY(this.orig_posY);
+            this.rot = 'A';
+            this.flipState = false;
+            this.rotAdd = 0;
 
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
+                this.rotAdd += 1;
+                char startChar = this.flipState? 'E':'A';
+                if(this.rotAdd > 3) this.rotAdd = 0;
+                this.rot = (char)((int)startChar + this.rotAdd);
+                this.pieceString = this.name + this.rot;
+                System.out.println(pieceString);
                 event.consume();
             });
+
 
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
                     Flip(this.name.charAt(0),this.posX, this.posY);
+                    this.flipState = !this.flipState;
+
                 }else {
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
@@ -130,7 +145,7 @@ public class Board_test extends Application{
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
-                        System.out.println(name);
+                        System.out.println(this.name + this.rot);
                         System.out.println(nearText.getText());
                     }
                 }
@@ -198,6 +213,10 @@ public class Board_test extends Application{
         return res;
     }
 
+    /**
+     * hightlight the nearest Peg for debug
+     * @param nearPeg nearest peg
+     */
     private void highlightNearestPeg(Circle nearPeg){
         if(highlighted!=null){
             highlighted.setFill(Color.LIGHTGRAY);
@@ -215,6 +234,7 @@ public class Board_test extends Application{
         Group board = setBoard();
 
         Group pieces = setPieces();
+
 //        String url = URI_BASE + imageList[0] + ".png";
 
 //        pieces.getChildren().add(pi);
