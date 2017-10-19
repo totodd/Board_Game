@@ -34,6 +34,7 @@ public class Board_test extends Application{
     private boolean findNearFlag = false;
     private Circle highlighted = null;
     private LinkedList<String> pieceOnBoard = new LinkedList<>();
+    private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
 
@@ -43,6 +44,9 @@ public class Board_test extends Application{
         n=rnd.nextInt(startDictionary.length);
         startString = startDictionary[n];
         System.out.println(startString);
+//        System.out.println(pieceOnBoard.toString());
+//        pieceOnBoard.clear();
+        pieceOnBoardMap.clear();
     }
 
 
@@ -72,20 +76,15 @@ public class Board_test extends Application{
 
     private Group setPieces(){
         Group pieces = new Group();
-        //String[] startArray = startString.split("(?<=\\G.{3})");
-        //Collections.addAll(pieceOnBoard, startArray);
         ArrayList<String> usedPiece = new ArrayList<>();
         String[] startArray = null;
-        //ArrayList<Character> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
-        //for(String s : startArray){
-            //usedPiece.add(s);
         if(startString!="") {
             startArray = startString.split("(?<=\\G.{3})");
-            Collections.addAll(pieceOnBoard, startArray);
-
+//            Collections.addAll(pieceOnBoard, startArray);
             for (String s : startArray) {
                 usedPiece.add(s);
+                pieceOnBoardMap.put(s.charAt(0),s);
             }
         }
 
@@ -110,7 +109,7 @@ public class Board_test extends Application{
             pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
 
             if((int)usedPiece.get(i).charAt(1)>=69){
-                System.out.println(i);
+//                System.out.println(i);
                 pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
             }
             pieces.getChildren().add(pc);
@@ -193,8 +192,8 @@ public class Board_test extends Application{
 
             this.addEventHandler(MouseEvent.ANY, event -> {
                 if(!placeFlag){
-                    if(pieceOnBoard.contains(this.pieceString))
-                        pieceOnBoard.remove(this.pieceString);
+                    if(pieceOnBoardMap.containsKey(this.name))
+                        pieceOnBoardMap.remove(this.name);
                 }
                 if(moveFlag){
                     this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
@@ -208,9 +207,9 @@ public class Board_test extends Application{
                         this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                     }
                 }
-                System.out.println("moveFlag " + moveFlag);
-                System.out.println("placeFlag " + placeFlag);
-//                System.out.println(pieceOnBoard);
+//                System.out.println("moveFlag " + moveFlag);
+//                System.out.println("placeFlag " + placeFlag);
+                System.out.println(pieceOnBoardMap.values().toString());
             });
 
             this.setOnScroll(event -> {            // scroll to change orientation
@@ -267,10 +266,12 @@ public class Board_test extends Application{
                     boolean pegFlag = false;
                     moveFlag = false;
                     String tryPlacement = "";
-                    for(String s:pieceOnBoard) tryPlacement += s;
-                    tryPlacement += this.pieceString + this.nearPegText;
+                    for(String s:pieceOnBoardMap.values()) tryPlacement += s;
+//                    for(String s:pieceOnBoard) tryPlacement += s;
+                    tryPlacement += "" + this.name + this.rot + this.nearPegText;
                     System.out.println(tryPlacement);
                     pegFlag = StepsGame.isPlacementSequenceValid(tryPlacement);
+
                     if(pegFlag){
                         // put on peg
                         this.setFitHeight(PIECE_IMAGE_SIZE);
@@ -283,7 +284,8 @@ public class Board_test extends Application{
                         pieceBigFlag = true;
                         placeFlag = true;
                         this.pieceString = "" + this.name + this.rot + this.nearPegText;
-                        pieceOnBoard.add(this.pieceString);
+//                        pieceOnBoard.add(this.pieceString);
+                        pieceOnBoardMap.put(this.name,this.pieceString);
 
                     }else {
                         // return to stock
@@ -400,7 +402,7 @@ public class Board_test extends Application{
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println(pieceOnBoard.toString());
+                System.out.println(pieceOnBoardMap.values().toString());
             }
         });
 
