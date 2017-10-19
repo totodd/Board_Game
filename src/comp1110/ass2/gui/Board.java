@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -15,9 +16,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -70,8 +73,8 @@ public class Board extends Application{
      */
     private Group setBoard(){
         int distance = 60;
-        double margin_x = BOARD_WIDTH/20;
-        double margin_y = BOARD_HEIGHT/20;
+        double margin_x = BOARD_WIDTH/5.5;
+        double margin_y = BOARD_HEIGHT/8;
         Group board = new Group();
         for (int i = 0; i < StepsGame.BOARD_STRING.length();i++){
             StackPane pegs = new StackPane();
@@ -170,7 +173,7 @@ public class Board extends Application{
 
 
     /**
-     * Author: Tao Chen, Chen Chen, Xu Shen
+     * Author: Tao Chen, Chen Chen, Sheng Xu
      *
      * Make the pieces draggable and full function for the use of mouse
      */
@@ -372,11 +375,11 @@ public class Board extends Application{
         }
 
         /**
-         * Author: Xu Shen
-         *
-         * @param pcs
-         * @param x
-         * @param y
+         * Author: Sheng Xu
+         * Flip the piece image according to the click times
+         * @param pcs   First character of the current piece
+         * @param x     X layout of the piece
+         * @param y     Y layout of the piece
          */
         void Flip(char pcs, double x, double y){
             if(check % 2 == 0)
@@ -440,7 +443,7 @@ public class Board extends Application{
     }
 
     /**
-     * Author: Xu Shen
+     * Author: Sheng Xu
      * Get the viable hint by given placed pieces
      * @return set of viable pieces
      */
@@ -607,12 +610,70 @@ public class Board extends Application{
         return opa-reduceAmount;
     }
 
+    /**
+     * Set up event handlers for the main game
+     * This code is adopted from Assignment 1
+     * @param scene  The Scene used by the game.
+     */
+    private void setUpHandlers(Scene scene) {
+        /* create handlers for key press and release events */
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.M) {
+                toggleSoundLoop();
+                event.consume();
+            } else if (event.getCode() == KeyCode.Q) {
+                Platform.exit();
+                event.consume();
+            }
+        });
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                event.consume();
+            }
+        });
+    }
+
+    /**
+     * Set up the sound loop (to play when the 'M' key is pressed)
+     * This code is adopted from Assignment 1
+     */
+    private void setUpSoundLoop() {
+        try {
+            loop = new AudioClip(LOOP_URI);
+            loop.setCycleCount(AudioClip.INDEFINITE);
+        } catch (Exception e) {
+            System.err.println(":-( something bad happened ("+LOOP_URI+"): "+e);
+        }
+    }
+
+    /**
+     * Turn the sound loop on or off
+     */
+    private void toggleSoundLoop() {
+        if (loopPlaying)
+            loop.stop();
+        else
+            loop.play();
+        loopPlaying = !loopPlaying;
+    }
+
+    /* Loop in public domain CC 0 http://www.freesound.org/people/oceanictrancer/sounds/211684/ */
+    private static final String LOOP_URI = Board.class.getResource("assets/" + "211684__oceanictrancer__classic-house-loop-128-bpm.wav").toString();
+    private AudioClip loop;
+
+    /* game variables */
+    private boolean loopPlaying = false;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
 
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+        setUpHandlers(scene);
+        setUpSoundLoop();
+
         Group button = setButtons();
         setStart();
         Group board = setBoard();
