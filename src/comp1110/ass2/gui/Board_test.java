@@ -125,6 +125,8 @@ public class Board_test extends Application{
 
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
+                    this.posX = this.getLayoutX();
+                    this.posY = this.getLayoutY();
                     Flip(this.name,this.posX, this.posY);
                     this.flipState = !this.flipState;
 
@@ -241,16 +243,27 @@ public class Board_test extends Application{
 
     private Group setButtons(){
         Group button = new Group();
-        Button reset = new Button("Reset");
-        reset.setOnAction(new EventHandler<ActionEvent>() {
+        Button newGame = new Button("NewGame");
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
             }
         });
-        reset.setLayoutX(BOARD_WIDTH * 0.85);
-        reset.setLayoutY(BOARD_HEIGHT*0.2);
+        newGame.setLayoutX(BOARD_WIDTH * 0.85);
+        newGame.setLayoutY(BOARD_HEIGHT*0.2);
+
+        Button retry = new Button("Retry");
+        retry.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                root.getChildren().clear();
+                root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+            }
+        });
+        retry.setLayoutX(BOARD_WIDTH * 0.85);
+        retry.setLayoutY(BOARD_HEIGHT*0.25);
 
 
         Button hint = new Button("Hint");
@@ -262,7 +275,7 @@ public class Board_test extends Application{
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
         hint.setLayoutY(BOARD_HEIGHT*0.3);
-        button.getChildren().addAll(hint,reset);
+        button.getChildren().addAll(hint,newGame,retry);
 
         return button;
     }
@@ -295,6 +308,18 @@ public class Board_test extends Application{
 //        pieces.getChildren().add(pi);
 
         root.getChildren().addAll(board,pieces,button);
+
+        String start = "CGOGGQEDIBAkFHn";
+        String[] startArray = start.split("(?<=\\G.{3})");
+        
+//        for startArray[0].charAt(0)
+//        startArray[0].charAt(2)
+//                pegList.get(0).getLayoutX()
+
+
+
+
+
 
 
 
