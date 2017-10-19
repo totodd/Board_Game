@@ -574,6 +574,7 @@ public class Board extends Application{
         Text count = new Text(BOARD_WIDTH * 0.745, BOARD_HEIGHT*0.68, "Chances: "+String.valueOf(hintCount));
         count.setFill(Color.BLACK);
         count.setFont(Font.font ("Serif", 12));
+        count.setOpacity(0);
         button.getChildren().addAll(hint,newGame,retry,count);
 
         difficulty.setMin(1);
