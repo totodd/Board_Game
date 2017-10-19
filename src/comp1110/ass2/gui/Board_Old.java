@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class Board extends Application {
+public class Board_Old extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 60;
