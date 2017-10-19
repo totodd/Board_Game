@@ -12,7 +12,7 @@ additional features...
 
 
 - 3 difficulty level to choose
-- shading hints
+- hints with fading effect
 - on dragging rotating and flipping
 - random initial placement
 - congratulation ending

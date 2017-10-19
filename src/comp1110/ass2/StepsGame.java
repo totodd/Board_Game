@@ -146,6 +146,7 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Chen Chen
      * Determine whether a piece placement is well-formed according to the following:
      * - it consists of exactly three characters
      * - the first character is in the range A .. H (shapes)
@@ -179,6 +180,7 @@ public class StepsGame implements Serializable{
 
 
     /**
+     * Author: Chen Chen
      * Determine whether a placement string is well-formed:
      * - it consists of exactly N three-character piece placements (where N = 1 .. 8);
      * - each piece placement is well-formed

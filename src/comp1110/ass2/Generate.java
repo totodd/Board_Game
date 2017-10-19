@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
     /**
+     * Author: Chen Chen
      * This is first attempt to generate all solutions
      */
 public class Generate {
@@ -26,6 +27,7 @@ public class Generate {
     }
 
     /**
+     * Author: Chen Chen
      * This will generate from the Base point to the depth
      * Example Base = "" depth 1
      * will give you all combinations of starting from
