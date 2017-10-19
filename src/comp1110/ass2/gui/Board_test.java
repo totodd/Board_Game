@@ -46,13 +46,18 @@ public class Board_test extends Application{
 
     private void setStart(){
 
-        difficulty.getValue();
 
+        Double a = difficulty.getValue();
+        int b =(6-a.intValue())*3;
         int n;
         Random rnd =new Random();
-        n=rnd.nextInt(startDictionary.length);
-        startString = startDictionary[n];
-        System.out.println(startString);
+
+        do{
+            n=rnd.nextInt(startDictionary.length);
+            startString = startDictionary[n];
+        }while(startString.length()!=b);
+
+
 //        System.out.println(pieceOnBoard.toString());
 //        pieceOnBoard.clear();
         pieceOnBoardMap.clear();
@@ -405,19 +410,41 @@ public class Board_test extends Application{
         hint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                // display all viable pieces
-            }
+                    System.out.println("start calculating");
+                    Group hint = new Group();
+                    Set<String> hintPlaces = getHint();
+                    for(String s:hintPlaces) addFixed(s, hint);
+                    double red = 0.05;
+                    Double count = (1-0.3)/red;
+
+                    root.getChildren().add(hint);
+
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
+                            ae -> {
+
+                                hint.setOpacity(reduceOpa(hint.getOpacity(),red));
+                                if(hint.getOpacity()<0.4) {
+                                    root.getChildren().remove(hint);
+                                    hint.setOpacity(1.0);
+                                }
+                            }));
+
+                    timeline.setCycleCount(count.intValue());
+                    timeline.play();
+
+                }
+
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
         hint.setLayoutY(BOARD_HEIGHT*0.3);
         button.getChildren().addAll(hint,newGame,retry);
 
-        difficulty.setMin(0);
-        difficulty.setMax(10);
+        difficulty.setMin(1);
+        difficulty.setMax(3);
         //difficulty.setValue(0);
-        difficulty.setShowTickLabels(true);
-        difficulty.setShowTickMarks(true);
-        difficulty.setMajorTickUnit(5);
+        difficulty.setShowTickLabels(false);
+        difficulty.setShowTickMarks(false);
+        difficulty.setMajorTickUnit(1);
         difficulty.setMinorTickCount(1);
         difficulty.setSnapToTicks(true);
 
@@ -431,8 +458,19 @@ public class Board_test extends Application{
         difficultyCaption.setLayoutY(BOARD_HEIGHT - 40);
         button.getChildren().add(difficultyCaption);
 
+        final Label difficultyEasy = new Label("Easy");
+        difficultyEasy.setTextFill(Color.GREY);
+        difficultyEasy.setLayoutX(BOARD_WIDTH/2 - 80);
+        difficultyEasy.setLayoutY(BOARD_HEIGHT - 20);
+        button.getChildren().add(difficultyEasy);
+        final Label difficultyHard = new Label("Hard");
+        difficultyHard.setTextFill(Color.GREY);
+        difficultyHard.setLayoutX(BOARD_WIDTH/2+40);
+        difficultyHard.setLayoutY(BOARD_HEIGHT - 20);
+        button.getChildren().add(difficultyHard);
         return button;
     }
+    
 
     double reduceOpa(double opa, double reduceAmount){
         return opa-reduceAmount;
@@ -442,54 +480,14 @@ public class Board_test extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
-//        StackPane t = new StackPane();
 
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-
+        Group button = setButtons();
         setStart();
         Group board = setBoard();
-
         Group pieces = setPieces();
-        Group button = setButtons();
-
-        DraggbleImageView p =  (DraggbleImageView) pieces.getChildren().get(0);
-        Button b = (Button) button.getChildren().get(0);
-        b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                System.out.println("start calculating");
-                Group hint = new Group();
-                Set<String> hintPlaces = getHint();
-                for(String s:hintPlaces) addFixed(s, hint);
-                double red = 0.05;
-                Double count = (1-0.3)/red;
-
-                root.getChildren().add(hint);
-
-                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
-                        ae -> {
-
-                        hint.setOpacity(reduceOpa(hint.getOpacity(),red));
-                        if(hint.getOpacity()<0.4) {
-                            root.getChildren().remove(hint);
-                            hint.setOpacity(1.0);
-                        }
-                        }));
-
-                timeline.setCycleCount(count.intValue());
-                timeline.play();
-
-            }
-        });
-
-        scene.addEventHandler(MouseEvent.ANY,event -> {
-
-        });
-
-
 
         root.getChildren().addAll(board,pieces,button);
-
 
         primaryStage.setScene(scene);
         primaryStage.show();
