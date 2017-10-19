@@ -667,7 +667,7 @@ public class Board extends Application{
     }
 
     /* Loop in public domain CC 0 http://www.freesound.org/people/oceanictrancer/sounds/211684/ */
-    private static final String LOOP_URI = Board.class.getResource("assets/" + "211684__oceanictrancer__classic-house-loop-128-bpm.wav").toString();
+    private static final String LOOP_URI = Board.class.getResource("assets/" + "Short-electronic-background-music (1).wav").toString();
     private AudioClip loop;
 
     /* game variables */
