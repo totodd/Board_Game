@@ -37,6 +37,13 @@ public class Board_test extends Application{
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI"};
 
+    private void setStart(){
+        int n;
+        Random rnd =new Random();
+        n=rnd.nextInt(startDictionary.length);
+        startString = startDictionary[n];
+    }
+
 
     private Group setBoard(){
         int distance = 60;
@@ -325,6 +332,7 @@ public class Board_test extends Application{
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                setStart();
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
             }
@@ -363,12 +371,8 @@ public class Board_test extends Application{
         primaryStage.setTitle("StepsGame Viewer");
 //        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-        int n;
-        Random rnd =new Random();
-        n=rnd.nextInt(startDictionary.length);
 
-        startString = startDictionary[n];
-
+        setStart();
         Group board = setBoard();
 
         Group pieces = setPieces();
