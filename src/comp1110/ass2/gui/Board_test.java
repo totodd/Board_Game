@@ -18,10 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Board_test extends Application{
     private double FIND_RANGE = 60;
@@ -38,6 +35,15 @@ public class Board_test extends Application{
     private Circle highlighted = null;
     private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private Group root = new Group();
+    private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
+
+    private void setStart(){
+        int n;
+        Random rnd =new Random();
+        n=rnd.nextInt(startDictionary.length);
+        startString = startDictionary[n];
+        System.out.println(startString);
+    }
 
 
     private Group setBoard(){
@@ -66,21 +72,60 @@ public class Board_test extends Application{
 
     private Group setPieces(){
         Group pieces = new Group();
+        //String[] startArray = startString.split("(?<=\\G.{3})");
+        //Collections.addAll(pieceOnBoard, startArray);
+        ArrayList<String> usedPiece = new ArrayList<>();
         String[] startArray = null;
-        ArrayList<Character> usedPiece = new ArrayList<>();
+        //ArrayList<Character> usedPiece = new ArrayList<>();
         ArrayList<String> viablePiece = new ArrayList<>();
+        //for(String s : startArray){
+            //usedPiece.add(s);
         if(startString!="") {
             startArray = startString.split("(?<=\\G.{3})");
             Collections.addAll(pieceOnBoard, startArray);
 
             for (String s : startArray) {
-                usedPiece.add(s.charAt(0));
+                usedPiece.add(s);
             }
         }
-        for(String s : imageList){
-            if(!usedPiece.contains(s.charAt(0)))
-                viablePiece.add(s);
+
+        for(int i = 0; i < usedPiece.size(); i++){
+            Image im = new Image(URI_BASE + usedPiece.get(i).charAt(0)+"A" + ".png");
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),usedPiece.get(i),usedPiece.get(i).charAt(1));
+            pc.setFitWidth(PIECE_IMAGE_SIZE);
+            pc.setFitHeight(PIECE_IMAGE_SIZE);
+            int x;
+            x=usedPiece.get(i).charAt(2);
+            if(x>90){
+                x=x-65-7;
+            }else{
+                x=x-65;
+            }
+
+            pegList.get(x).getLayoutX();
+            pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+            pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
+
+
+            pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
+
+            if((int)usedPiece.get(i).charAt(1)>=69){
+                System.out.println(i);
+                pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
+            }
+            pieces.getChildren().add(pc);
         }
+
+        for(String s : imageList){
+            boolean isUsed=false;
+            for(int i=0;i<usedPiece.size();i++){
+                if((int)s.charAt(0)==(int)usedPiece.get(i).charAt(0)){
+                    isUsed=true;
+                }
+            }
+            if(!isUsed){
+                viablePiece.add(s);
+        }}
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
@@ -113,6 +158,22 @@ public class Board_test extends Application{
         private char nearPegText;
 
         private StackPane nearPeg;
+        DraggbleImageView(Image image, double posX, double posY, String name,char rotate){
+            super(image);
+            if (name.charAt(1) =='E')
+                check = 1;
+            this.name = name.charAt(0);
+            this.orig_posX = posX;
+            this.orig_posY = posY;
+            this.posX = posX;
+            this.posY = posY;
+            this.setLayoutX(this.orig_posX);
+            this.setLayoutY(this.orig_posY);
+            this.rot = rotate;
+            this.flipState = false;
+            this.rotAdd = 0;
+            this.placeFlag = false;
+        }
 
         DraggbleImageView(Image image, double posX, double posY, String name) {
             super(image);
@@ -288,6 +349,7 @@ public class Board_test extends Application{
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                setStart();
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
             }
@@ -327,9 +389,7 @@ public class Board_test extends Application{
 //        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
-        String start = "";
-        startString = start;
-
+        setStart();
         Group board = setBoard();
 
         Group pieces = setPieces();
@@ -350,26 +410,7 @@ public class Board_test extends Application{
 
 
 
-//        String url = URI_BASE + imageList[0] + ".png";
-
-//        pieces.getChildren().add(pi);
-
         root.getChildren().addAll(board,pieces,button);
-
-//        String[] startArray = start.split("(?<=\\G.{3})");
-        
-//        for startArray[0].charAt(0)
-//        startArray[0].charAt(2)
-//                pegList.get(0).getLayoutX()
-
-
-
-
-
-
-
-
-
 
 
         primaryStage.setScene(scene);
