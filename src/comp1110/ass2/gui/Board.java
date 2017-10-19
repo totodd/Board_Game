@@ -271,6 +271,7 @@ public class Board extends Application{
                 }
                 if(pieceOnBoardMap.size() == 8){
                     root.getChildren().get(2).setOpacity(0);
+                    root.getChildren().get(3).setOpacity(0);
                     root.getChildren().add(completion());
                 }
                 System.out.println(pieceOnBoardMap.values().toString());
