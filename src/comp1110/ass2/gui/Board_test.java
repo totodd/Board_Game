@@ -23,7 +23,7 @@ public class Board_test extends Application{
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
     private static final double PEG_SIZE = 21.5;
-    public static final String[] imageList = {"AA","AE","BA","BE","CA","CE","DA","DE","EA","EE","FA","FE","GA","GE","HA","HE"};
+    public static final String[] imageList = {"AA","BA","CA","DA","EA","FA","GA","HA"};
     public static final String URI_BASE = "file:src/comp1110/ass2/gui/assets/";
     private static final int PIECE_IMAGE_SIZE = (int) ((3*60)*1.33);
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
@@ -98,7 +98,7 @@ public class Board_test extends Application{
             this.setLayoutY(this.orig_posY);
 
             this.setOnScroll(event -> {            // scroll to change orientation
-                this.setRotate((this.getRotate()+90)%360);;
+                this.setRotate((this.getRotate()+90)%360);
                 event.consume();
             });
 
@@ -130,6 +130,7 @@ public class Board_test extends Application{
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
+                        System.out.println(name);
                         System.out.println(nearText.getText());
                     }
                 }
@@ -170,7 +171,9 @@ public class Board_test extends Application{
             this.setLayoutX(x);
             this.setLayoutY(y);
         }
+        void get(){
 
+        }
         private double distance(double x, double y){
             double centerX = getLayoutX()+PIECE_IMAGE_SIZE/2;
             double centerY = getLayoutY()+PIECE_IMAGE_SIZE/2;

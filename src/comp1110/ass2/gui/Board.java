@@ -207,8 +207,9 @@ public class Board extends Application {
      * Create a basic text field for input and a refresh button.
      */
     private void makeControls() {
-        pieceInitializor();
+
         BGInitizlizor();
+        pieceInitializor();
 //        controls.getChildren().addAll(initializor);
 //        Label label1 = new Label("Placement:");
 //        textField = new TextField ();
