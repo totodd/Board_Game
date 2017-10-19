@@ -23,13 +23,4 @@ public class ArrayTest {
         assertTrue(Utility.mergeStringArray(a,b).length==4);
     }
 
-    @Test
-    public void deduplicate(){
-        String a[]={"aa","bb"};
-        String b[]={"bb","dd"};
-        String c[]={"aa","bb","dd"};
-        String d[]={"aa","aa","bb","bb"};
-        assertTrue(Utility.deduplicateStringArray(Utility.mergeStringArray(a,b)).length==3);
-        assertTrue(Utility.deduplicateStringArray(d).length==2);
-    }
 }

@@ -277,6 +277,7 @@ public class Board_test extends Application{
                     if (this.rotAdd > 3) this.rotAdd = 0;
                     this.rot = (char) ((int) startChar + this.rotAdd);
                     this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                    event.consume();
                 }
             });
 
@@ -284,15 +285,23 @@ public class Board_test extends Application{
             this.setOnMousePressed(event -> {
                 moveFlag = false;
                 placeFlag = false;
-                pieceBigFlag = true;
                 if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
                     Flip(this.name,this.getLayoutX(), this.getLayoutY());
                     this.flipState = !this.flipState;
                 }else { //left click
+                    pieceBigFlag = true;
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-                    this.setLayoutX(2 * this.posX - mouseX);
-                    this.setLayoutY(2 * this.posY - mouseY);
+                    if(!pieceBigFlag) {
+                        this.posX = this.getLayoutX();
+                        this.posY = this.getLayoutY();
+                        this.setLayoutX(2 * this.posX - mouseX);
+                        this.setLayoutY(2 * this.posY - mouseY);
+                    }
+                    else{
+                        this.setLayoutX(event.getSceneX()-PIECE_IMAGE_SIZE/2);
+                        this.setLayoutY(event.getSceneY()-PIECE_IMAGE_SIZE/2);
+                    }
                 }
             });
 

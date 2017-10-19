@@ -6,15 +6,15 @@
 
 package comp1110.ass2;
 
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
+    /**
+     * This is first attempt to generate all solutions
+     */
 public class Generate {
-
 
     public static void main(String[] args) throws Exception {
         for(int i=1;i<9;i++){
@@ -23,19 +23,19 @@ public class Generate {
         }
         generateBase();
         generateSeq("H",3);
-        /*
-        * This will generate from the Base point to the depth
-        * Example Base = "" depth 1
-        * will give you A,B,C,D,E,F,G,H
-        *
-        * Base "A",depth 1
-        * will give you
-        * "AB","AC","AD',"AE","AF","AG","AH"
-        *
-        * */
-
     }
 
+    /**
+     * This will generate from the Base point to the depth
+     * Example Base = "" depth 1
+     * will give you all combinations of starting from
+     * A,B,C,D,E,F,G,H
+     * Base "A",depth 1
+     * will give you all combinations starting from
+     * "AB","AC","AD',"AE","AF","AG","AH"
+     * @param base base string
+     * @param depth how many pieces to add o base
+     */
     static void generateSeq(String base,int depth) throws Exception {
         if (depth!=0){
             String base2[]=nextSeq(base);
@@ -46,10 +46,13 @@ public class Generate {
         }
     }
 
+    /**
+     * This will generate all
+     * and write it into a file
+     * @param base the base string to add next piece
+     */
     static String[] nextSeq(String base) throws Exception {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
-
         String add[]={"A","B","C","D","E","F","G","H"};
         char baseChar[]=base.toCharArray();
         ArrayList<Character> baseList = new ArrayList<>();
@@ -76,6 +79,12 @@ public class Generate {
         return outputString;
     }
 
+    /**
+     * This will add one piece to existing placement
+     * and write it into a file
+     * @param base the base string
+     * @param add the single piece to add
+     */
     static void addPiece(String base,String add) throws Exception {
         String startbase[] = Utility.readFiletoStringArray(base.length()+"/"+base+".txt");
         String startadd[] = Utility.readFiletoStringArray("1/"+add+".txt");
@@ -94,9 +103,12 @@ public class Generate {
                 }
             }
         }
-
     }
 
+    /**
+     * This will generate all single piece placements
+     * and write it into a file
+     */
     static void generateBase() throws Exception {
         ArrayList<String> single = StepsGame.viableSinglePlacement2();
         String[] start = single.toArray(new String[single.size()]);
