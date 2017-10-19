@@ -35,13 +35,14 @@ public class Board_test extends Application{
     private Circle highlighted = null;
     private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private Group root = new Group();
-    private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI"};
+    private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
 
     private void setStart(){
         int n;
         Random rnd =new Random();
         n=rnd.nextInt(startDictionary.length);
         startString = startDictionary[n];
+        System.out.println(startString);
     }
 
 
@@ -108,8 +109,9 @@ public class Board_test extends Application{
 
             pc.setRotate(((int)usedPiece.get(i).charAt(1)-65)%4*90);
 
-            if((int)usedPiece.get(i).charAt(1)>68){
-                pc.Flip(usedPiece.get(i).charAt(0),pc.getLayoutX(),pc.getLayoutY());
+            if((int)usedPiece.get(i).charAt(1)>=69){
+                System.out.println(i);
+                pc.setImage(new Image(URI_BASE + usedPiece.get(i).charAt(0) + "E.png"));
             }
             pieces.getChildren().add(pc);
         }
