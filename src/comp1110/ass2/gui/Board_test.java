@@ -18,10 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Board_test extends Application{
     private double FIND_RANGE = 60;
@@ -38,6 +35,7 @@ public class Board_test extends Application{
     private Circle highlighted = null;
     private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private Group root = new Group();
+    private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI"};
 
 
     private Group setBoard(){
@@ -365,9 +363,11 @@ public class Board_test extends Application{
         primaryStage.setTitle("StepsGame Viewer");
 //        StackPane t = new StackPane();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+        int n;
+        Random rnd =new Random();
+        n=rnd.nextInt(startDictionary.length);
 
-        String start = "CGOGGQEDI";
-        startString = start;
+        startString = startDictionary[n];
 
         Group board = setBoard();
 
@@ -389,26 +389,7 @@ public class Board_test extends Application{
 
 
 
-//        String url = URI_BASE + imageList[0] + ".png";
-
-//        pieces.getChildren().add(pi);
-
         root.getChildren().addAll(board,pieces,button);
-
-//        String[] startArray = start.split("(?<=\\G.{3})");
-        
-//        for startArray[0].charAt(0)
-//        startArray[0].charAt(2)
-//                pegList.get(0).getLayoutX()
-
-
-
-
-
-
-
-
-
 
 
         primaryStage.setScene(scene);
