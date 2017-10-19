@@ -84,11 +84,13 @@ public class Board_test extends Application{
         private double orig_posY;
         private double posY;
         private int check = 0;
-        private String name;
+        private char name;
         private char rot;
         private boolean flipState;
         private int rotAdd;
         private String pieceString;
+        private boolean placeFlag;
+        private char nearPegText;
 
         private StackPane nearPeg;
 
@@ -96,7 +98,7 @@ public class Board_test extends Application{
             super(image);
             if (name.charAt(1) =='E')
                 check = 1;
-            this.name = name;
+            this.name = name.charAt(0);
             this.orig_posX = posX;
             this.orig_posY = posY;
             this.posX = posX;
@@ -106,6 +108,7 @@ public class Board_test extends Application{
             this.rot = 'A';
             this.flipState = false;
             this.rotAdd = 0;
+            this.placeFlag = false;
 
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
@@ -114,14 +117,14 @@ public class Board_test extends Application{
                 char startChar = this.flipState? 'E':'A';
                 if(this.rotAdd > 3) this.rotAdd = 0;
                 this.rot = (char)((int)startChar + this.rotAdd);
-                this.pieceString = this.name + this.rot;
+                this.pieceString = placeFlag?  "" + this.name + this.rot + this.nearPegText :"" + this.name + this.rot;
                 System.out.println(pieceString);
                 event.consume();
             });
 
             this.setOnMousePressed(event -> {
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
-                    Flip(this.name.charAt(0),this.posX, this.posY);
+                    Flip(this.name,this.posX, this.posY);
                     this.flipState = !this.flipState;
 
                 }else {
@@ -150,6 +153,7 @@ public class Board_test extends Application{
                     Text nearText = (Text) nearPeg.getChildren().get(1);
                     if (findNearFlag) {
 //                        highlightNearestPeg(nearCircle);
+                        this.nearPegText = nearText.getText().charAt(0);
                         System.out.println(name);
                         System.out.println(nearText.getText());
                     }
@@ -169,12 +173,15 @@ public class Board_test extends Application{
                             this.setLayoutX(this.posX);
                             this.setLayoutY(this.posY);
                             pieceBigFlag = true;
+                            placeFlag = true;
+                            this.pieceString = "" + this.name + this.rot + this.nearPegText;
                         }else {
                             this.setLayoutX(this.orig_posX);
                             this.setLayoutY(this.orig_posY);
                             this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
                             this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                             pieceBigFlag = false;
+                            placeFlag = false;
                         }
                     }
                 }
