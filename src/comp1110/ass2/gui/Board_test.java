@@ -45,23 +45,19 @@ public class Board_test extends Application{
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
+    private final Slider difficulty = new Slider(1,3,2);
 
     private void setStart(){
-
 
         Double a = difficulty.getValue();
         int b =(6-a.intValue())*3;
         int n;
         Random rnd =new Random();
-
         do{
             n=rnd.nextInt(startDictionary.length);
             startString = startDictionary[n];
         }while(startString.length()!=b);
 
-
-//        System.out.println(pieceOnBoard.toString());
-//        pieceOnBoard.clear();
         pieceOnBoardMap.clear();
     }
 
@@ -425,28 +421,28 @@ public class Board_test extends Application{
         hint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                    System.out.println("start calculating");
-                    Group hint = new Group();
-                    Set<String> hintPlaces = getHint();
-                    if(hintPlaces != null) {
-                        for (String s : hintPlaces) addFixed(s, hint);
-                        double red = 0.05;
-                        Double count = (1 - 0.3) / red;
+                System.out.println("start calculating hint");
+                Group hint = new Group();
+                Set<String> hintPlaces = getHint();
+                if(hintPlaces != null) {
+                    for (String s : hintPlaces) addFixed(s, hint);
+                    double red = 0.05;
+                    Double count = (1 - 0.3) / red;
 
-                        root.getChildren().add(hint);
+                    root.getChildren().add(hint);
 
-                        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
-                                ae -> {
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
+                            ae -> {
 
-                                    hint.setOpacity(reduceOpa(hint.getOpacity(), red));
-                                    if (hint.getOpacity() < 0.4) {
-                                        root.getChildren().remove(hint);
-                                        hint.setOpacity(1.0);
-                                    }
-                                }));
+                                hint.setOpacity(reduceOpa(hint.getOpacity(), red));
+                                if (hint.getOpacity() < 0.4) {
+                                    root.getChildren().remove(hint);
+                                    hint.setOpacity(1.0);
+                                }
+                            }));
 
-                        timeline.setCycleCount(count.intValue());
-                        timeline.play();
+                    timeline.setCycleCount(count.intValue());
+                    timeline.play();
                     }
                 }
 
@@ -465,24 +461,24 @@ public class Board_test extends Application{
         difficulty.setSnapToTicks(true);
 
         difficulty.setLayoutX(BOARD_WIDTH/2 - 80);
-        difficulty.setLayoutY(BOARD_HEIGHT - 40);
+        difficulty.setLayoutY(BOARD_HEIGHT - 80);
         button.getChildren().add(difficulty);
 
         final Label difficultyCaption = new Label("Difficulty:");
         difficultyCaption.setTextFill(Color.GREY);
         difficultyCaption.setLayoutX(BOARD_WIDTH/2 - 150);
-        difficultyCaption.setLayoutY(BOARD_HEIGHT - 40);
+        difficultyCaption.setLayoutY(BOARD_HEIGHT - 80);
         button.getChildren().add(difficultyCaption);
 
         final Label difficultyEasy = new Label("Easy");
         difficultyEasy.setTextFill(Color.GREY);
         difficultyEasy.setLayoutX(BOARD_WIDTH/2 - 80);
-        difficultyEasy.setLayoutY(BOARD_HEIGHT - 20);
+        difficultyEasy.setLayoutY(BOARD_HEIGHT - 60);
         button.getChildren().add(difficultyEasy);
         final Label difficultyHard = new Label("Hard");
         difficultyHard.setTextFill(Color.GREY);
         difficultyHard.setLayoutX(BOARD_WIDTH/2+40);
-        difficultyHard.setLayoutY(BOARD_HEIGHT - 20);
+        difficultyHard.setLayoutY(BOARD_HEIGHT - 60);
         button.getChildren().add(difficultyHard);
         return button;
     }
@@ -492,7 +488,7 @@ public class Board_test extends Application{
         return opa-reduceAmount;
     }
     /* the difficulty slider */
-    private final Slider difficulty = new Slider();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
