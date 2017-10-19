@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -15,9 +16,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -480,9 +483,9 @@ public class Board extends Application{
      */
     private Group completion(){
         Group congra = new Group();
-        Text congText = new Text(BOARD_WIDTH/2 - 40,BOARD_HEIGHT/2 +20,"Congratulations!!!");
+        Text congText = new Text( 140,BOARD_HEIGHT/2 +80,"Congratulations!!!");
         congText.setFill(Color.RED);
-        congText.setFont(Font.font ("Verdana", 80));
+        congText.setFont(Font.font ("Serif", 80));
         congra.getChildren().add(congText);
         return congra;
     }
@@ -586,12 +589,70 @@ public class Board extends Application{
         return opa-reduceAmount;
     }
 
+    /**
+     * Set up event handlers for the main game
+     * This code is adopted from Assignment 1
+     * @param scene  The Scene used by the game.
+     */
+    private void setUpHandlers(Scene scene) {
+        /* create handlers for key press and release events */
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.M) {
+                toggleSoundLoop();
+                event.consume();
+            } else if (event.getCode() == KeyCode.Q) {
+                Platform.exit();
+                event.consume();
+            }
+        });
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                event.consume();
+            }
+        });
+    }
+
+    /**
+     * Set up the sound loop (to play when the 'M' key is pressed)
+     * This code is adopted from Assignment 1
+     */
+    private void setUpSoundLoop() {
+        try {
+            loop = new AudioClip(LOOP_URI);
+            loop.setCycleCount(AudioClip.INDEFINITE);
+        } catch (Exception e) {
+            System.err.println(":-( something bad happened ("+LOOP_URI+"): "+e);
+        }
+    }
+
+    /**
+     * Turn the sound loop on or off
+     */
+    private void toggleSoundLoop() {
+        if (loopPlaying)
+            loop.stop();
+        else
+            loop.play();
+        loopPlaying = !loopPlaying;
+    }
+
+    /* Loop in public domain CC 0 http://www.freesound.org/people/oceanictrancer/sounds/211684/ */
+    private static final String LOOP_URI = Board.class.getResource("assets/" + "211684__oceanictrancer__classic-house-loop-128-bpm.wav").toString();
+    private AudioClip loop;
+
+    /* game variables */
+    private boolean loopPlaying = false;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
 
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+        setUpHandlers(scene);
+        setUpSoundLoop();
+
         Group button = setButtons();
         setStart();
         Group board = setBoard();
