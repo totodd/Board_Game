@@ -27,7 +27,7 @@ import javafx.util.Duration;
 
 import java.util.*;
 
-public class Board extends Application{
+public class Board_test extends Application{
     private double FIND_RANGE = 60;
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -39,10 +39,10 @@ public class Board extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    //    private boolean requireCal = false;
+//    private boolean requireCal = false;
 //    private Set<String> lastHint = null;
     private Circle highlighted = null;
-    //    private LinkedList<String> pieceOnBoard = new LinkedList<>();
+//    private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
@@ -155,7 +155,7 @@ public class Board extends Application{
             }
             if(!isUsed){
                 viablePiece.add(s);
-            }}
+        }}
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
@@ -445,27 +445,27 @@ public class Board extends Application{
      */
     private Set<String> getHint(){
 //        if(lastHint==null) {
-        System.out.println("new hint");
+            System.out.println("new hint");
 //            requireCal = false;
-        String a = "";
-        for (String s : pieceOnBoardMap.values()) a += s;
-        StepsGame.viableSinglePlacement();
-        Set<String> nextPc = new HashSet<>();
-        String[] fin;
-        try {
-            fin = StepsGame.getSolutions(a);
-            for (String f : fin) {
-                Set<String> temp = StepsGame.getViablePiecePlacements(a, f);
-                nextPc.addAll(temp);
-            }
+            String a = "";
+            for (String s : pieceOnBoardMap.values()) a += s;
+            StepsGame.viableSinglePlacement();
+            Set<String> nextPc = new HashSet<>();
+            String[] fin;
+            try {
+                fin = StepsGame.getSolutions(a);
+                for (String f : fin) {
+                    Set<String> temp = StepsGame.getViablePiecePlacements(a, f);
+                    nextPc.addAll(temp);
+                }
 //                lastHint = nextPc;
-            return nextPc;
-        } catch (IndexOutOfBoundsException x) {
-            System.out.println("Bad placement, not solution!");
-        } catch (Exception x) {
-            x.printStackTrace();
-        }
-        return null;
+                return nextPc;
+            } catch (IndexOutOfBoundsException x) {
+                System.out.println("Bad placement, not solution!");
+            } catch (Exception x) {
+                x.printStackTrace();
+            }
+            return null;
 //        }else{
 //            System.out.println("old hint");
 //            System.out.println(lastHint.toString());
@@ -541,8 +541,8 @@ public class Board extends Application{
 
                     timeline.setCycleCount(count.intValue());
                     timeline.play();
+                    }
                 }
-            }
 
         });
         hint.setLayoutX(BOARD_WIDTH * 0.85);
