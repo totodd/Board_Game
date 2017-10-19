@@ -101,7 +101,6 @@ public class Board_test extends Application{
                 x=x-65;
             }
 
-            pegList.get(x).getLayoutX();
             pc.setLayoutX(pegList.get(x).getLayoutX()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
             pc.setLayoutY(pegList.get(x).getLayoutY()- PIECE_IMAGE_SIZE/2 + PEG_SIZE);
 
