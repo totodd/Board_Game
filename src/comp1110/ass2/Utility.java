@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 public class Utility {
     /**
+     * Author: Chen Chen
      * write a string into a file
      * @param string The string need to write into the file.
      * @param filename the filename of the file,including the relative directory
@@ -38,6 +39,7 @@ public class Utility {
     }
 
     /**
+     * Author: Chen Chen
      * write a string into a file
      * @param strings The strings array need to write into the file.
      * @param filename the filename of the file,including the relative directory
@@ -58,7 +60,7 @@ public class Utility {
         }
         fileWriter.close();
     }
-    /**
+    /**Author: Chen Chen
      * write a string into a file
      * method overloading with append=false
      */
@@ -66,7 +68,7 @@ public class Utility {
         writeStringArray(strings,filename,false);
     }
 
-    /**
+    /**Author: Chen Chen
      * read a string array from a file
      * @param filename the filename of the file,including the relative directory
      * @throws Exception
@@ -86,7 +88,7 @@ public class Utility {
 
     }
 
-    /**
+    /**Author: Chen Chen
      * merge two string array into one, which can also deduplicate
      * @param input1 string array need to merge
      * @param input2 string array need to merge
@@ -106,7 +108,7 @@ public class Utility {
         String[] output=map.values().toArray(new String[map.size()]);
         return output;
     }
-    /**
+    /**Author: Chen Chen
      * determine if a array is empty
      * return true if empty
      * @param input array to determine

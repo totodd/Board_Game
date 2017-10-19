@@ -102,7 +102,8 @@ public class Board extends Application{
     }
 
     /**
-     *
+     *Author: Chen Chen
+     * Add a piece placement to a fixed group which cannot be moved by mouse
      *
      * @param placement
      * @param pieces
@@ -204,6 +205,7 @@ public class Board extends Application{
         private StackPane nearPeg;
 
         /**
+         * Author: Chen Chen
          *  Constructor for pieces with initial rotation and will keep fixed on board
          * @param image image of piece
          * @param posX location x to put
@@ -514,6 +516,12 @@ public class Board extends Application{
         return inst;
     }
 
+
+    /**
+     * Author: Chen Chen
+     * add all buttons to Group button
+     *
+     */
     private Group setButtons(){
         Group button = new Group();
         Button newGame = new Button("NewGame");
@@ -543,7 +551,10 @@ public class Board extends Application{
         retry.setLayoutX(BOARD_WIDTH * 0.85-100);
         retry.setLayoutY(355+BOARD_HEIGHT*0.25);
 
-
+        /**
+         * Author: Chen Chen, Tao Chen, Xu Sheng
+         * Implement hint with fading effect
+         */
         Button hint = new Button("Hint");
         hint.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -583,6 +594,10 @@ public class Board extends Application{
         count.setOpacity(0);
         button.getChildren().addAll(hint,newGame,retry,count);
 
+        /**
+         * Author: Chen Chen
+         * All difficulty slider
+         */
         difficulty.setMin(1);
         difficulty.setMax(3);
         //difficulty.setValue(0);
@@ -614,8 +629,10 @@ public class Board extends Application{
         button.getChildren().add(difficultyHard);
         return button;
     }
-
-
+    /**
+     * Author: Chen Chen
+     * method used in fading effect
+     */
     double reduceOpa(double opa, double reduceAmount){
         return opa-reduceAmount;
     }
@@ -674,24 +691,23 @@ public class Board extends Application{
     /* game variables */
     private boolean loopPlaying = false;
 
-
+    /**
+     * Author: Chen Chen, Tao Chen, Xu Sheng
+     * run at start
+     * basic board function
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("IQ-STEPS");
-
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-
         setUpHandlers(scene);
         setUpSoundLoop();
-
         Group button = setButtons();
         setStart();
         Group board = setBoard();
         Group pieces = setPieces();
         Group inst = instruction();
-
         root.getChildren().addAll(board,pieces,button, inst);
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
