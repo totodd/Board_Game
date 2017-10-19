@@ -72,8 +72,8 @@ public class Board extends Application{
      */
     private Group setBoard(){
         int distance = 60;
-        double margin_x = BOARD_WIDTH/20;
-        double margin_y = BOARD_HEIGHT/20;
+        double margin_x = BOARD_WIDTH/5.5;
+        double margin_y = BOARD_HEIGHT/8;
         Group board = new Group();
         for (int i = 0; i < StepsGame.BOARD_STRING.length();i++){
             StackPane pegs = new StackPane();
