@@ -270,7 +270,11 @@ public class Board_test extends Application{
             this.setOnScroll(event -> {            // scroll to change orientation
                 if(!placeFlag) {
                     System.out.println(pieceString);
-                    moveFlag = true;
+                    if(pieceBigFlag) {
+                        moveFlag = true;
+                    }else{
+                        moveFlag = false;
+                    }
                     this.setRotate((this.getRotate() + 90) % 360);
                     this.rotAdd += 1;
                     char startChar = this.flipState ? 'E' : 'A';
