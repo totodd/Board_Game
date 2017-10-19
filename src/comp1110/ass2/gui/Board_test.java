@@ -38,6 +38,8 @@ public class Board_test extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
+    private boolean requireCal = false;
+    private Set<String> lastHint = null;
     private Circle highlighted = null;
     private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
@@ -300,6 +302,7 @@ public class Board_test extends Application{
                         this.pieceString = "" + this.name + this.rot + this.nearPegText;
 //                        pieceOnBoard.add(this.pieceString);
                         pieceOnBoardMap.put(this.name,this.pieceString);
+                        requireCal = true;
 
                     }else {
                         // return to stock
@@ -360,24 +363,33 @@ public class Board_test extends Application{
     }
 
     private Set<String> getHint(){
-        String a = "";
-        for(String s:pieceOnBoardMap.values()) a += s;
-        StepsGame.viableSinglePlacement();
-        Set<String> nextPc = new HashSet<>();
-        String [] fin;
-        try {
-            fin = StepsGame.getSolutions(a);
-            for(String f : fin){
-                Set<String> temp = StepsGame.getViablePiecePlacements(a,f);
-                nextPc.addAll(temp);
+        if(lastHint==null | requireCal) {
+            System.out.println("new hint");
+            requireCal = false;
+            String a = "";
+            for (String s : pieceOnBoardMap.values()) a += s;
+            StepsGame.viableSinglePlacement();
+            Set<String> nextPc = new HashSet<>();
+            String[] fin;
+            try {
+                fin = StepsGame.getSolutions(a);
+                for (String f : fin) {
+                    Set<String> temp = StepsGame.getViablePiecePlacements(a, f);
+                    nextPc.addAll(temp);
+                }
+                lastHint = nextPc;
+                return nextPc;
+            } catch (IndexOutOfBoundsException x) {
+                System.out.println("Bad placement, not solution!");
+            } catch (Exception x) {
+                x.printStackTrace();
             }
-            return nextPc;
-        }catch (IndexOutOfBoundsException x){
-            System.out.println("Bad placement, not solution!");
-        }catch (Exception x) {
-            x.printStackTrace();
+            return null;
+        }else{
+            System.out.println("old hint");
+            System.out.println(lastHint.toString());
+            return lastHint;
         }
-        return null;
     }
 
     private Group setButtons(){
@@ -413,25 +425,26 @@ public class Board_test extends Application{
                     System.out.println("start calculating");
                     Group hint = new Group();
                     Set<String> hintPlaces = getHint();
-                    for(String s:hintPlaces) addFixed(s, hint);
-                    double red = 0.05;
-                    Double count = (1-0.3)/red;
+                    if(hintPlaces != null) {
+                        for (String s : hintPlaces) addFixed(s, hint);
+                        double red = 0.05;
+                        Double count = (1 - 0.3) / red;
 
-                    root.getChildren().add(hint);
+                        root.getChildren().add(hint);
 
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
-                            ae -> {
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
+                                ae -> {
 
-                                hint.setOpacity(reduceOpa(hint.getOpacity(),red));
-                                if(hint.getOpacity()<0.4) {
-                                    root.getChildren().remove(hint);
-                                    hint.setOpacity(1.0);
-                                }
-                            }));
+                                    hint.setOpacity(reduceOpa(hint.getOpacity(), red));
+                                    if (hint.getOpacity() < 0.4) {
+                                        root.getChildren().remove(hint);
+                                        hint.setOpacity(1.0);
+                                    }
+                                }));
 
-                    timeline.setCycleCount(count.intValue());
-                    timeline.play();
-
+                        timeline.setCycleCount(count.intValue());
+                        timeline.play();
+                    }
                 }
 
         });
