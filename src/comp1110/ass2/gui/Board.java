@@ -486,8 +486,10 @@ public class Board extends Application{
      * @return the congratulation group
      */
     private Group completion(){
+        double margin_x = BOARD_WIDTH/5.5;
+        double margin_y = BOARD_HEIGHT/8;
         Group congra = new Group();
-        Text congText = new Text( 140,BOARD_HEIGHT/2 +80,"Congratulations!!!");
+        Text congText = new Text( margin_x,BOARD_HEIGHT/2 +120,"Congratulations!!!");
         congText.setFill(Color.RED);
         congText.setFont(Font.font ("Serif", 80));
         congra.getChildren().add(congText);
