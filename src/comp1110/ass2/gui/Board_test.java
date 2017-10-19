@@ -38,10 +38,10 @@ public class Board_test extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    private boolean requireCal = false;
-    private Set<String> lastHint = null;
+//    private boolean requireCal = false;
+//    private Set<String> lastHint = null;
     private Circle highlighted = null;
-    private LinkedList<String> pieceOnBoard = new LinkedList<>();
+//    private LinkedList<String> pieceOnBoard = new LinkedList<>();
     private LinkedHashMap<Character, String> pieceOnBoardMap = new LinkedHashMap<>();
     private Group root = new Group();
     private String[] startDictionary={"BGKFCNCFlAFn","CGOGGQEDI","CFjBGKGAgHEl","EEfDHnBCT","DFOGGQEDI","EEfCHSAHQFDN","BGSHGQEHuGEO","BFOHBLADgCEnGGQ","CGOGDLAGjHEQ"};
@@ -213,6 +213,7 @@ public class Board_test extends Application{
                     if(pieceOnBoardMap.containsKey(this.name))
                         pieceOnBoardMap.remove(this.name);
                 }
+
                 if(moveFlag){
                     this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
                     this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
@@ -302,7 +303,7 @@ public class Board_test extends Application{
                         this.pieceString = "" + this.name + this.rot + this.nearPegText;
 //                        pieceOnBoard.add(this.pieceString);
                         pieceOnBoardMap.put(this.name,this.pieceString);
-                        requireCal = true;
+//                        requireCal = true;
 
                     }else {
                         // return to stock
@@ -363,9 +364,9 @@ public class Board_test extends Application{
     }
 
     private Set<String> getHint(){
-        if(lastHint==null | requireCal) {
+//        if(lastHint==null) {
             System.out.println("new hint");
-            requireCal = false;
+//            requireCal = false;
             String a = "";
             for (String s : pieceOnBoardMap.values()) a += s;
             StepsGame.viableSinglePlacement();
@@ -377,7 +378,7 @@ public class Board_test extends Application{
                     Set<String> temp = StepsGame.getViablePiecePlacements(a, f);
                     nextPc.addAll(temp);
                 }
-                lastHint = nextPc;
+//                lastHint = nextPc;
                 return nextPc;
             } catch (IndexOutOfBoundsException x) {
                 System.out.println("Bad placement, not solution!");
@@ -385,11 +386,11 @@ public class Board_test extends Application{
                 x.printStackTrace();
             }
             return null;
-        }else{
-            System.out.println("old hint");
-            System.out.println(lastHint.toString());
-            return lastHint;
-        }
+//        }else{
+//            System.out.println("old hint");
+//            System.out.println(lastHint.toString());
+//            return lastHint;
+//        }
     }
 
     private Group setButtons(){
@@ -401,6 +402,7 @@ public class Board_test extends Application{
                 setStart();
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+//                lastHint = null;
             }
         });
         newGame.setLayoutX(BOARD_WIDTH * 0.85);
@@ -412,6 +414,7 @@ public class Board_test extends Application{
             public void handle(ActionEvent e) {
                 root.getChildren().clear();
                 root.getChildren().addAll(setBoard(),setPieces(),setButtons());
+//                lastHint = null;
             }
         });
         retry.setLayoutX(BOARD_WIDTH * 0.85);
