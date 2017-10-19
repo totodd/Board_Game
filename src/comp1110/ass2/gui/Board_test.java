@@ -96,6 +96,7 @@ public class Board_test extends Application{
 
     class DraggbleImageView extends ImageView{
         private boolean pieceBigFlag = false;
+        private boolean moveFlag = false;
         private double mouseX;
         private double mouseY;
         private double posX;
@@ -134,39 +135,56 @@ public class Board_test extends Application{
                     if(pieceOnBoard.contains(this.pieceString))
                         pieceOnBoard.remove(this.pieceString);
                 }
+                if(moveFlag){
+                    this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
+                    this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
+                }else {
+                    if (pieceBigFlag) {
+                        this.setFitHeight(PIECE_IMAGE_SIZE);
+                        this.setFitWidth(PIECE_IMAGE_SIZE);
+                    } else {
+                        this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
+                        this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
+                    }
+                }
+                System.out.println("moveFlag " + moveFlag);
+                System.out.println("placeFlag " + placeFlag);
 //                System.out.println(pieceOnBoard);
             });
 
             this.setOnScroll(event -> {            // scroll to change orientation
-                this.setRotate((this.getRotate()+90)%360);
-                this.rotAdd += 1;
-                char startChar = this.flipState? 'E':'A';
-                if(this.rotAdd > 3) this.rotAdd = 0;
-                this.rot = (char)((int)startChar + this.rotAdd);
-                this.pieceString = placeFlag?  "" + this.name + this.rot + this.nearPegText :"" + this.name + this.rot;
-                System.out.println(pieceString);
-                event.consume();
+                if(!placeFlag) {
+                    System.out.println(pieceString);
+                    moveFlag = true;
+                    this.setRotate((this.getRotate() + 90) % 360);
+                    this.rotAdd += 1;
+                    char startChar = this.flipState ? 'E' : 'A';
+                    if (this.rotAdd > 3) this.rotAdd = 0;
+                    this.rot = (char) ((int) startChar + this.rotAdd);
+                    this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                }
             });
 
+
             this.setOnMousePressed(event -> {
+                moveFlag = false;
+                placeFlag = false;
+                pieceBigFlag = true;
                 if(event.getButton()== MouseButton.SECONDARY) { //flip image when right clicked
-                    placeFlag = false;
                     Flip(this.name,this.getLayoutX(), this.getLayoutY());
                     this.flipState = !this.flipState;
                 }else { //left click
                     this.mouseX = event.getSceneX();
                     this.mouseY = event.getSceneY();
-
                     this.setLayoutX(2 * this.posX - mouseX);
                     this.setLayoutY(2 * this.posY - mouseY);
-                    this.setFitHeight(PIECE_IMAGE_SIZE*1.1);
-                    this.setFitWidth(PIECE_IMAGE_SIZE*1.1);
                 }
             });
 
             this.setOnMouseDragged(event -> {
                 if(event.getButton()!= MouseButton.SECONDARY) { // drag only for left click
                     placeFlag = false;
+                    moveFlag = true;
                     this.setLayoutX(getLayoutX() + event.getSceneX() - mouseX);
                     this.setLayoutY(getLayoutY() + event.getSceneY() - mouseY);
                     mouseX = event.getSceneX();
@@ -184,8 +202,9 @@ public class Board_test extends Application{
             });
 
             this.setOnMouseReleased((MouseEvent event) -> {
-                boolean pegFlag = false;
                 if(event.getButton()!= MouseButton.SECONDARY) { // only for left click
+                    boolean pegFlag = false;
+                    moveFlag = false;
                     String tryPlacement = "";
                     for(String s:pieceOnBoard) tryPlacement += s;
                     tryPlacement += this.pieceString + this.nearPegText;
@@ -199,22 +218,18 @@ public class Board_test extends Application{
                         this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
                         this.setLayoutX(this.posX);
                         this.setLayoutY(this.posY);
-                        if(!placeFlag) {
-                            pieceBigFlag = true;
-                            placeFlag = true;
-                            this.pieceString = "" + this.name + this.rot + this.nearPegText;
-                            pieceOnBoard.add(this.pieceString);
-                        }
+
+                        pieceBigFlag = true;
+                        placeFlag = true;
+                        this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                        pieceOnBoard.add(this.pieceString);
+
                     }else {
                         // return to stock
                         this.setLayoutX(this.orig_posX);
                         this.setLayoutY(this.orig_posY);
-                        this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
-                        this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                         pieceBigFlag = false;
                         placeFlag = false;
-                        if(pieceOnBoard.contains(this.pieceString))
-                            pieceOnBoard.remove(this.pieceString);
                     }
                 }
             });
