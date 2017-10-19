@@ -291,7 +291,7 @@ public class StepsGame implements Serializable{
      * @param objective A valid game objective, but not necessarily a valid placement string
      * @return An set of viable piece placements
      */
-    static Set<String> getViablePiecePlacements(String placement, String objective) {
+    public static Set<String> getViablePiecePlacements(String placement, String objective) {
         // FIXME Task 6: determine the correct order of piece placements
         List<Place> placed = turnToPlace(placement);
         List<Place> toPlace = turnToPlace(objective);
@@ -385,7 +385,7 @@ public class StepsGame implements Serializable{
      * Before the start of the game, the function will find out all viable piece-placements
      */
 
-    static void viableSinglePlacement() {
+    public static void viableSinglePlacement() {
         String pcs = PIECES;
         String viablePositions = BOARD_STRING;
         for (int i = 0; i < pcs.length(); i++) {
@@ -440,7 +440,7 @@ public class StepsGame implements Serializable{
      * @param placement
      * @return an Arraylist of string of all viable new placements
      */
-    static ArrayList<String> nextPlacement(String placement) {
+    public static ArrayList<String> nextPlacement(String placement) {
         ArrayList<String> singleSolutions = new ArrayList<>();
         ArrayList<String> newPlacements = new ArrayList<>();
         singleSolutions.addAll(viableSingleSolutions);
@@ -532,7 +532,7 @@ public class StepsGame implements Serializable{
      * @return An array of strings, each describing a unique unordered solution to
      * the game given the starting point provided by placement.
      */
-    static String[] getSolutions(String placement) throws Exception {
+    public static String[] getSolutions(String placement) throws Exception {
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
         int pl = placement.length()/3;
         viableSinglePlacement();
