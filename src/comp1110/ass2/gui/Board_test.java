@@ -80,7 +80,7 @@ public class Board_test extends Application{
 
         for(int i = 0; i < viablePiece.size(); i++){
             Image im = new Image(URI_BASE + viablePiece.get(i) + ".png");
-            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),imageList[i]);
+            DraggbleImageView pc = new DraggbleImageView(im, PIECE_IMAGE_SIZE*0.45*(i%8),BOARD_HEIGHT-PIECE_IMAGE_SIZE+PIECE_IMAGE_SIZE*0.45*(i/8),viablePiece.get(i));
             pc.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
             pc.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
             pieces.getChildren().add(pc);
@@ -141,8 +141,10 @@ public class Board_test extends Application{
                 if(event.getButton()== MouseButton.SECONDARY) { //test: flip image when right clicked
                     this.posX = this.getLayoutX();
                     this.posY = this.getLayoutY();
+                    System.out.println(name);
                     Flip(this.name,this.posX, this.posY);
                     this.flipState = !this.flipState;
+                    System.out.println(name);
 
                 }else {
                     this.mouseX = event.getSceneX();
@@ -217,9 +219,6 @@ public class Board_test extends Application{
             check ++;
             this.setLayoutX(x);
             this.setLayoutY(y);
-        }
-        void get(){
-
         }
         private double distance(double x, double y){
             double centerX = getLayoutX()+PIECE_IMAGE_SIZE/2;
