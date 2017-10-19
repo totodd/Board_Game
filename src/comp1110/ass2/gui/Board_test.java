@@ -127,7 +127,6 @@ public class Board_test extends Application{
 
             this.setOnScroll(event -> {            // scroll to change orientation
                 this.setRotate((this.getRotate()+90)%360);
-
                 this.rotAdd += 1;
                 char startChar = this.flipState? 'E':'A';
                 if(this.rotAdd > 3) this.rotAdd = 0;
@@ -180,29 +179,30 @@ public class Board_test extends Application{
             this.setOnMouseReleased((MouseEvent event) -> {
                 boolean pegFlag = false;
                 if(event.getButton()!= MouseButton.SECONDARY) { // only for left click
+                    String tryPlacement = "";
+                    for(String s:pieceOnBoard) tryPlacement += s;
+                    System.out.println(tryPlacement);
+                    pegFlag = StepsGame.isPlacementSequenceValid(tryPlacement);
                     if(pegFlag){
-//                    Node nearPeg = NearestPeg();
-                        //put on nearPeg
+                        // put on peg
+                        this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                        this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
+                        this.setLayoutX(this.posX);
+                        this.setLayoutY(this.posY);
+                        pieceBigFlag = true;
+                        placeFlag = true;
+                        this.pieceString = "" + this.name + this.rot + this.nearPegText;
+                        pieceOnBoard.add(this.pieceString);
                     }else {
-                        if(findNearFlag){
-                            this.posX = nearPeg.getLayoutX() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                            this.posY = nearPeg.getLayoutY() - PIECE_IMAGE_SIZE/2 + PEG_SIZE;
-                            this.setLayoutX(this.posX);
-                            this.setLayoutY(this.posY);
-                            pieceBigFlag = true;
-                            placeFlag = true;
-                            this.pieceString = "" + this.name + this.rot + this.nearPegText;
-                            pieceOnBoard.add(this.pieceString);
-                        }else {
-                            this.setLayoutX(this.orig_posX);
-                            this.setLayoutY(this.orig_posY);
-                            this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
-                            this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
-                            pieceBigFlag = false;
-                            placeFlag = false;
-                            if(pieceOnBoard.contains(this.pieceString))
-                                pieceOnBoard.remove(this.pieceString);
-                        }
+                        // return to stock
+                        this.setLayoutX(this.orig_posX);
+                        this.setLayoutY(this.orig_posY);
+                        this.setFitHeight(PIECE_IMAGE_SIZE_SMALL);
+                        this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
+                        pieceBigFlag = false;
+                        placeFlag = false;
+                        if(pieceOnBoard.contains(this.pieceString))
+                            pieceOnBoard.remove(this.pieceString);
                     }
                 }
             });
