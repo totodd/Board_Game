@@ -211,8 +211,6 @@ public class Board_test extends Application{
                         this.setFitWidth(PIECE_IMAGE_SIZE_SMALL);
                     }
                 }
-//                System.out.println("moveFlag " + moveFlag);
-//                System.out.println("placeFlag " + placeFlag);
                 System.out.println(pieceOnBoardMap.values().toString());
             });
 
