@@ -42,7 +42,7 @@ public class Board extends Application{
     private static final int PIECE_IMAGE_SIZE_SMALL = (int) ((3*60)*1.33*0.5);
     private static ArrayList<StackPane> pegList = new ArrayList<>();
     private boolean findNearFlag = false;
-    private int hintCount;
+    private int hintCount=5;
     //    private boolean requireCal = false;
 //    private Set<String> lastHint = null;
     private Circle highlighted = null;
