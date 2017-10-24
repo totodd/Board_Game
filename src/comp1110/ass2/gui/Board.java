@@ -574,7 +574,7 @@ public class Board extends Application{
 
                     root.getChildren().add(hint);
 
-                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(400),
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),
                             ae -> {
 
                                 hint.setOpacity(reduceOpa(hint.getOpacity(), red));
